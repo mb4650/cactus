@@ -3,8 +3,8 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "Cactus"
-      href: cactus.html
+    - text: "Cactus_report"
+      href: project_report.html
     - text: "dashboard"
       href: plotly.html
 
