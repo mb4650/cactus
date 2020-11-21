@@ -1,0 +1,13 @@
+name: "Cactus"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "Cactus"
+      href: cactus.html
+    - text: "dashboard"
+      href: plotly.html
+
+output:
+  html_document:
+    theme: cerulean
