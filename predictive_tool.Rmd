@@ -15,9 +15,29 @@ covid_dataset = covid19(c("US"), level = 2, raw = FALSE) %>%
                 janitor::clean_names()
 
 noaa = read_csv("data/noaadata.csv")%>%
-        select (-c(X1))
+        select (-c(X1))%>%
+        janitor::clean_names()
 
 covid_noaa_dataset = full_join(covid_dataset,noaa, by = c("key_alpha_2" = "state", "date" = "date"))
 
+```
+
+
+```{r}
+#creating a df  using cdc dataset as well
+
+cdc_dataset = cdc_dataset = read_csv("data/covid.csv")
+
+#extracting population of each state from covid library dataset
+population_by_state = covid_dataset%>%
+                select(c("key_alpha_2","population"))%>%
+                distinct( key_alpha_2, population)
+
+cdc_pop = left_join(cdc_dataset,population_by_state, by =c('state' = "key_alpha_2") )
+
+cdc_noaa_dataset = cdc_pop%>%
+                    mutate(submission_date = as.Date(submission_date, "%m/%d/%Y")) %>%
+                    full_join(noaa, by = c("state" = "state", "submission_date" = "date"))%>%
+janitor::clean_names()
 ```
 
