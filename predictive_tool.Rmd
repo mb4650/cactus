@@ -1,0 +1,23 @@
+---
+title: "predictive_tool"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(tidyverse)
+library(COVID19)
+library(dplyr)
+
+#level = 2 gives state level data and raw = false cleans the dataset
+covid_dataset = covid19(c("US"), level = 2, raw = FALSE) %>%
+                janitor::clean_names()
+
+noaa = read_csv("data/noaadata.csv")%>%
+        select (-c(X1))
+
+covid_noaa_dataset = full_join(covid_dataset,noaa, by = c("key_alpha_2" = "state", "date" = "date"))
+
+```
+
