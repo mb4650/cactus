@@ -60,6 +60,50 @@ plot_df =
 ```
 
 
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+
+```{r}
+
+# State list
+state_sel = plot_df %>% pull(key_apple_mobility) %>% unique() %>% sort()
+
+
+# Select state 
+selectInput("state_sel", 
+            label = h3("Select state"),
+						choices = state_sel,
+						selected = "Alabama")
+
+
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+
+```
+
+### Chart C
+
+```{r}
+
+```
+
 Trends in COVID and Climate in US Between Jan 2020 and Oct 2020
 ===================================== 
 
@@ -67,7 +111,7 @@ Column {.sidebar}
 -----------------------------------------------------------------------
 
 
-```{r for_sidebar}
+```{r}
 
 # Select State, Month, Day
 var_choice = plot_df %>% names() 
@@ -91,4 +135,5 @@ selectInput("day_sel",
 selectInput("variable_sel", label = h3("Select variable"),
 						choices = var_sel, selected = "confirmed")
 ```
+
 
