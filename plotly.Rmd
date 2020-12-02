@@ -18,7 +18,8 @@ library(plotly)
 ```{r}
 #level = 2 gives state level data and raw = false cleans the dataset
 covid_dataset = covid19(c("US"), level = 2, raw = FALSE) %>%
-                janitor::clean_names()
+                janitor::clean_names() %>%
+                filter(date <= '2020-10-31')
 
 noaa = read_csv("data/noaadata.csv")%>%
         select (-c(X1))%>%
@@ -43,12 +44,51 @@ covid_noaa_dataset = full_join(covid_dataset,noaa_avg, by = c("key_alpha_2" = "s
 
 plot_df = 
   covid_noaa_dataset %>%
-  select(id, date:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
+  separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
+  select(id:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
   mutate(
     prop_cases = confirmed/population,
     prop_deaths_pop = deaths/population,
-    prop_deaths_case = deaths/confirmed
-  )
+    prop_deaths_case = deaths/confirmed,
+    prop_hospital_pop = hosp/population,
+    prop_hospital_case = hosp/confirmed,
+    prop_tested = tests/population
+  ) %>%
+  group_by(key_alpha_2) %>%
+  mutate(new_cases = (confirmed - lag(confirmed)))
+  
 ```
 
+
+Trends in COVID and Climate in US Between Jan 2020 and Oct 2020
+===================================== 
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+
+```{r for_sidebar}
+
+# Select State, Month, Day
+var_choice = plot_df %>% names() 
+var_sel = as.data.frame(var_choice) %>% filter(var_choice %in% c("tests", "confirmed", "deaths", "hosp", "population", "state_tavg", "state_tmax", "state_tmin", "state_prcp", "prop_cases", "prop_deaths_pop", "prop_deaths_case", "prop_hospital_pop", "prop_hospital_case", "prop_tested", "new_cases"))
+month = month.name
+day = c(1:31)
+
+# Select month 
+selectInput("month_sel", 
+            label = h3("Select month"),
+						choices = as.list(month),
+						selected = "January")
+
+# Select dat
+selectInput("day_sel", 
+            label = h3("Select day"),
+						choices = as.list(day),
+						selected = 1)
+
+# Variable select
+selectInput("variable_sel", label = h3("Select variable"),
+						choices = var_sel, selected = "confirmed")
+```
 
