@@ -17,9 +17,9 @@ library(plotly)
 
 ```{r}
 #level = 2 gives state level data and raw = false cleans the dataset
-covid_dataset = covid19(c("US"), level = 2, raw = FALSE) %>%
-                janitor::clean_names() %>%
-                filter(date <= '2020-10-31')
+covid_dataset = covid19(c("US"), level = 2, raw = FALSE, verbose = FALSE) %>%
+  janitor::clean_names() %>%
+  filter(date <= '2020-10-31')
 
 noaa = read_csv("data/noaadata.csv")%>%
         select (-c(X1))%>%
@@ -83,7 +83,8 @@ plot_df =
   
 ```
 
-
+Trends in Cases, Hospitalizations, and Death for each State
+===================================== 
 
 Column {.sidebar}
 -----------------------------------------------------------------------
