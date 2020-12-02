@@ -40,7 +40,10 @@ noaa_avg = noaa %>%
   )
   
 
-covid_noaa_dataset = full_join(covid_dataset,noaa_avg, by = c("key_alpha_2" = "state", "date" = "date")) 
+covid_noaa_dataset = 
+  full_join(covid_dataset,noaa_avg, by = c("key_alpha_2" = "state", "date" = "date")) %>%
+  mutate(as.Date(date))
+  
 
 plot_df = 
   covid_noaa_dataset %>%
@@ -86,7 +89,14 @@ Column {data-width=650}
 ### Chart A
 
 ```{r}
-
+renderPlotly({
+  covid_noaa_dataset %>%
+    filter(
+      key_apple_mobility == input[["state_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~date, y = ~confirmed, type = "bar", colors = "viridis")
+})
 ```
 
 Column {data-width=350}
