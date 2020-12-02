@@ -1,9 +1,54 @@
 ---
 title: "Plotly Graphics"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+runtime: shiny
 ---
+
+```{r setup,include=FALSE}
+library(tidyverse)
+library(COVID19)
+library(flexdashboard)
+library(plotly)
+```
+
+```{r}
+#level = 2 gives state level data and raw = false cleans the dataset
+covid_dataset = covid19(c("US"), level = 2, raw = FALSE) %>%
+                janitor::clean_names()
+
+noaa = read_csv("data/noaadata.csv")%>%
+        select (-c(X1))%>%
+        janitor::clean_names()
+
+noaa_avg = noaa %>%
+  mutate(
+    tavg = tavg/10,
+    tmax = tmax/10,
+    tmin = tmin/10,
+  ) %>%
+  group_by(state, date) %>%
+  summarize(
+    state_tavg = mean(tavg),
+    state_tmax = mean(tmax),
+    state_tmin = mean(tmin),
+    state_prcp = mean(prcp)
+  )
+  
+
+covid_noaa_dataset = full_join(covid_dataset,noaa_avg, by = c("key_alpha_2" = "state", "date" = "date")) 
+
+plot_df = 
+  covid_noaa_dataset %>%
+  select(id, date:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
+  mutate(
+    prop_cases = confirmed/population,
+    prop_deaths_pop = deaths/population,
+    prop_deaths_case = deaths/confirmed
+  )
+```
 
 
