@@ -1,0 +1,185 @@
+---
+title: "descriptive_plotly"
+author: "Ling Yi"
+date: "12/2/2020"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(plotly)
+library(flexdashboard)
+library(readxl)
+require(scales)
+library(lubridate)
+library(COVID19)
+
+knitr::opts_chunk$set(
+	fig.width = 6, 
+  fig.asp = .6,
+  out.width = "90%"
+)
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+
+```{r}
+covid_df = covid19(c("US"), level = 2, start = "2020-01-01")
+
+covid_df = 
+  covid_df %>% 
+  mutate(
+    state = key_alpha_2
+  ) %>% 
+  arrange(state) %>% 
+  group_by(state) %>%
+  mutate(
+    new_case = confirmed - lag(confirmed, default = 0),
+    new_case_updated = replace(new_case, which(new_case<0), NA),
+    new_deaths = deaths - lag(deaths, default = 0),
+    new_death_updated = replace(new_deaths, which(new_deaths<0), NA),
+    date = as.Date(date),
+    new_date = date,
+    state_binary = ifelse(state %in% c("ID", "MT", "ND", "WY", "SD", "UT", "NE", "IA", "KS", "MO", "OK", "AR", "TX", "IL", "MS", "AL", "FL", "TN", "KY", "IN", "OH", "WV", "NC", "SC", "AK"), "red", "blue"),
+    temperate = ifelse(state %in% c("FL", "TX", "NC", "SC", "GA", "LA", "HI", "OK", "AK", "AL", "MS", "TN", "KY"), "sub-tropical", "temperate")
+  ) %>% 
+  separate(new_date, into = c("year", "month", "day"))
+
+mask_df = read_excel("./data/mask_state.xlsx") %>% 
+  janitor::clean_names() %>% 
+  mutate(date = as.Date(as.numeric(as.character(date)), origin="1899-12-30")) %>% 
+  select(-x4)
+
+cactus_df = left_join(covid_df, mask_df, by.x=c("state", "date"), by.y=c("state", "date"))
+
+```
+
+Making the first plot: Look at trends of covid cases corresponding with important 2020
+
+```{r}
+time_plot = 
+covid_df %>% 
+  ggplot(aes(x = date, y = new_case_updated, color = state))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  theme(legend.position = "none")+
+  labs(title = "Covid Cases Over Time",
+       y = "Confirmed cases",
+       x = "Date")+
+      scale_x_date(breaks = seq.Date(from = as.Date("2020-01-31"), 
+                                     to = as.Date("2020-11-01"), by = 15)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+time_plot <- time_plot + scale_y_continuous(labels = comma)
+time_plot
+```
+
+```{r}
+death_plot = 
+covid_df %>% 
+  ggplot(aes(x = date, y = new_death_updated, color = state))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  theme(legend.position = "none")+
+  labs(title = "Covid Related Deaths in last year",
+       y = "Confirmed Deaths",
+       x = "Date")+
+      scale_x_date(breaks = seq.Date(from = as.Date("2020-01-31"), 
+                                     to = as.Date("2020-11-01"), by = 15)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+death_plot <- death_plot + scale_y_continuous(labels = comma)
+death_plot
+```
+
+
+Working on the second graph
+
+```{r}
+state_plot = 
+covid_df %>% 
+  group_by(state_binary, date, temperate) %>% 
+  summarize(mean_cases = mean(new_case_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_cases, color = state_binary))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  scale_y_continuous(labels = comma)+
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom")+
+  labs(title = "Red/Blue state Covid Cases",
+       y = "Confirmed Cases",
+       x = "Date")+
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+state_plot
+```
+
+
+```{r}
+state_death = 
+covid_df %>% 
+  group_by(state_binary, date, temperate) %>% 
+  summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_deaths, color = state_binary))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  scale_y_continuous(labels = comma)+
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom")+
+  labs(title = "Red/Blue states Covid Deaths",
+       y = "Confirmed deaths",
+       x = "Date")+
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+state_death
+```
+
+
+
+will now make the difference between dates that have mask mandate vs those that do not have mask mandate 
+
+
+```{r}
+cactus_df = 
+  cactus_df %>% 
+  mutate(in_two_weeks_mask = if_else(mask == "Yes", lead(new_case_updated, 14), NA_real_)) %>%
+  mutate(diff = in_two_weeks_mask - new_case_updated)
+
+
+cactus_df = 
+  cactus_df %>% 
+  mutate(in_two_weeks_death = if_else(mask == "Yes", lead(new_death_updated, 30), NA_real_)) %>% 
+  mutate(diff_death = in_two_weeks_death - new_death_updated)
+```
+
+```{r}
+cactus_df %>% 
+  ggplot(aes(x = state, y=diff, color = state_binary))+
+  geom_point()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))+
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position =     "bottom")+
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+##not sure if I will use this
+    labs(title = "Difference in cases and mask mandate",
+       y = "Two week difference in cases",
+       x = "State")
+```
+
+```{r}
+cactus_df %>% 
+  ggplot(aes(x = state, y=diff_death, color = state_binary))+
+  geom_point()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))+
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position =     "bottom")+
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+##not sure if I will use this
+    labs(title = "Difference in deaths and mask mandate",
+       y = "Four week difference in deaths",
+       x = "State")
+```
+
+

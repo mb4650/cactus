@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Ling Yi" />
+
+
+<title>descriptive_plotly</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="project_report.html">Cactus_report</a>
+</li>
+<li>
+  <a href="plotly.html">dashboard</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">descriptive_plotly</h1>
+<h4 class="author">Ling Yi</h4>
+<h4 class="date">12/2/2020</h4>
+
+</div>
+
+
+<pre class="r"><code>covid_df = covid19(c(&quot;US&quot;), level = 2, start = &quot;2020-01-01&quot;)</code></pre>
+<pre><code>## We have invested a lot of time and effort in creating COVID-19 Data Hub, please cite the following when using it:
+## 
+##   Guidotti, E., Ardia, D., (2020), &quot;COVID-19 Data Hub&quot;, Journal of Open
+##   Source Software 5(51):2376, doi: 10.21105/joss.02376.
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Article{,
+##     title = {COVID-19 Data Hub},
+##     year = {2020},
+##     doi = {10.21105/joss.02376},
+##     author = {Emanuele Guidotti and David Ardia},
+##     journal = {Journal of Open Source Software},
+##     volume = {5},
+##     number = {51},
+##     pages = {2376},
+##   }
+## 
+## To retrieve citation and metadata of the data sources see ?covid19cite. To hide this message use &#39;verbose = FALSE&#39;.</code></pre>
+<pre class="r"><code>covid_df = 
+  covid_df %&gt;% 
+  mutate(
+    state = key_alpha_2
+  ) %&gt;% 
+  arrange(state) %&gt;% 
+  group_by(state) %&gt;%
+  mutate(
+    new_case = confirmed - lag(confirmed, default = 0),
+    new_case_updated = replace(new_case, which(new_case&lt;0), NA),
+    new_deaths = deaths - lag(deaths, default = 0),
+    new_death_updated = replace(new_deaths, which(new_deaths&lt;0), NA),
+    date = as.Date(date),
+    new_date = date,
+    state_binary = ifelse(state %in% c(&quot;ID&quot;, &quot;MT&quot;, &quot;ND&quot;, &quot;WY&quot;, &quot;SD&quot;, &quot;UT&quot;, &quot;NE&quot;, &quot;IA&quot;, &quot;KS&quot;, &quot;MO&quot;, &quot;OK&quot;, &quot;AR&quot;, &quot;TX&quot;, &quot;IL&quot;, &quot;MS&quot;, &quot;AL&quot;, &quot;FL&quot;, &quot;TN&quot;, &quot;KY&quot;, &quot;IN&quot;, &quot;OH&quot;, &quot;WV&quot;, &quot;NC&quot;, &quot;SC&quot;, &quot;AK&quot;), &quot;red&quot;, &quot;blue&quot;),
+    temperate = ifelse(state %in% c(&quot;FL&quot;, &quot;TX&quot;, &quot;NC&quot;, &quot;SC&quot;, &quot;GA&quot;, &quot;LA&quot;, &quot;HI&quot;, &quot;OK&quot;, &quot;AK&quot;, &quot;AL&quot;, &quot;MS&quot;, &quot;TN&quot;, &quot;KY&quot;), &quot;sub-tropical&quot;, &quot;temperate&quot;)
+  ) %&gt;% 
+  separate(new_date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;))
+
+mask_df = read_excel(&quot;./data/mask_state.xlsx&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  mutate(date = as.Date(as.numeric(as.character(date)), origin=&quot;1899-12-30&quot;)) %&gt;% 
+  select(-x4)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...4</code></pre>
+<pre><code>## Warning: Problem with `mutate()` input `date`.
+## i NAs introduced by coercion
+## i Input `date` is `as.Date(as.numeric(as.character(date)), origin = &quot;1899-12-30&quot;)`.</code></pre>
+<pre><code>## Warning in as.Date(as.numeric(as.character(date)), origin = &quot;1899-12-30&quot;): NAs
+## introduced by coercion</code></pre>
+<pre class="r"><code>cactus_df = left_join(covid_df, mask_df, by.x=c(&quot;state&quot;, &quot;date&quot;), by.y=c(&quot;state&quot;, &quot;date&quot;))</code></pre>
+<pre><code>## Joining, by = c(&quot;date&quot;, &quot;state&quot;)</code></pre>
+<p>Making the first plot: Look at trends of covid cases corresponding with important 2020</p>
+<pre class="r"><code>time_plot = 
+covid_df %&gt;% 
+  ggplot(aes(x = date, y = new_case_updated, color = state))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  theme(legend.position = &quot;none&quot;)+
+  labs(title = &quot;Covid Cases Over Time&quot;,
+       y = &quot;Confirmed cases&quot;,
+       x = &quot;Date&quot;)+
+      scale_x_date(breaks = seq.Date(from = as.Date(&quot;2020-01-31&quot;), 
+                                     to = as.Date(&quot;2020-11-01&quot;), by = 15)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+time_plot &lt;- time_plot + scale_y_continuous(labels = comma)
+time_plot</code></pre>
+<pre><code>## Warning: Removed 186 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 162 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
+<pre class="r"><code>death_plot = 
+covid_df %&gt;% 
+  ggplot(aes(x = date, y = new_death_updated, color = state))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  theme(legend.position = &quot;none&quot;)+
+  labs(title = &quot;Covid Related Deaths in last year&quot;,
+       y = &quot;Confirmed Deaths&quot;,
+       x = &quot;Date&quot;)+
+      scale_x_date(breaks = seq.Date(from = as.Date(&quot;2020-01-31&quot;), 
+                                     to = as.Date(&quot;2020-11-01&quot;), by = 15)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+death_plot &lt;- death_plot + scale_y_continuous(labels = comma)
+death_plot</code></pre>
+<pre><code>## Warning: Removed 930 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 861 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
+<p>Working on the second graph</p>
+<pre class="r"><code>state_plot = 
+covid_df %&gt;% 
+  group_by(state_binary, date, temperate) %&gt;% 
+  summarize(mean_cases = mean(new_case_updated, na.rm = TRUE)) %&gt;% 
+  ggplot(aes(x = date, y = mean_cases, color = state_binary))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  scale_y_continuous(labels = comma)+
+  facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = FALSE, strip.position = &quot;bottom&quot;)+
+  labs(title = &quot;Red/Blue state Covid Cases&quot;,
+       y = &quot;Confirmed Cases&quot;,
+       x = &quot;Date&quot;)+
+  scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;state_binary&#39;, &#39;date&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>state_plot</code></pre>
+<pre><code>## Warning: Removed 18 rows containing missing values (geom_point).</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
+<pre class="r"><code>state_death = 
+covid_df %&gt;% 
+  group_by(state_binary, date, temperate) %&gt;% 
+  summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %&gt;% 
+  ggplot(aes(x = date, y = mean_deaths, color = state_binary))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  scale_y_continuous(labels = comma)+
+  facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = FALSE, strip.position = &quot;bottom&quot;)+
+  labs(title = &quot;Red/Blue states Covid Deaths&quot;,
+       y = &quot;Confirmed deaths&quot;,
+       x = &quot;Date&quot;)+
+  scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;state_binary&#39;, &#39;date&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>state_death</code></pre>
+<pre><code>## Warning: Removed 94 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 47 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<p>will now make the difference between dates that have mask mandate vs those that do not have mask mandate</p>
+<pre class="r"><code>cactus_df = 
+  cactus_df %&gt;% 
+  mutate(in_two_weeks_mask = if_else(mask == &quot;Yes&quot;, lead(new_case_updated, 14), NA_real_)) %&gt;%
+  mutate(diff = in_two_weeks_mask - new_case_updated)
+
+
+cactus_df = 
+  cactus_df %&gt;% 
+  mutate(in_two_weeks_death = if_else(mask == &quot;Yes&quot;, lead(new_death_updated, 30), NA_real_)) %&gt;% 
+  mutate(diff_death = in_two_weeks_death - new_death_updated)</code></pre>
+<pre class="r"><code>cactus_df %&gt;% 
+  ggplot(aes(x = state, y=diff, color = state_binary))+
+  geom_point()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))+
+  facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = TRUE, strip.position =     &quot;bottom&quot;)+
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+##not sure if I will use this
+    labs(title = &quot;Difference in cases and mask mandate&quot;,
+       y = &quot;Two week difference in cases&quot;,
+       x = &quot;State&quot;)</code></pre>
+<pre><code>## Warning: Removed 15323 rows containing missing values (geom_point).</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
+<pre class="r"><code>cactus_df %&gt;% 
+  ggplot(aes(x = state, y=diff_death, color = state_binary))+
+  geom_point()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))+
+  facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = TRUE, strip.position =     &quot;bottom&quot;)+
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+##not sure if I will use this
+    labs(title = &quot;Difference in deaths and mask mandate&quot;,
+       y = &quot;Four week difference in deaths&quot;,
+       x = &quot;State&quot;)</code></pre>
+<pre><code>## Warning: Removed 15328 rows containing missing values (geom_point).</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
