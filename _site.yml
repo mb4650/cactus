@@ -5,8 +5,8 @@ navbar:
   right:
     - text: "Cactus_report"
       href: project_report.html
-    - text: "dashboard"
-      href: plotly.html
+    - text: "Shiny dashboard"
+      href: https://mb4650.shinyapps.io/plotly/#section-trends-in-cases-hospitalizations-and-death-for-each-state
 
 output:
   html_document:
