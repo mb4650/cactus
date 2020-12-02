@@ -1,0 +1,10 @@
+name: plotly
+title:
+username:
+account: mlui
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3341399
+bundleId: 3935422
+url: https://mlui.shinyapps.io/plotly/
+when: 1606951028.55438
