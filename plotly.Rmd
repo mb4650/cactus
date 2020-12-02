@@ -58,7 +58,28 @@ plot_df =
     prop_tested = tests/population
   ) %>%
   group_by(key_alpha_2) %>%
-  mutate(new_cases = (confirmed - lag(confirmed)))
+  mutate(new_cases = (confirmed - lag(confirmed))) %>%
+  select(key_apple_mobility, key_alpha_2, id, population, year:confirmed, deaths, hosp, prop_cases:new_cases) %>%
+  pivot_longer(
+    (tests:new_cases),
+    names_to = "stat_type",
+    values_to = "stat"
+  ) %>%
+  mutate(
+    stat_name = 
+    if_else(stat_type == "tests", "Number of Tests", 
+    if_else(stat_type == "confirmed", "Number of Confirmed Cases",
+    if_else(stat_type == "deaths", "Number of Deaths",
+    if_else(stat_type == "hosp", "Number of Hospitalizations",
+    if_else(stat_type == "prop_cases", "Proportion of State Population with Confirmed Cases",
+    if_else(stat_type == "prop_deaths_pop", "Proportion of State Population who Died of COVID-19",
+    if_else(stat_type == "prop_deaths_case", "Proportion of Confirmed Cases who Died of COVID-19",
+    if_else(stat_type == "prop_hospital_pop","Proportion of State Population who were Hospitalized with COVID-19",
+    if_else(stat_type == "prop_hospital_case", "Proportion of Confirmed Cases who were Hospitalized with COVID-19",
+    if_else(stat_type == "prop_tested", "Proportion of State Population who were Tested",
+    if_else(stat_type == "new_cases", "Number of New Cases", NULL))))))))))),
+    month_name = month.name[month]
+  )
   
 ```
 
@@ -156,15 +177,14 @@ Column {.sidebar}
 ```{r}
 
 # Select State, Month, Day
-var_choice = plot_df %>% names() 
-var_sel = as.data.frame(var_choice) %>% filter(var_choice %in% c("tests", "confirmed", "deaths", "hosp", "population", "state_tavg", "state_tmax", "state_tmin", "state_prcp", "prop_cases", "prop_deaths_pop", "prop_deaths_case", "prop_hospital_pop", "prop_hospital_case", "prop_tested", "new_cases"))
-month = month.name
+var_choice = plot_df %>% distinct(stat_name) %>% pull()
+month = plot_df %>% distinct(month_name) %>% pull()
 day = c(1:31)
 
 # Select month 
 selectInput("month_sel", 
             label = h3("Select month"),
-						choices = as.list(month),
+						choices = month,
 						selected = "January")
 
 # Select dat
@@ -174,32 +194,35 @@ selectInput("day_sel",
 						selected = 1)
 
 # Variable select
-selectInput("variable_sel", label = h3("Select variable"),
-						choices = var_sel, selected = "confirmed")
+selectInput("variable_choice", label = h3("Select variable"),
+						choices = var_choice, selected = "Number of Tests")
 ```
 
+Column {.tabset}
+-----------------------------------------------------------------------
 
 ```{r map}
 
 renderPlotly({
   plot_df %>%
     filter(
-      month == input[["month_sel"]],
-      day == input[["day_sel"]]
+      month_name == input[["month_sel"]],
+      day == input[["day_sel"]],
+      stat_name == input[["variable_choice"]]
     ) %>%
-  plot_geo(locationmode = 'USA-states')%>% 
+  plot_geo(locationmode = 'USA-states') %>% 
   add_trace(
-    z = ~input[["variable_sel"]], 
+    z = ~stat, 
     locations = ~key_alpha_2,
-    color = ~input[["variable_sel"]], 
-    colors = 'viridis'
+    color = ~stat, 
+    colors = "Reds"
   ) %>% 
-    colorbar(title = "Millions USD") %>% 
+    colorbar(title = "Statistic") %>% 
     layout(
-    title = '2011 US Agriculture Exports by State<br>(Hover for breakdown)',
+    title = '',
     geo = list(
       scope = 'usa',
-      projection = list(type = 'albers usa'),
+      projection = list(type = 'state'),
       showlakes = TRUE,
       lakecolor = toRGB('white')
   ))
