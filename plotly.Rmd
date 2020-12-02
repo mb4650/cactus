@@ -1,9 +1,231 @@
 ---
 title: "Plotly Graphics"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+runtime: shiny
 ---
 
+```{r setup,include=FALSE}
+library(tidyverse)
+library(COVID19)
+library(flexdashboard)
+library(plotly)
+```
 
+```{r}
+#level = 2 gives state level data and raw = false cleans the dataset
+covid_dataset = covid19(c("US"), level = 2, raw = FALSE) %>%
+                janitor::clean_names() %>%
+                filter(date <= '2020-10-31')
+
+noaa = read_csv("data/noaadata.csv")%>%
+        select (-c(X1))%>%
+        janitor::clean_names()
+
+noaa_avg = noaa %>%
+  mutate(
+    tavg = tavg/10,
+    tmax = tmax/10,
+    tmin = tmin/10,
+  ) %>%
+  group_by(state, date) %>%
+  summarize(
+    state_tavg = mean(tavg),
+    state_tmax = mean(tmax),
+    state_tmin = mean(tmin),
+    state_prcp = mean(prcp)
+  )
+  
+
+covid_noaa_dataset = 
+  full_join(covid_dataset,noaa_avg, by = c("key_alpha_2" = "state", "date" = "date")) %>%
+  mutate(as.Date(date))
+  
+
+plot_df = 
+  covid_noaa_dataset %>%
+  separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
+  select(id:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
+  mutate(
+    prop_cases = confirmed/population,
+    prop_deaths_pop = deaths/population,
+    prop_deaths_case = deaths/confirmed,
+    prop_hospital_pop = hosp/population,
+    prop_hospital_case = hosp/confirmed,
+    prop_tested = tests/population
+  ) %>%
+  group_by(key_alpha_2) %>%
+  mutate(new_cases = (confirmed - lag(confirmed))) %>%
+  select(key_apple_mobility, key_alpha_2, id, population, year:confirmed, deaths, hosp, prop_cases:new_cases) %>%
+  pivot_longer(
+    (tests:new_cases),
+    names_to = "stat_type",
+    values_to = "stat"
+  ) %>%
+  mutate(
+    stat_name = 
+    if_else(stat_type == "tests", "Number of Tests", 
+    if_else(stat_type == "confirmed", "Number of Confirmed Cases",
+    if_else(stat_type == "deaths", "Number of Deaths",
+    if_else(stat_type == "hosp", "Number of Hospitalizations",
+    if_else(stat_type == "prop_cases", "Proportion of State Population with Confirmed Cases",
+    if_else(stat_type == "prop_deaths_pop", "Proportion of State Population who Died of COVID-19",
+    if_else(stat_type == "prop_deaths_case", "Proportion of Confirmed Cases who Died of COVID-19",
+    if_else(stat_type == "prop_hospital_pop","Proportion of State Population who were Hospitalized with COVID-19",
+    if_else(stat_type == "prop_hospital_case", "Proportion of Confirmed Cases who were Hospitalized with COVID-19",
+    if_else(stat_type == "prop_tested", "Proportion of State Population who were Tested",
+    if_else(stat_type == "new_cases", "Number of New Cases", NULL))))))))))),
+    month_name = month.name[month]
+  )
+  
+```
+
+
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+
+```{r}
+
+# State list
+state_sel = plot_df %>% pull(key_apple_mobility) %>% unique() %>% sort()
+
+
+# Select state 
+selectInput("state_sel", 
+            label = h3("Select state"),
+						choices = state_sel,
+						selected = "Alabama")
+
+
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+renderPlotly({
+  covid_noaa_dataset %>%
+    filter(
+      key_apple_mobility == input[["state_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~date) %>% 
+    add_lines(y = ~confirmed, color = I("red")) %>%
+    add_lines(y = ~deaths, color = I("green")) %>%
+    add_lines(y = ~hosp, color = I("blue")) 
+    
+})
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+renderPlotly({
+  covid_noaa_dataset %>%
+    filter(
+      key_apple_mobility == input[["state_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~date, y = ~confirmed, type = "bar", color = I("red"))
+})
+```
+
+### Chart C
+
+```{r}
+renderPlotly({
+  covid_noaa_dataset %>%
+    filter(
+      key_apple_mobility == input[["state_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~date, y = ~deaths, type = "bar", color = I("green"))
+})
+```
+
+
+### Chart D
+
+```{r}
+renderPlotly({
+  covid_noaa_dataset %>%
+    filter(
+      key_apple_mobility == input[["state_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~date, y = ~hosp, type = "bar", color = I("blue"))
+})
+```
+
+Trends in COVID and Climate in US Between Jan 2020 and Oct 2020
+===================================== 
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+
+```{r}
+
+# Select State, Month, Day
+var_choice = plot_df %>% distinct(stat_name) %>% pull()
+month = plot_df %>% distinct(month_name) %>% pull()
+day = c(1:31)
+
+# Select month 
+selectInput("month_sel", 
+            label = h3("Select month"),
+						choices = month,
+						selected = "January")
+
+# Select dat
+selectInput("day_sel", 
+            label = h3("Select day"),
+						choices = as.list(day),
+						selected = 1)
+
+# Variable select
+selectInput("variable_choice", label = h3("Select variable"),
+						choices = var_choice, selected = "Number of Tests")
+```
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+```{r map}
+
+renderPlotly({
+  plot_df %>%
+    filter(
+      month_name == input[["month_sel"]],
+      day == input[["day_sel"]],
+      stat_name == input[["variable_choice"]]
+    ) %>%
+  plot_geo(locationmode = 'USA-states') %>% 
+  add_trace(
+    z = ~stat, 
+    locations = ~key_alpha_2,
+    color = ~stat, 
+    colors = "Reds"
+  ) %>% 
+    colorbar(title = "Statistic") %>% 
+    layout(
+    title = '',
+    geo = list(
+      scope = 'usa',
+      projection = list(type = 'state'),
+      showlakes = TRUE,
+      lakecolor = toRGB('white')
+  ))
+})
+
+```
