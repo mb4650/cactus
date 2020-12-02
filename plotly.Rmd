@@ -179,3 +179,30 @@ selectInput("variable_sel", label = h3("Select variable"),
 ```
 
 
+```{r map}
+
+renderPlotly({
+  plot_df %>%
+    filter(
+      month == input[["month_sel"]],
+      day == input[["day_sel"]]
+    ) %>%
+  plot_geo(locationmode = 'USA-states')%>% 
+  add_trace(
+    z = ~input[["variable_sel"]], 
+    locations = ~key_alpha_2,
+    color = ~input[["variable_sel"]], 
+    colors = 'viridis'
+  ) %>% 
+    colorbar(title = "Millions USD") %>% 
+    layout(
+    title = '2011 US Agriculture Exports by State<br>(Hover for breakdown)',
+    geo = list(
+      scope = 'usa',
+      projection = list(type = 'albers usa'),
+      showlakes = TRUE,
+      lakecolor = toRGB('white')
+  ))
+})
+
+```
