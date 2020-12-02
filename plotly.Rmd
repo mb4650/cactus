@@ -95,7 +95,11 @@ renderPlotly({
       key_apple_mobility == input[["state_sel"]]
     ) %>%
   plot_ly(
-    x= ~date, y = ~confirmed, type = "bar", colors = "viridis")
+    x= ~date) %>% 
+    add_lines(y = ~confirmed, color = I("red")) %>%
+    add_lines(y = ~deaths, color = I("green")) %>%
+    add_lines(y = ~hosp, color = I("blue")) 
+    
 })
 ```
 
@@ -105,13 +109,41 @@ Column {data-width=350}
 ### Chart B
 
 ```{r}
-
+renderPlotly({
+  covid_noaa_dataset %>%
+    filter(
+      key_apple_mobility == input[["state_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~date, y = ~confirmed, type = "bar", color = I("red"))
+})
 ```
 
 ### Chart C
 
 ```{r}
+renderPlotly({
+  covid_noaa_dataset %>%
+    filter(
+      key_apple_mobility == input[["state_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~date, y = ~deaths, type = "bar", color = I("green"))
+})
+```
 
+
+### Chart D
+
+```{r}
+renderPlotly({
+  covid_noaa_dataset %>%
+    filter(
+      key_apple_mobility == input[["state_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~date, y = ~hosp, type = "bar", color = I("blue"))
+})
 ```
 
 Trends in COVID and Climate in US Between Jan 2020 and Oct 2020
