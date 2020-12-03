@@ -16,7 +16,7 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -103,33 +103,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 61px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .dropdown-submenu {
   position: relative;
@@ -260,7 +260,7 @@ $(document).ready(function () {
 
 
 
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -272,14 +272,22 @@ $(document).ready(function () {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        
+        <li>
+  <a href="about.html">About the Memebers</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="project_report.html">Cactus_report</a>
+  <a href="project_report.html">Project Report</a>
 </li>
 <li>
-  <a href="https://mb4650.shinyapps.io/plotly/#section-trends-in-cases-hospitalizations-and-death-for-each-state">Shiny dashboard</a>
+  <a href="https://mb4650.shinyapps.io/plotly/">Interactive Dashboard Visualizations</a>
+</li>
+<li>
+  <a href="descriptive_plotly.html">Descriptives</a>
+</li>
+<li>
+  <a href="predictive_tool.html">Predictive Tool</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -553,7 +561,7 @@ ny_df =
   nyc_df %&gt;% 
   rbind(ny_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;New York&quot;, &quot;NYC&quot;, &quot;other NY counties&quot;))</code></pre>
-<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 7.639661510^{4}.</p>
+<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 2.16114610^{5}.</p>
 <pre class="r"><code>ny_confirmed_plot =
   ny_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -583,7 +591,8 @@ ny_df =
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
 <pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
 <pre class="r"><code>ny_confirmed_plot + ny_deaths_plot</code></pre>
-<pre><code>## Warning: Removed 15 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 16 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <p>The second populated city - Los Angeles vs. other less populated counties in California.</p>
 <pre class="r"><code>la_df =
@@ -598,7 +607,7 @@ ca_df =
   la_df %&gt;% 
   rbind(ca_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Los Angeles&quot;, &quot;LA&quot;, &quot;other CA counties&quot;))</code></pre>
-<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 5.221216710^{5}.</p>
+<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 7.027838310^{5}.</p>
 <pre class="r"><code>ca_confirmed_plot =
   ca_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -642,7 +651,7 @@ il_df =
   chicago_df %&gt;% 
   rbind(il_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Cook&quot;, &quot;Cook County (Chicago)&quot;, &quot;other IL counties&quot;))</code></pre>
-<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 8.018778610^{4}.</p>
+<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 5.745111810^{4}.</p>
 <pre class="r"><code>il_confirmed_plot =
   il_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -686,7 +695,7 @@ tx_df =
   houston_df %&gt;% 
   rbind(tx_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Houston&quot;, &quot;Houston&quot;, &quot;other TX counties&quot;))</code></pre>
-<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 3.04896110^{5}.</p>
+<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 1.256887310^{5}.</p>
 <pre class="r"><code>tx_confirmed_plot =
   tx_df %&gt;% 
   group_by(ppl, date) %&gt;% 
