@@ -242,8 +242,7 @@ renderPlotly({
 })
 
 ```
-Trends in Temperature for each State
-===================================== 
+
 
 ```{r, ignore = TRUE}
 month_noaa_avg = 
@@ -257,3 +256,38 @@ month_noaa_avg =
       month_prcp = mean(state_prcp, na.rm = TRUE)) %>%
    filter(!is.na(month_tmax))
 ```
+
+
+Trends in Temperature for each State
+===================================== 
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+```{r}
+
+# State list
+state_month_sel = month_noaa_avg %>% pull(state) %>% unique() %>% sort()
+
+
+# Select state 
+selectInput("state_month_sel", 
+            label = h3("Select state"),
+						choices = state_month_sel,
+						selected = "AK")
+
+```
+
+Column {.tabset}
+-----------------------------------------------------------------------
+```{r}
+renderPlotly({
+    month_noaa_avg %>%
+    filter(
+      state == input[["state_month_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~month, y = ~month_tmax, type = "bar", color = "viridis") 
+
+})
+```
+
