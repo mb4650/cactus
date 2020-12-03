@@ -33,10 +33,10 @@ noaa_avg = noaa %>%
   ) %>%
   group_by(state, date) %>%
   summarize(
-    state_tavg = mean(tavg),
-    state_tmax = mean(tmax),
-    state_tmin = mean(tmin),
-    state_prcp = mean(prcp)
+    state_tavg = mean(tavg, na.rm = TRUE),
+    state_tmax = mean(tmax, na.rm = TRUE),
+    state_tmin = mean(tmin, na.rm = TRUE),
+    state_prcp = mean(prcp, na.rm = TRUE)
   )
   
 
@@ -241,4 +241,19 @@ renderPlotly({
   ))
 })
 
+```
+Trends in Temperature for each State
+===================================== 
+
+```{r, ignore = TRUE}
+month_noaa_avg = 
+    noaa_avg %>%
+    separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
+    group_by(state, month) %>%
+    summarize(
+      month_tavg = mean(state_tavg, na.rm = TRUE),
+      month_tmax = mean(state_tmax, na.rm = TRUE),
+      month_tmin = mean(state_tmin, na.rm = TRUE),
+      month_prcp = mean(state_prcp, na.rm = TRUE)) %>%
+   filter(!is.na(month_tmax))
 ```
