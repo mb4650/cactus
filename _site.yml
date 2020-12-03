@@ -10,7 +10,7 @@ navbar:
     - text: "Project Report"
       href: project_report.html
     - text: "Interactive Dashboard Visualizations"
-      href: https://mb4650.shinyapps.io/plotly/#section-trends-in-cases-hospitalizations-and-death-for-each-state
+      href: https://mb4650.shinyapps.io/plotly/
     - text: "Descriptives"
       href: descriptive_plotly.html
     - text: "Predictive Tool"
