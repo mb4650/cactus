@@ -156,7 +156,7 @@ selectInput("state_sel",
 Column {.tabset data-width=650}
 -----------------------------------
 
-### Chart A
+### COVID-19 trends over time for confirmed cases, deaths, and hospitalization
 
 ```{r}
 renderPlotly({
@@ -169,20 +169,20 @@ renderPlotly({
     add_lines(y = ~confirmed, name = 'Confirmed Cases', color = I("mediumpurple")) %>%
     add_lines(y = ~deaths, name = 'Deaths', color = I("mediumaquamarine")) %>%
     add_lines(y = ~hosp, name = 'Hospitalized', color = I("lightsalmon")) %>%
-  layout(title = 'COVID-19 trends over time for confirmed cases, deaths, and hospitalization',
+  layout(#title = 'COVID-19 trends over time for confirmed cases, deaths, and hospitalization',
          xaxis = list(title = 'Date'),
          yaxis = list(title = 'Count'))
     
 })
 ```
 
-### Trend graphs
-
+### Description
+Trend graphs
 
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Chart B
+### Confirmed COVID-19 Cases Over Time
 
 ```{r}
 renderPlotly({
@@ -192,13 +192,13 @@ renderPlotly({
     ) %>%
   plot_ly(
     x= ~date, y = ~confirmed, type = "bar", color = I("mediumpurple")) %>%
-  layout(title = 'Confirmed COVID-19 Cases Over Time',
+  layout(#title = 'Confirmed COVID-19 Cases Over Time',
          xaxis = list(title = 'Date'),
          yaxis = list(title = 'Count'))
 })
 ```
 
-### Chart C
+### COVID-19 Deaths Over Time
 
 ```{r}
 renderPlotly({
@@ -208,14 +208,14 @@ renderPlotly({
     ) %>%
   plot_ly(
     x= ~date, y = ~deaths, type = "bar", color = I("mediumaquamarine")) %>%
-  layout(title = 'COVID-19 Deaths Over Time',
+  layout(#title = 'COVID-19 Deaths Over Time',
          xaxis = list(title = 'Date'),
          yaxis = list(title = 'Count'))
 })
 ```
 
 
-### Chart D
+### COVID-19 Hospitalization Cases Over Time
 
 ```{r}
 renderPlotly({
@@ -225,7 +225,7 @@ renderPlotly({
     ) %>%
   plot_ly(
     x= ~date, y = ~hosp, type = "bar", color = I("lightsalmon")) %>%
-  layout(title = 'COVID-19 Hospitalization Cases Over Time',
+  layout(#title = 'COVID-19 Hospitalization Cases Over Time',
          xaxis = list(title = 'Date'),
          yaxis = list(title = 'Count'))
 })
