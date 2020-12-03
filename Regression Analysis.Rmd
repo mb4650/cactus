@@ -83,6 +83,7 @@ noaa_dataset =
   inner_join(tavg_df, tmin_df, by = c("state_name" = "state_name", "month" = "month", "state_code" = "state_code")) %>%
   inner_join(tmax_df, by = c("state_name" = "state_name", "month" = "month", "state_code" = "state_code")) %>%
   inner_join(prcp_df, by = c("state_name" = "state_name", "month" = "month", "state_code" = "state_code"))
+write_csv (noaa_dataset,"data/noaa_dataset.csv")
 ```
 
 ## Import Covid datase. Clean and tidy data 
@@ -100,6 +101,7 @@ covid_data =
          day = day(date)) %>%
   group_by(month, key_alpha_2) %>% top_n(1, day) %>%
   mutate(new_cases = confirmed - lag(confirmed, default = 0))
+
 ```
 
 ## Merging the two dataset 
@@ -111,6 +113,7 @@ covid_noaa_dataset =
     month = factor(month)
   ) %>%
   rename(case_count = "confirmed")
+write_csv(covid_noaa_dataset, "data/covid_noaa_dataset.csv" )
 ```
 
 ## Hypothesis
@@ -149,3 +152,65 @@ covid_noaa_dataset %>%
                      tl.col = "red",
                      tl.cex = .9,
                      tl.srt = 45)
+  
+```
+
+
+
+### Confounding 
+
+### Modeling - Poisson vs Negative binomial regression 
+
+
+```{r}
+poisson_mod = glm(new_cases ~  as.factor(month) + state_tavg + state_total_prcp, 
+                    family = "poisson"(link = "log"), data = covid_noaa_dataset)
+
+poisson_mod %>%
+  broom::glance() %>% 
+  dplyr::select(AIC) %>% 
+  knitr::kable(digits = 3)
+
+neg_bin_mod = glm.nb(new_cases ~ as.factor(month) + state_tavg + state_total_prcp,
+                            data = covid_noaa_dataset)
+
+neg_bin_mod %>% 
+  broom::glance() %>% 
+  dplyr::select(AIC) %>% 
+  knitr::kable(digits = 3)
+```
+Since the AIC for Poisson is 28597532 and the AIC for negative binomia regression model is 9174.884, we decided to proceed with negative binomial regression model 
+
+## Cross validation 
+
+
+```{r}
+count_cv = 
+  crossv_mc(covid_noaa_dataset, 100)
+count_cv = 
+  count_cv %>% 
+  mutate(  
+    model_poisson = map(train, ~glm(new_cases ~  as.factor(month) + state_tavg + state_total_prcp,
+                                    family="poisson" (link = log), covid_noaa_dataset)), 
+    model_neg_binomial = map(train, ~ glm.nb(new_cases ~  as.factor(month) + state_tavg + state_total_prcp, 
+                                             data = covid_noaa_dataset))) %>% 
+  mutate(rmse_poisson = map2_dbl(model_poisson, test, ~rmse(model = .x, data = .y)), 
+         rmse_negative_binomial = map2_dbl(model_neg_binomial, test, ~rmse(model = .x, data = .y)))
+
+count_cv %>% 
+  dplyr::select(rmse_poisson, rmse_negative_binomial) %>% 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse",
+    names_prefix = "rmse_") %>% 
+  mutate(model = fct_inorder(model)) %>% 
+  ggplot(aes(x = model, y = rmse)) + geom_violin() +
+  labs(
+    title = "Prediction Error Distributions"
+  )
+```
+
+
+
+

@@ -303,12 +303,12 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-## ✓ tibble  3.0.3     ✓ dplyr   1.0.0
-## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
 ## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(COVID19)
@@ -439,7 +439,8 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 <pre class="r"><code>noaa_dataset =
   inner_join(tavg_df, tmin_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;)) %&gt;%
   inner_join(tmax_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;)) %&gt;%
-  inner_join(prcp_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;))</code></pre>
+  inner_join(prcp_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;))
+write_csv (noaa_dataset,&quot;data/noaa_dataset.csv&quot;)</code></pre>
 </div>
 <div id="import-covid-datase.-clean-and-tidy-data" class="section level2">
 <h2>Import Covid datase. Clean and tidy data</h2>
@@ -463,7 +464,8 @@ covid_data =
   mutate(
     month = factor(month)
   ) %&gt;%
-  rename(case_count = &quot;confirmed&quot;)</code></pre>
+  rename(case_count = &quot;confirmed&quot;)
+write_csv(covid_noaa_dataset, &quot;data/covid_noaa_dataset.csv&quot; )</code></pre>
 </div>
 <div id="hypothesis" class="section level2">
 <h2>Hypothesis</h2>
@@ -506,6 +508,79 @@ covid_noaa_dataset %&gt;%
                      tl.srt = 45)</code></pre>
 <p><img src="Regression-Analysis_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 </div>
+<div id="confounding" class="section level3">
+<h3>Confounding</h3>
+</div>
+<div id="modeling---poisson-vs-negative-binomial-regression" class="section level3">
+<h3>Modeling - Poisson vs Negative binomial regression</h3>
+<pre class="r"><code>poisson_mod = glm(new_cases ~  as.factor(month) + state_tavg + state_total_prcp, 
+                    family = &quot;poisson&quot;(link = &quot;log&quot;), data = covid_noaa_dataset)
+
+poisson_mod %&gt;%
+  broom::glance() %&gt;% 
+  dplyr::select(AIC) %&gt;% 
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">28597532</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>neg_bin_mod = glm.nb(new_cases ~ as.factor(month) + state_tavg + state_total_prcp,
+                            data = covid_noaa_dataset)
+
+neg_bin_mod %&gt;% 
+  broom::glance() %&gt;% 
+  dplyr::select(AIC) %&gt;% 
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">9174.884</td>
+</tr>
+</tbody>
+</table>
+<p>Since the AIC for Poisson is 28597532 and the AIC for negative binomia regression model is 9174.884, we decided to proceed with negative binomial regression model</p>
+</div>
+</div>
+<div id="cross-validation" class="section level2">
+<h2>Cross validation</h2>
+<pre class="r"><code>count_cv = 
+  crossv_mc(covid_noaa_dataset, 100)
+count_cv = 
+  count_cv %&gt;% 
+  mutate(  
+    model_poisson = map(train, ~glm(new_cases ~  as.factor(month) + state_tavg + state_total_prcp,
+                                    family=&quot;poisson&quot; (link = log), covid_noaa_dataset)), 
+    model_neg_binomial = map(train, ~ glm.nb(new_cases ~  as.factor(month) + state_tavg + state_total_prcp, 
+                                             data = covid_noaa_dataset))) %&gt;% 
+  mutate(rmse_poisson = map2_dbl(model_poisson, test, ~rmse(model = .x, data = .y)), 
+         rmse_negative_binomial = map2_dbl(model_neg_binomial, test, ~rmse(model = .x, data = .y)))
+
+count_cv %&gt;% 
+  dplyr::select(rmse_poisson, rmse_negative_binomial) %&gt;% 
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;, 
+    values_to = &quot;rmse&quot;,
+    names_prefix = &quot;rmse_&quot;) %&gt;% 
+  mutate(model = fct_inorder(model)) %&gt;% 
+  ggplot(aes(x = model, y = rmse)) + geom_violin() +
+  labs(
+    title = &quot;Prediction Error Distributions&quot;
+  )</code></pre>
+<p><img src="Regression-Analysis_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
 </div>
 
 
