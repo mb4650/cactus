@@ -17,9 +17,9 @@ library(plotly)
 
 ```{r}
 #level = 2 gives state level data and raw = false cleans the dataset
-covid_dataset = covid19(c("US"), level = 2, raw = FALSE) %>%
-                janitor::clean_names() %>%
-                filter(date <= '2020-10-31')
+covid_dataset = covid19(c("US"), level = 2, raw = FALSE, verbose = FALSE) %>%
+  janitor::clean_names() %>%
+  filter(date <= '2020-10-31')
 
 noaa = read_csv("data/noaadata.csv")%>%
         select (-c(X1))%>%
@@ -33,10 +33,10 @@ noaa_avg = noaa %>%
   ) %>%
   group_by(state, date) %>%
   summarize(
-    state_tavg = mean(tavg),
-    state_tmax = mean(tmax),
-    state_tmin = mean(tmin),
-    state_prcp = mean(prcp)
+    state_tavg = mean(tavg, na.rm = TRUE),
+    state_tmax = mean(tmax, na.rm = TRUE),
+    state_tmin = mean(tmin, na.rm = TRUE),
+    state_prcp = mean(prcp, na.rm = TRUE)
   )
   
 
@@ -83,7 +83,8 @@ plot_df =
   
 ```
 
-
+Trends in Cases, Hospitalizations, and Death for each State
+===================================== 
 
 Column {.sidebar}
 -----------------------------------------------------------------------
@@ -117,9 +118,12 @@ renderPlotly({
     ) %>%
   plot_ly(
     x= ~date) %>% 
-    add_lines(y = ~confirmed, color = I("red")) %>%
-    add_lines(y = ~deaths, color = I("green")) %>%
-    add_lines(y = ~hosp, color = I("blue")) 
+    add_lines(y = ~confirmed, name = 'Confirmed Cases', color = I("red")) %>%
+    add_lines(y = ~deaths, name = 'Deaths', color = I("green")) %>%
+    add_lines(y = ~hosp, name = 'Hospitalized', color = I("blue")) %>%
+  layout(title = 'COVID-19 trends over time for confirmed cases, deaths, and hospitalization',
+         xaxis = list(title = 'Date'),
+         yaxis = list(title = 'Count'))
     
 })
 ```
@@ -136,7 +140,10 @@ renderPlotly({
       key_apple_mobility == input[["state_sel"]]
     ) %>%
   plot_ly(
-    x= ~date, y = ~confirmed, type = "bar", color = I("red"))
+    x= ~date, y = ~confirmed, type = "bar", color = I("red")) %>%
+  layout(title = 'Confirmed COVID-19 Cases Over Time',
+         xaxis = list(title = 'Date'),
+         yaxis = list(title = 'Count'))
 })
 ```
 
@@ -149,7 +156,10 @@ renderPlotly({
       key_apple_mobility == input[["state_sel"]]
     ) %>%
   plot_ly(
-    x= ~date, y = ~deaths, type = "bar", color = I("green"))
+    x= ~date, y = ~deaths, type = "bar", color = I("green")) %>%
+  layout(title = 'COVID-19 Deaths Over Time',
+         xaxis = list(title = 'Date'),
+         yaxis = list(title = 'Count'))
 })
 ```
 
@@ -163,7 +173,10 @@ renderPlotly({
       key_apple_mobility == input[["state_sel"]]
     ) %>%
   plot_ly(
-    x= ~date, y = ~hosp, type = "bar", color = I("blue"))
+    x= ~date, y = ~hosp, type = "bar", color = I("blue")) %>%
+  layout(title = 'COVID-19 Hospitalization Cases Over Time',
+         xaxis = list(title = 'Date'),
+         yaxis = list(title = 'Count'))
 })
 ```
 
@@ -229,3 +242,52 @@ renderPlotly({
 })
 
 ```
+
+
+```{r, ignore = TRUE}
+month_noaa_avg = 
+    noaa_avg %>%
+    separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
+    group_by(state, month) %>%
+    summarize(
+      month_tavg = mean(state_tavg, na.rm = TRUE),
+      month_tmax = mean(state_tmax, na.rm = TRUE),
+      month_tmin = mean(state_tmin, na.rm = TRUE),
+      month_prcp = mean(state_prcp, na.rm = TRUE)) %>%
+   filter(!is.na(month_tmax))
+```
+
+
+Trends in Temperature for each State
+===================================== 
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+```{r}
+
+# State list
+state_month_sel = month_noaa_avg %>% pull(state) %>% unique() %>% sort()
+
+
+# Select state 
+selectInput("state_month_sel", 
+            label = h3("Select state"),
+						choices = state_month_sel,
+						selected = "AK")
+
+```
+
+Column {.tabset}
+-----------------------------------------------------------------------
+```{r}
+renderPlotly({
+    month_noaa_avg %>%
+    filter(
+      state == input[["state_month_sel"]]
+    ) %>%
+  plot_ly(
+    x= ~month, y = ~month_tmax, type = "bar", color = "viridis") 
+
+})
+```
+
