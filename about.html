@@ -9,10 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Maya Bunyan | Lunbei Hu | Michelle Lui | Ling Yi | Gauri Bhatkhande | Pallavi Krishnamurthy" />
 
 
-<title>CACTUS: COVID-19 and Climate in the US</title>
+<title>About The Members</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,9 +19,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -252,69 +248,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -322,16 +255,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -374,49 +297,33 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">CACTUS: COVID-19 and Climate in the US</h1>
-<h4 class="author">Maya Bunyan | Lunbei Hu | Michelle Lui | Ling Yi | Gauri Bhatkhande | Pallavi Krishnamurthy</h4>
+<h1 class="title toc-ignore">About The Members</h1>
 
 </div>
 
 
-<style type="text/css">
-h2.author{
-  font-size: 10px;
-}
-</style>
-<p><space></p>
-<center>
-<p><img src="images/cactus.jpg"></p>
-</center>
-<div id="overview" class="section level1">
-<h1>Overview</h1>
-<p>Give really basic overview of the project here - go into more detail in the report tab; also give break down of what will be seen in each tab maybe?</p>
-<div id="report" class="section level3">
-<h3>Report</h3>
-<p>This tab includes detailed information on the project. (add more later)</p>
+<p>We can add little descriptions and links to any personal webpages we may want to show</p>
+<div id="maya-bunyan" class="section level3">
+<h3>Maya Bunyan</h3>
 </div>
-<div id="descriptives" class="section level3">
-<h3>Descriptives</h3>
-<p>One part of our project was to ask specific questions regarding COVID-19 and climate, such as ….</p>
+<div id="lunbei-hu" class="section level3">
+<h3>Lunbei Hu</h3>
 </div>
-<div id="interactive-plots" class="section level3">
-<h3>Interactive Plots</h3>
-<p>In order for people to get a better idea of the trends seen in the data, we created interactive maps to allow viewers to choose what variables they would like to see and help them better visualize the information.</p>
+<div id="michelle-lui" class="section level3">
+<h3>Michelle Lui</h3>
 </div>
-<div id="predictive-tool" class="section level3">
-<h3>Predictive Tool</h3>
-<p>We were interested in seeing how the case counts might be next year, so created a predictive tool</p>
+<div id="ling-yi" class="section level3">
+<h3>Ling Yi</h3>
 </div>
+<div id="gauri-bhatkhande" class="section level3">
+<h3>Gauri Bhatkhande</h3>
 </div>
-<div id="screencast" class="section level1">
-<h1>Screencast</h1>
+<div id="pallavi-krishnamurthy" class="section level3">
+<h3>Pallavi Krishnamurthy</h3>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -449,32 +356,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

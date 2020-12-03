@@ -1,0 +1,18 @@
+---
+title: "About The Members"
+output: 
+  html_document
+---
+We can add little descriptions and links to any personal webpages we may want to show
+
+### Maya Bunyan 
+
+### Lunbei Hu
+
+### Michelle Lui
+
+### Ling Yi 
+
+### Gauri Bhatkhande 
+
+### Pallavi Krishnamurthy

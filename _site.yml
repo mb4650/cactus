@@ -3,6 +3,9 @@ output_dir: "."
 navbar:
   type: inverse
   title: "Home"
+  left:
+    - text: "About the Memebers"
+      href: about.html
   right:
     - text: "Project Report"
       href: project_report.html
