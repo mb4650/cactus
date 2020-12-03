@@ -1,21 +1,23 @@
 library(shiny)
 library(readr)
+library(leaflet)
+library(maps)
+mapStates = map("state", fill = TRUE, plot = FALSE)
+covid_noaa_dataset = read_csv("covid_noaa_dataset.csv")
 
-covid_noaa_dataset = read_csv("data/covid_noaa_dataset.csv")
 
 ui <- fluidPage(
-  titlePanel("map_df Case count Predictor"),
+  titlePanel("Case count Predictor"),
   
   sidebarLayout(
     sidebarPanel(
-      helpText(""),
+      helpText("enter details"),
       
       selectInput("Month", h3("Select Month"),
                   choices =unique(covid_noaa_dataset["month"]),selected = 1),
       
       selectInput("State", h3("Select state"),
                   choices =unique(covid_noaa_dataset["state_name"]),selected = 1),
-      
       
       sliderInput( "tavg",
                    label = "tavg",
@@ -49,7 +51,7 @@ server <- function(input, output) {
     df = data.frame( month = as.factor(input$Month), state_name = input$State ,
                      state_tavg = input$tavg , state_total_prcp = input$prcp )
     
-    count = as.integer( predict(poisson, df, type = "response") )
+    count = as.integer( predict(neg_bin_mod, df, type = "response") )
     
     #paste( "you chose", a)
     map_df = covid_noaa_dataset%>% 
@@ -83,13 +85,70 @@ server <- function(input, output) {
           bringToFront = TRUE)) %>%
       
       addCircleMarkers(lat =map_df$latitude.y, lng = map_df$longitude.y,
-                       radius =a/100000,color = "red",popup =map_df$state_name)
-    
-    
-    
+                       radius =count/10000,color = "red",popup =map_df$state_name)
     
   })
   
+  output$plot1 <- renderLeaflet({
+    map_df = covid_noaa_dataset%>% filter(month == as.factor(input$Month))
+    
+    url = "https://developers.google.com/public-data/docs/canonical/states_csv"
+    lat_long_html = read_html(url)
+    
+    table_lat_long_df = 
+      lat_long_html %>% 
+      html_nodes(css = "table") %>% 
+      first() %>%
+      html_table()
+    
+    map_df = inner_join(map_df, table_lat_long_df, by = c("key_alpha_2" = "state" ))
+    
+    pal <- colorNumeric(
+      palette = "Blues",
+      domain = map_df$state_tavg)
+    
+    pal1 <- colorNumeric(
+      palette = colorRampPalette(c('red', 'dark red'))(length(map_df$new_cases)), 
+      domain = map_df$new_cases)
+    
+    labels <- sprintf(
+      "<strong>%s</strong><br/>",
+      map_df$state_name, map_df$state_tavg
+    ) %>% lapply(htmltools::HTML)
+    
+    
+    leaflet(data = mapStates) %>%
+      setView(-96, 37.8, 4) %>%
+      addPolygons(
+        fillColor = ~pal(map_df$state_tavg),
+        weight = 2,
+        opacity = 1,
+        color = "white",
+        dashArray = "3",
+        fillOpacity = 0.7,
+        highlight = highlightOptions(
+          weight = 3,
+          color = "#666",
+          dashArray = "",
+          fillOpacity = 0.7,
+          bringToFront = FALSE),
+        #label = labels,
+        labelOptions = labelOptions(
+          style = list("font-weight" = "normal", padding = "3px 8px"),
+          textsize = "15px",
+          direction = "auto")) %>%
+      
+      addCircleMarkers(lat =map_df$latitude.y,
+                       lng = map_df$longitude.y,
+                       radius = map_df$new_cases/10000,
+                       color = pal1(map_df$new_cases), 
+                        popup =map_df$state_name ) %>%
+      
+      addLegend("bottomright", pal = pal, values = ~map_df$state_tavg,
+                title = "temp",
+                labFormat = labelFormat(prefix = "F"),
+                opacity = 1)
+  })
   
 }
 
