@@ -465,6 +465,24 @@ covid_data =
   ) %&gt;%
   rename(case_count = &quot;confirmed&quot;)</code></pre>
 </div>
+<div id="hypothesis" class="section level2">
+<h2>Hypothesis</h2>
+<p>Our team hypothesizes that there is a relationship between temperature and COVID-19 cases.</p>
+<div id="relevant-predictors" class="section level3">
+<h3>Relevant predictors</h3>
+<p>The following are the relevant predictors we want to include in the model</p>
+<ul>
+<li><code>new_cases</code>- The number of new cases in every month.</li>
+<li><code>case_count</code> - The total number of cases in every month.</li>
+<li><code>population</code>- Total population of each state - This forms the offset variable in the poisson regression model and the demoninator for the count to extrapolate the rate.</li>
+<li><code>state_name</code>- All the states in the USA</li>
+<li><code>state_tavg</code>- The average temperature in a state in a month.</li>
+<li><code>state_tmax</code>- The maximum temperature in a state in a month</li>
+<li><code>state_tmin</code>- The minimum temperature in a state in a month</li>
+<li><code>state_total_prcp</code> - The total precipitation in a state in a month.</li>
+</ul>
+</div>
+</div>
 
 
 

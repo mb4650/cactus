@@ -112,3 +112,21 @@ covid_noaa_dataset =
   ) %>%
   rename(case_count = "confirmed")
 ```
+
+## Hypothesis
+
+Our team hypothesizes that there is a relationship between temperature and COVID-19 cases.
+
+
+### Relevant predictors
+
+The following are the relevant predictors we want to include in the model
+
+* `new_cases`- The number of new cases in every month.
+* `case_count` - The total number of cases in every month.
+* `population`- Total population of each state - This forms the offset variable in the poisson regression model and the demoninator for the count to extrapolate the rate.
+* `state_name`- All the states in the USA
+* `state_tavg`- The average temperature in a state in a month.
+* `state_tmax`- The maximum temperature in a state in a month
+* `state_tmin`- The minimum temperature in a state in a month
+* `state_total_prcp` - The total precipitation in a state in a month.
