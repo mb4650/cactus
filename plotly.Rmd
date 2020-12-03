@@ -105,9 +105,13 @@ selectInput("state_sel",
 
 ```
 
+<<<<<<< HEAD
 
 
 Column {.tabset data-width=650}
+=======
+Column {data-width=650}
+>>>>>>> origin
 -----------------------------------------------------------------------
 
 ### Chart A
@@ -198,9 +202,11 @@ Column {.sidebar}
 ```{r}
 
 # Select State, Month, Day
-var_choice = plot_df %>% distinct(stat_name) %>% pull()
-month = plot_df %>% distinct(month_name) %>% pull()
+#var_choice = plot_df %>% distinct(stat_name) %>% pull()
+#month = plot_df %>% distinct(month_name) %>% pull()
 day = c(1:31)
+var_choice = plot_df %>% pull(stat_name) %>% unique() %>% sort()
+month = plot_df %>% pull(month_name) %>% unique() %>% sort()
 
 # Select month 
 selectInput("month_sel", 
@@ -208,7 +214,7 @@ selectInput("month_sel",
 						choices = month,
 						selected = "January")
 
-# Select dat
+# Select day
 selectInput("day_sel", 
             label = h3("Select day"),
 						choices = as.list(day),
@@ -237,11 +243,12 @@ renderPlotly({
     z = ~stat, 
     locations = ~key_alpha_2,
     color = ~stat, 
-    colors = "Reds"
+    colors = "Reds",
+    text = ~paste(stat_name)
   ) %>% 
     colorbar(title = "Statistic") %>% 
     layout(
-    title = '',
+    title = 'United States Map - Statistics by State',
     geo = list(
       scope = 'usa',
       projection = list(type = 'state'),
