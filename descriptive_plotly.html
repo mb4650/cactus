@@ -23,17 +23,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
-
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -290,7 +279,7 @@ $(document).ready(function () {
   <a href="project_report.html">Cactus_report</a>
 </li>
 <li>
-  <a href="plotly.html">dashboard</a>
+  <a href="https://mb4650.shinyapps.io/plotly/#section-trends-in-cases-hospitalizations-and-death-for-each-state">Shiny dashboard</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -354,8 +343,8 @@ mask_df = read_excel(&quot;./data/mask_state.xlsx&quot;) %&gt;%
 <pre><code>## New names:
 ## * `` -&gt; ...4</code></pre>
 <pre><code>## Warning: Problem with `mutate()` input `date`.
-## i NAs introduced by coercion
-## i Input `date` is `as.Date(as.numeric(as.character(date)), origin = &quot;1899-12-30&quot;)`.</code></pre>
+## ℹ NAs introduced by coercion
+## ℹ Input `date` is `as.Date(as.numeric(as.character(date)), origin = &quot;1899-12-30&quot;)`.</code></pre>
 <pre><code>## Warning in as.Date(as.numeric(as.character(date)), origin = &quot;1899-12-30&quot;): NAs
 ## introduced by coercion</code></pre>
 <pre class="r"><code>cactus_df = left_join(covid_df, mask_df, by.x=c(&quot;state&quot;, &quot;date&quot;), by.y=c(&quot;state&quot;, &quot;date&quot;))</code></pre>
@@ -376,7 +365,7 @@ covid_df %&gt;%
 
 time_plot &lt;- time_plot + scale_y_continuous(labels = comma)
 time_plot</code></pre>
-<pre><code>## Warning: Removed 186 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 185 rows containing missing values (geom_point).</code></pre>
 <pre><code>## Warning: Removed 162 row(s) containing missing values (geom_path).</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
 <pre class="r"><code>death_plot = 
@@ -478,7 +467,7 @@ cactus_df =
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
