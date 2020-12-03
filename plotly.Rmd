@@ -293,7 +293,7 @@ renderPlotly({
     colors = "Reds",
     text = ~paste(covid_stat_name, noaa_stat, noaa_stat_name, sep = "<br>")
   ) %>% 
-    colorbar(title = "Statistic") %>% 
+    colorbar(title = "COVID Statistic") %>% 
     layout(
     title = 'United States Map - Statistics by State',
     geo = list(
@@ -356,7 +356,10 @@ renderPlotly({
   plot_ly(
     x= ~month, y = ~month_tmin, type = "bar", name = "Minimum temperature", color = "mediumvioletred") %>%
     add_trace(y = ~month_tmax, type = "bar",name = "Maximum temperature", color = "mistyrose") %>%
-    add_lines(y = ~month_tavg, name = "Average temperature", color = "magenta")
+    add_lines(y = ~month_tavg, name = "Average temperature", color = "magenta")%>%
+    layout(title = 'Temperature Trends Over Time',
+           xaxis = list(title = 'Date'),
+           yaxis = list(title = 'Temperature (F)'))
 
 })
 ```
