@@ -13,4 +13,24 @@ output:
 
 </center>
 
+# Overview
 
+Give really basic overview of the project here - go into more detail in the report tab; also give break down of what will be seen in each tab maybe?
+
+## Report
+
+This tab includes detailed information on the project. (add more later)
+
+## Descriptives
+
+One part of our project was to ask specific questions regarding COVID-19 and climate, such as ....
+
+## Interactive Plots
+
+In order for people to get a better idea of the trends seen in the data, we created interactive maps to allow viewers to choose what variables they would like to see and help them better visualize the information. 
+
+## Predictive Tool
+
+We were interested in seeing how the case counts might be next year, so created a predictive tool
+
+# Screencast
