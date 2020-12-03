@@ -166,9 +166,9 @@ renderPlotly({
     ) %>%
   plot_ly(
     x= ~date) %>% 
-    add_lines(y = ~confirmed, name = 'Confirmed Cases', color = I("red")) %>%
-    add_lines(y = ~deaths, name = 'Deaths', color = I("green")) %>%
-    add_lines(y = ~hosp, name = 'Hospitalized', color = I("blue")) %>%
+    add_lines(y = ~confirmed, name = 'Confirmed Cases', color = I("mediumpurple")) %>%
+    add_lines(y = ~deaths, name = 'Deaths', color = I("mediumaquamarine")) %>%
+    add_lines(y = ~hosp, name = 'Hospitalized', color = I("lightsalmon")) %>%
   layout(title = 'COVID-19 trends over time for confirmed cases, deaths, and hospitalization',
          xaxis = list(title = 'Date'),
          yaxis = list(title = 'Count'))
@@ -191,7 +191,7 @@ renderPlotly({
       key_apple_mobility == input[["state_sel"]]
     ) %>%
   plot_ly(
-    x= ~date, y = ~confirmed, type = "bar", color = I("red")) %>%
+    x= ~date, y = ~confirmed, type = "bar", color = I("mediumpurple")) %>%
   layout(title = 'Confirmed COVID-19 Cases Over Time',
          xaxis = list(title = 'Date'),
          yaxis = list(title = 'Count'))
@@ -207,7 +207,7 @@ renderPlotly({
       key_apple_mobility == input[["state_sel"]]
     ) %>%
   plot_ly(
-    x= ~date, y = ~deaths, type = "bar", color = I("green")) %>%
+    x= ~date, y = ~deaths, type = "bar", color = I("mediumaquamarine")) %>%
   layout(title = 'COVID-19 Deaths Over Time',
          xaxis = list(title = 'Date'),
          yaxis = list(title = 'Count'))
@@ -224,7 +224,7 @@ renderPlotly({
       key_apple_mobility == input[["state_sel"]]
     ) %>%
   plot_ly(
-    x= ~date, y = ~hosp, type = "bar", color = I("blue")) %>%
+    x= ~date, y = ~hosp, type = "bar", color = I("lightsalmon")) %>%
   layout(title = 'COVID-19 Hospitalization Cases Over Time',
          xaxis = list(title = 'Date'),
          yaxis = list(title = 'Count'))
@@ -354,7 +354,9 @@ renderPlotly({
       state == input[["state_month_sel"]]
     ) %>%
   plot_ly(
-    x= ~month, y = ~month_tmax, type = "bar", color = "viridis") 
+    x= ~month, y = ~month_tmin, type = "bar", name = "Minimum temperature", color = "mediumvioletred") %>%
+    add_trace(y = ~month_tmax, type = "bar",name = "Maximum temperature", color = "mistyrose") %>%
+    add_lines(y = ~month_tavg, name = "Average temperature", color = "magenta")
 
 })
 ```
