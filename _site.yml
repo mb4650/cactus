@@ -1,6 +1,7 @@
 name: "Cactus"
 output_dir: "."
 navbar:
+  type: inverse
   title: "Home"
   right:
     - text: "Cactus_report"
