@@ -81,6 +81,52 @@ plot_df =
     month_name = month.name[month]
   )
   
+plot2_df = 
+  covid_noaa_dataset %>%
+  separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
+  select(id:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
+  mutate(
+    prop_cases = confirmed/population,
+    prop_deaths_pop = deaths/population,
+    prop_deaths_case = deaths/confirmed,
+    prop_hospital_pop = hosp/population,
+    prop_hospital_case = hosp/confirmed,
+    prop_tested = tests/population
+  ) %>%
+  group_by(key_alpha_2) %>%
+  mutate(new_cases = (confirmed - lag(confirmed))) %>%
+  select(key_apple_mobility, key_alpha_2, id, population, year:confirmed, deaths, hosp, prop_cases:new_cases, state_tavg:state_prcp) %>%
+  pivot_longer(
+    (tests:new_cases),
+    names_to = "covid_stat_type",
+    values_to = "covid_stat"
+  ) %>%
+    pivot_longer(
+    (state_tavg:state_prcp),
+    names_to = "noaa_stat_type",
+    values_to = "noaa_stat"
+  ) %>%
+  mutate(
+    noaa_stat_name = 
+    if_else(noaa_stat_type == "state_tavg", "Average temperature",
+    if_else(noaa_stat_type == "state_tmax", "Maximum temperature",
+    if_else(noaa_stat_type == "state_tmin", "Minimum temperature",
+    if_else(noaa_stat_type == "state_prcp", "Precipitation", NULL)))),
+    covid_stat_name = 
+    if_else(covid_stat_type == "tests", "Number of Tests", 
+    if_else(covid_stat_type == "confirmed", "Number of Confirmed Cases",
+    if_else(covid_stat_type == "deaths", "Number of Deaths",
+    if_else(covid_stat_type == "hosp", "Number of Hospitalizations",
+    if_else(covid_stat_type == "prop_cases", "Proportion of State Population with Confirmed Cases",
+    if_else(covid_stat_type == "prop_deaths_pop", "Proportion of State Population who Died of COVID-19",
+    if_else(covid_stat_type == "prop_deaths_case", "Proportion of Confirmed Cases who Died of COVID-19",
+    if_else(covid_stat_type == "prop_hospital_pop","Proportion of State Population who were Hospitalized with COVID-19",
+    if_else(covid_stat_type == "prop_hospital_case", "Proportion of Confirmed Cases who were Hospitalized with COVID-19",
+    if_else(covid_stat_type == "prop_tested", "Proportion of State Population who were Tested",
+    if_else(covid_stat_type == "new_cases", "Number of New Cases", NULL))))))))))),
+    month_name = month.name[month]
+  )
+  
 ```
 
 Trends in Cases, Hospitalizations, and Death for each State
@@ -192,11 +238,11 @@ Column {.sidebar}
 ```{r}
 
 # Select State, Month, Day
-#var_choice = plot_df %>% distinct(stat_name) %>% pull()
-#month = plot_df %>% distinct(month_name) %>% pull()
+
 day = c(1:31)
-var_choice = plot_df %>% pull(stat_name) %>% unique() %>% sort()
-month = plot_df %>% pull(month_name) %>% unique() %>% sort()
+covid_var_choice = plot2_df %>% pull(covid_stat_name) %>% unique() %>% sort()
+noaa_var_choice = plot2_df %>% pull(noaa_stat_name) %>% unique() %>% sort()
+month = plot2_df %>% pull(month_name) %>% unique()
 
 # Select month 
 selectInput("month_sel", 
@@ -210,9 +256,13 @@ selectInput("day_sel",
 						choices = as.list(day),
 						selected = 1)
 
-# Variable select
-selectInput("variable_choice", label = h3("Select variable"),
-						choices = var_choice, selected = "Number of Tests")
+# Covid Variable select
+selectInput("covid_variable_choice", label = h3("Select COVID variable"),
+						choices = covid_var_choice, selected = "Number of Tests")
+
+# NOAA Variable select
+selectInput("noaa_variable_choice", label = h3("Select climate variable"),
+						choices = noaa_var_choice, selected = "Average temperature")
 ```
 
 Column {.tabset}
@@ -222,19 +272,20 @@ Column {.tabset}
 ```{r map}
 
 renderPlotly({
-  plot_df %>%
+  plot2_df %>%
     filter(
       month_name == input[["month_sel"]],
       day == input[["day_sel"]],
-      stat_name == input[["variable_choice"]]
+      covid_stat_name == input[["covid_variable_choice"]],
+      noaa_stat_name == input[["noaa_variable_choice"]]
     ) %>%
   plot_geo(locationmode = 'USA-states') %>% 
   add_trace(
-    z = ~stat, 
+    z = ~covid_stat,
     locations = ~key_alpha_2,
-    color = ~stat, 
+    color = ~covid_stat, 
     colors = "Reds",
-    text = ~paste(stat_name)
+    text = ~paste(covid_stat_name, noaa_stat, noaa_stat_name, sep = "<br>")
   ) %>% 
     colorbar(title = "Statistic") %>% 
     layout(
