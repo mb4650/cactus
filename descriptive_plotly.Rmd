@@ -504,15 +504,16 @@ us_events_df =
 ```
 
 ```{r}
-us_events_df %>% 
-  ggplot(aes(x = event, y=diff))+
+us_events_df %>%  
+  ggplot(aes(x = date, y=new_case))+
   geom_point()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))+
- scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+##not sure if I will use this
-    labs(title = "Difference in cases and event",
-       y = "Two week difference in cases",
-       x = "Event")
+    labs(title = "New cases over time",
+       y = "new cases",
+       x = "date")+
+      geom_vline(xintercept = as.POSIXct(as.Date(c("2020-11-03", "2020-05-25", "2020-09-18", "2020-10-02", "2020-11-07", "2020-22-18"))) , linetype="dotted", color = "blue", show.legend=TRUE)
 ```
+
+
 ```{r}
 us_events_df %>% 
   ggplot(aes(x = event, y=diff_death))+
@@ -522,4 +523,6 @@ us_events_df %>%
     labs(title = "Difference in deaths and event",
        y = "Four week difference in deaths",
        x = "Event")
+  
 ```
+
