@@ -130,3 +130,22 @@ The following are the relevant predictors we want to include in the model
 * `state_tmax`- The maximum temperature in a state in a month
 * `state_tmin`- The minimum temperature in a state in a month
 * `state_total_prcp` - The total precipitation in a state in a month.
+
+### Assessing crude correlation among our selected variables
+
+```{r}
+library(MASS)
+covid_noaa_dataset_cor =
+covid_noaa_dataset %>%
+  dplyr::select(new_cases, state_tavg, state_tmax, state_tmin, state_total_prcp)
+
+  covid_noaa_dataset_cor[,3:7] %>%
+  cor() %>%
+  corrplot::corrplot(type = "lower",
+                     method = "square",
+                     addCoef.col = "red",
+                     diag = FALSE,
+                     number.cex = .6,
+                     tl.col = "red",
+                     tl.cex = .9,
+                     tl.srt = 45)

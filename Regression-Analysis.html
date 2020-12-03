@@ -482,6 +482,30 @@ covid_data =
 <li><code>state_total_prcp</code> - The total precipitation in a state in a month.</li>
 </ul>
 </div>
+<div id="assessing-crude-correlation-among-our-selected-variables" class="section level3">
+<h3>Assessing crude correlation among our selected variables</h3>
+<pre class="r"><code>library(MASS)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre class="r"><code>covid_noaa_dataset_cor =
+covid_noaa_dataset %&gt;%
+  dplyr::select(new_cases, state_tavg, state_tmax, state_tmin, state_total_prcp)</code></pre>
+<pre><code>## Adding missing grouping variables: `month`, `key_alpha_2`</code></pre>
+<pre class="r"><code>  covid_noaa_dataset_cor[,3:7] %&gt;%
+  cor() %&gt;%
+  corrplot::corrplot(type = &quot;lower&quot;,
+                     method = &quot;square&quot;,
+                     addCoef.col = &quot;red&quot;,
+                     diag = FALSE,
+                     number.cex = .6,
+                     tl.col = &quot;red&quot;,
+                     tl.cex = .9,
+                     tl.srt = 45)</code></pre>
+<p><img src="Regression-Analysis_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
+</div>
 </div>
 
 
