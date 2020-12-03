@@ -129,6 +129,7 @@ plot2_df =
   
 ```
 
+
 Trends in Cases, Hospitalizations, and Death for each State
 ===================================== 
 
@@ -151,14 +152,9 @@ selectInput("state_sel",
 
 ```
 
-<<<<<<< HEAD
-
 
 Column {.tabset data-width=650}
-=======
-Column {data-width=650}
->>>>>>> origin
------------------------------------------------------------------------
+-----------------------------------
 
 ### Chart A
 
