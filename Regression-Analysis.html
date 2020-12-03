@@ -354,6 +354,93 @@ options(
 
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d</code></pre>
+<div id="create-dataset-with-noaa-data" class="section level2">
+<h2>Create dataset with noaa data</h2>
+<pre class="r"><code>tmin_df = read_csv(&quot;https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dtmin.csv&amp;d=DwIFAg&amp;c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&amp;r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&amp;m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&amp;s=hmGOQjY_Ej_kzF9vStPclRFQpAr4mQSKOX5ce_tmlsE&amp;e= &quot;, skip = 3) %&gt;%
+  janitor::clean_names() %&gt;%
+   separate(date, into = c(&quot;year&quot;, &quot;month&quot;), sep = 4) %&gt;%
+  mutate(
+    month = as.numeric(month),
+    state_code = state.abb[match(location,state.name)],
+    state_name = location,
+    state_tmin = value) %&gt;%
+  filter(year == 2020) %&gt;%
+  select(state_name,state_code, month, state_tmin)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Location ID` = col_character(),
+##   Location = col_character(),
+##   Date = col_double(),
+##   Value = col_double(),
+##   Rank = col_double(),
+##   `Anomaly (1901-2000 base period)` = col_double(),
+##   `1901-2000 Mean` = col_double()
+## )</code></pre>
+<pre class="r"><code>tmax_df = read_csv(&quot;https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dtmax.csv&amp;d=DwIFAg&amp;c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&amp;r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&amp;m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&amp;s=kFXvvcnRWOVQuIlHG8ufptNh9-TGtc8HeymdMUmu_Dw&amp;e= &quot;, skip = 3) %&gt;%
+  janitor::clean_names() %&gt;%
+   separate(date, into = c(&quot;year&quot;, &quot;month&quot;), sep = 4) %&gt;%
+  mutate(
+    month = as.numeric(month),
+    state_code = state.abb[match(location,state.name)],
+    state_name = location,
+    state_tmax = value) %&gt;%
+  filter(year == 2020) %&gt;%
+  select(state_name,state_code, month, state_tmax)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Location ID` = col_character(),
+##   Location = col_character(),
+##   Date = col_double(),
+##   Value = col_double(),
+##   Rank = col_double(),
+##   `Anomaly (1901-2000 base period)` = col_double(),
+##   `1901-2000 Mean` = col_double()
+## )</code></pre>
+<pre class="r"><code>tavg_df = read_csv(&quot;https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dtavg.csv&amp;d=DwIFAg&amp;c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&amp;r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&amp;m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&amp;s=wY9iFojIMOK8mzQ7AkPJQDUUj3FfapibffutaytqzXU&amp;e= &quot;, skip = 3) %&gt;%
+  janitor::clean_names() %&gt;%
+  separate(date, into = c(&quot;year&quot;, &quot;month&quot;), sep = 4) %&gt;%
+  mutate(
+    month = as.numeric(month),
+    state_code = state.abb[match(location,state.name)],
+    state_name = location,
+    state_tavg = value) %&gt;%
+  filter(year == 2020) %&gt;%
+  select(state_name,state_code, month, state_tavg)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Location ID` = col_character(),
+##   Location = col_character(),
+##   Date = col_double(),
+##   Value = col_double(),
+##   Rank = col_double(),
+##   `Anomaly (1901-2000 base period)` = col_double(),
+##   `1901-2000 Mean` = col_double()
+## )</code></pre>
+<pre class="r"><code>prcp_df = read_csv(&quot;https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dpcp.csv&amp;d=DwIFAg&amp;c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&amp;r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&amp;m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&amp;s=VPeiJ1-NI637AZPZMfUV8exXyubpArhFG_u6KBXJlEI&amp;e= &quot;, skip = 3) %&gt;%
+  janitor::clean_names() %&gt;%
+  separate(date, into = c(&quot;year&quot;, &quot;month&quot;), sep = 4) %&gt;%
+  mutate(
+    month = as.numeric(month),
+    state_code = state.abb[match(location,state.name)],
+    state_name = location,
+    state_total_prcp = value) %&gt;%
+  filter(year == 2020) %&gt;%
+  select(state_name,state_code, month, state_total_prcp)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Location ID` = col_character(),
+##   Location = col_character(),
+##   Date = col_double(),
+##   Value = col_double(),
+##   Rank = col_double(),
+##   `Anomaly (1901-2000 base period)` = col_double(),
+##   `1901-2000 Mean` = col_double()
+## )</code></pre>
+<pre class="r"><code>noaa_dataset =
+  inner_join(tavg_df, tmin_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;)) %&gt;%
+  inner_join(tmax_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;)) %&gt;%
+  inner_join(prcp_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;))</code></pre>
+</div>
 
 
 
