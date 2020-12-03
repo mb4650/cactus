@@ -320,7 +320,10 @@ month_noaa_avg =
       month_tmin = mean(state_tmin, na.rm = TRUE),
       month_prcp = mean(state_prcp, na.rm = TRUE)) %>%
    filter(!is.na(month_tmax)) %>%
-  mutate(month_name = month.abb[month])
+  mutate(
+    month_name = month.name[month],
+    month_name = factor(month_name, levels = month.name) )
+
 ```
 
 
@@ -349,8 +352,8 @@ Column {.tabset}
 ### Temperature Trends
 
 ```{r}
-state_month = month_noaa_avg %>% pull(month_name) %>% unique()
-xlab = list(categoryorder = 'array', categoryarray = c('Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug','Sep', 'Oct'))
+#state_month = month_noaa_avg %>% pull(month_name) %>% unique()
+#xlab = list(categoryorder = 'array', categoryarray = c('Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug','Sep', 'Oct'))
 
 renderPlotly({
     month_noaa_avg %>%
@@ -362,7 +365,7 @@ renderPlotly({
     add_trace(y = ~month_tmax, type = "bar",name = "Maximum temperature", color = I("lightpink")) %>%
     add_lines(y = ~month_tavg, name = "Average temperature", color = I("orange"))%>%
     layout(title = 'Temperature Trends Over Time',
-           xaxis = xlab,
+           #xaxis = xlab,
            xaxis = list(title = 'Month'),
            yaxis = list(title = 'Temperature (F)'))
 
