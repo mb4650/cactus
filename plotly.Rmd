@@ -27,9 +27,9 @@ noaa = read_csv("data/noaadata.csv")%>%
 
 noaa_avg = noaa %>%
   mutate(
-    tavg = tavg/10,
-    tmax = tmax/10,
-    tmin = tmin/10,
+    tavg = ((tavg/10)*1.8) + 32 ,
+    tmax = ((tmax/10)*1.8) + 32,
+    tmin = ((tmin/10)*1.8) + 32,
   ) %>%
   group_by(state, date) %>%
   summarize(
@@ -104,6 +104,11 @@ selectInput("state_sel",
 
 
 ```
+
+
+Column {.tabset}
+-----------------------------------------------------------------------
+### Trend graphs
 
 Column {data-width=650}
 -----------------------------------------------------------------------
@@ -180,6 +185,8 @@ renderPlotly({
 })
 ```
 
+
+
 Trends in COVID and Climate in US Between Jan 2020 and Oct 2020
 ===================================== 
 
@@ -214,6 +221,7 @@ selectInput("variable_choice", label = h3("Select variable"),
 Column {.tabset}
 -----------------------------------------------------------------------
 
+### US Map
 ```{r map}
 
 renderPlotly({
@@ -243,6 +251,8 @@ renderPlotly({
 
 ```
 
+### Description
+Description of US map
 
 ```{r, ignore = TRUE}
 month_noaa_avg = 
@@ -279,6 +289,9 @@ selectInput("state_month_sel",
 
 Column {.tabset}
 -----------------------------------------------------------------------
+
+### Temperature Trends
+
 ```{r}
 renderPlotly({
     month_noaa_avg %>%
@@ -291,3 +304,5 @@ renderPlotly({
 })
 ```
 
+### Description
+Description of temperature trends
