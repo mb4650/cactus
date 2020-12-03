@@ -101,3 +101,14 @@ covid_data =
   group_by(month, key_alpha_2) %>% top_n(1, day) %>%
   mutate(new_cases = confirmed - lag(confirmed, default = 0))
 ```
+
+## Merging the two dataset 
+
+```{r}
+covid_noaa_dataset =
+  inner_join(covid_data,noaa_dataset, by = c("key_alpha_2" = "state_code", "month" = "month")) %>%
+  mutate(
+    month = factor(month)
+  ) %>%
+  rename(case_count = "confirmed")
+```

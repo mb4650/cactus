@@ -441,6 +441,30 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
   inner_join(tmax_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;)) %&gt;%
   inner_join(prcp_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;))</code></pre>
 </div>
+<div id="import-covid-datase.-clean-and-tidy-data" class="section level2">
+<h2>Import Covid datase. Clean and tidy data</h2>
+<pre class="r"><code>#level = 2 gives state level data and raw = false cleans the dataset
+covid_dataset = covid19(c(&quot;US&quot;), level = 2, raw = FALSE, verbose = FALSE) %&gt;%
+  janitor::clean_names()
+
+covid_data =
+  covid_dataset %&gt;%
+  mutate(month = month(date),
+         day = day(date),
+         month = as.numeric(month),
+         day = day(date)) %&gt;%
+  group_by(month, key_alpha_2) %&gt;% top_n(1, day) %&gt;%
+  mutate(new_cases = confirmed - lag(confirmed, default = 0))</code></pre>
+</div>
+<div id="merging-the-two-dataset" class="section level2">
+<h2>Merging the two dataset</h2>
+<pre class="r"><code>covid_noaa_dataset =
+  inner_join(covid_data,noaa_dataset, by = c(&quot;key_alpha_2&quot; = &quot;state_code&quot;, &quot;month&quot; = &quot;month&quot;)) %&gt;%
+  mutate(
+    month = factor(month)
+  ) %&gt;%
+  rename(case_count = &quot;confirmed&quot;)</code></pre>
+</div>
 
 
 
