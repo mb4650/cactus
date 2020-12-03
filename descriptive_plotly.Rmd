@@ -12,6 +12,8 @@ library(flexdashboard)
 library(readxl)
 require(scales)
 library(lubridate)
+library(httr)
+library(patchwork)
 library(COVID19)
 
 knitr::opts_chunk$set(
@@ -41,9 +43,9 @@ covid_df =
   group_by(state) %>%
   mutate(
     new_case = confirmed - lag(confirmed, default = 0),
-    new_case_updated = replace(new_case, which(new_case<0), NA),
+    new_case_updated = replace(new_case, which(new_case < 0), NA),
     new_deaths = deaths - lag(deaths, default = 0),
-    new_death_updated = replace(new_deaths, which(new_deaths<0), NA),
+    new_death_updated = replace(new_deaths, which(new_deaths < 0), NA),
     date = as.Date(date),
     new_date = date,
     state_binary = ifelse(state %in% c("ID", "MT", "ND", "WY", "SD", "UT", "NE", "IA", "KS", "MO", "OK", "AR", "TX", "IL", "MS", "AL", "FL", "TN", "KY", "IN", "OH", "WV", "NC", "SC", "AK"), "red", "blue"),
@@ -53,10 +55,10 @@ covid_df =
 
 mask_df = read_excel("./data/mask_state.xlsx") %>% 
   janitor::clean_names() %>% 
-  mutate(date = as.Date(as.numeric(as.character(date)), origin="1899-12-30")) %>% 
+  mutate(date = as.Date(as.numeric(as.character(date)), origin = "1899-12-30")) %>% 
   select(-x4)
 
-cactus_df = left_join(covid_df, mask_df, by.x=c("state", "date"), by.y=c("state", "date"))
+cactus_df = left_join(covid_df, mask_df, by.x = c("state", "date"), by.y = c("state", "date"))
 
 ```
 
@@ -65,13 +67,13 @@ Making the first plot: Look at trends of covid cases corresponding with importan
 ```{r}
 time_plot = 
 covid_df %>% 
-  ggplot(aes(x = date, y = new_case_updated, color = state))+
-  geom_point(alpha = 0.5)+
-  geom_line()+
-  theme(legend.position = "none")+
+  ggplot(aes(x = date, y = new_case_updated, color = state)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  theme(legend.position = "none") +
   labs(title = "Covid Cases Over Time",
        y = "Confirmed cases",
-       x = "Date")+
+       x = "Date") +
       scale_x_date(breaks = seq.Date(from = as.Date("2020-01-31"), 
                                      to = as.Date("2020-11-01"), by = 15)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
@@ -83,13 +85,13 @@ time_plot
 ```{r}
 death_plot = 
 covid_df %>% 
-  ggplot(aes(x = date, y = new_death_updated, color = state))+
-  geom_point(alpha = 0.5)+
-  geom_line()+
-  theme(legend.position = "none")+
+  ggplot(aes(x = date, y = new_death_updated, color = state)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  theme(legend.position = "none") +
   labs(title = "Covid Related Deaths in last year",
        y = "Confirmed Deaths",
-       x = "Date")+
+       x = "Date") +
       scale_x_date(breaks = seq.Date(from = as.Date("2020-01-31"), 
                                      to = as.Date("2020-11-01"), by = 15)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
@@ -106,14 +108,14 @@ state_plot =
 covid_df %>% 
   group_by(state_binary, date, temperate) %>% 
   summarize(mean_cases = mean(new_case_updated, na.rm = TRUE)) %>% 
-  ggplot(aes(x = date, y = mean_cases, color = state_binary))+
-  geom_point(alpha = 0.5)+
-  geom_line()+
-  scale_y_continuous(labels = comma)+
-  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom")+
+  ggplot(aes(x = date, y = mean_cases, color = state_binary)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_y_continuous(labels = comma) +
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom") +
   labs(title = "Red/Blue state Covid Cases",
        y = "Confirmed Cases",
-       x = "Date")+
+       x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 
@@ -126,14 +128,14 @@ state_death =
 covid_df %>% 
   group_by(state_binary, date, temperate) %>% 
   summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %>% 
-  ggplot(aes(x = date, y = mean_deaths, color = state_binary))+
-  geom_point(alpha = 0.5)+
-  geom_line()+
-  scale_y_continuous(labels = comma)+
-  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom")+
+  ggplot(aes(x = date, y = mean_deaths, color = state_binary)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_y_continuous(labels = comma) +
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom") +
   labs(title = "Red/Blue states Covid Deaths",
        y = "Confirmed deaths",
-       x = "Date")+
+       x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 
@@ -160,11 +162,11 @@ cactus_df =
 
 ```{r}
 cactus_df %>% 
-  ggplot(aes(x = state, y=diff, color = state_binary))+
-  geom_point()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))+
-  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position =     "bottom")+
- scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+##not sure if I will use this
+  ggplot(aes(x = state, y = diff, color = state_binary)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position =     "bottom") +
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +##not sure if I will use this
     labs(title = "Difference in cases and mask mandate",
        y = "Two week difference in cases",
        x = "State")
@@ -172,14 +174,291 @@ cactus_df %>%
 
 ```{r}
 cactus_df %>% 
-  ggplot(aes(x = state, y=diff_death, color = state_binary))+
-  geom_point()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))+
-  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position =     "bottom")+
- scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+##not sure if I will use this
+  ggplot(aes(x = state, y = diff_death, color = state_binary)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position =     "bottom") +
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +##not sure if I will use this
     labs(title = "Difference in deaths and mask mandate",
        y = "Four week difference in deaths",
        x = "State")
 ```
 
 
+Main cities (New York City, Los Angeles, Chicago/Cook County and Houston) compared to less populated counties regarding new cases and new death
+
+```{r}
+confirmed_df = 
+  read_csv("https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv") %>% 
+  select_all(tolower) %>% 
+  mutate(
+    state = province_state,
+    county = admin2
+  ) %>% 
+  select(-c(uid:combined_key)) %>% 
+  select(state, county, everything()) %>% 
+  filter(state %in% c("New York", "California", "Illinois", "Texas")) %>% 
+  pivot_longer(
+    -c(state, county),
+    names_to = "date",
+    values_to = "case_total"
+  ) %>%
+  group_by(state, county) %>% 
+  mutate(
+    date = mdy(date),
+    new_case = case_total - lag(case_total, default = 0),
+    new_case_updated = replace(new_case, which(new_case < 0), NA)
+  )
+
+
+deaths_df = read_csv("https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv") %>% 
+  select_all(tolower) %>% 
+  mutate(
+    state = province_state,
+    county = admin2
+  ) %>% 
+  select(-c(uid:combined_key)) %>% 
+  select(state, county, everything()) %>% 
+  filter(state %in% c("New York", "California", "Illinois", "Texas")) %>% 
+  pivot_longer(
+    -c(state, county, population),
+    names_to = "date",
+    values_to = "death_total"
+  ) %>% 
+  group_by(state, county) %>% 
+  mutate(
+    date = mdy(date),
+    new_death = death_total - lag(death_total, default = 0),
+    new_death_updated = replace(new_death, which(new_death < 0), NA)
+  )
+
+confirmed_deaths_df = 
+  inner_join(confirmed_df, deaths_df, by = c("state", "county", "date")) %>% 
+  group_by(state, county)
+
+lessppl_list =  
+  confirmed_deaths_df %>%
+  select(state, county) %>% 
+  group_by(state) %>% 
+  filter(!county %in% c("New York", "Los Angeles", "Cook", "Houston")) %>%
+  distinct(county, .keep_all = T) %>%
+  sample_n(10)
+
+lessppl_df = 
+  inner_join(lessppl_list, confirmed_deaths_df, by = "county") %>% 
+  mutate(
+    state = state.x
+  ) %>% 
+  select(-c(state.x, state.y)) %>% 
+  select(state, everything())
+```
+
+
+
+The most populated city - New York City vs. other less populated counties in New York state.
+
+```{r}
+nyc_df =
+  confirmed_deaths_df %>% 
+  filter(county == "New York")
+
+ny_lessppl_df = 
+  lessppl_df %>% 
+  filter(state == "New York") 
+
+ny_df = 
+  nyc_df %>% 
+  rbind(ny_lessppl_df) %>% 
+  mutate(ppl = ifelse(county == "New York", "NYC", "other NY counties"))
+```
+
+NYC has a population of `r mean(pull(nyc_df, population))`, and the mean population of the 10 randomly selected NY counties is `r mean(pull(ny_lessppl_df, population))`.
+
+```{r}
+ny_confirmed_plot =
+  ny_df %>% 
+  group_by(ppl, date) %>% 
+  summarize(mean_cases = mean(new_case_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_cases, color = ppl)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_y_continuous(labels = comma) +
+  labs(title = "NYC/Less Populated NY Counties Covid Cases",
+       y = "Confirmed Cases",
+       x = "Date") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+ny_deaths_plot =
+  ny_df %>% 
+  group_by(ppl, date) %>% 
+  summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_deaths, color = ppl)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_y_continuous(labels = comma) +
+  labs(title = "NYC/Less Populated NY Counties Covid Deaths",
+       y = "Confirmed deaths",
+       x = "Date") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+ny_confirmed_plot + ny_deaths_plot
+```
+
+The second populated city - Los Angeles vs. other less populated counties in California.
+
+```{r}
+la_df =
+  confirmed_deaths_df %>% 
+  filter(county == "Los Angeles")
+
+ca_lessppl_df = 
+  lessppl_df %>% 
+  filter(state == "California") 
+
+ca_df = 
+  la_df %>% 
+  rbind(ca_lessppl_df) %>% 
+  mutate(ppl = ifelse(county == "Los Angeles", "LA", "other CA counties"))
+```
+
+Los Angeles has a population of `r mean(pull(la_df, population))`, and the mean population of the 10 randomly selected CA counties is `r mean(pull(ca_lessppl_df, population))`.
+
+```{r}
+ca_confirmed_plot =
+  ca_df %>% 
+  group_by(ppl, date) %>% 
+  summarize(mean_cases = mean(new_case_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_cases, color = ppl)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Los Angeles/Less Populated CA Counties Covid Cases",
+       y = "Confirmed Cases",
+       x = "Date") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+ca_deaths_plot =
+  ca_df %>% 
+  group_by(ppl, date) %>% 
+  summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_deaths, color = ppl)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Los Angeles/Less Populated CA Counties Covid Deaths",
+       y = "Confirmed deaths",
+       x = "Date") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+ca_confirmed_plot + ca_deaths_plot
+```
+
+The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois.
+
+```{r}
+chicago_df =
+  confirmed_deaths_df %>% 
+  filter(county == "Cook")
+
+il_lessppl_df = 
+  lessppl_df %>% 
+  filter(state == "Illinois") 
+
+il_df = 
+  chicago_df %>% 
+  rbind(il_lessppl_df) %>% 
+  mutate(ppl = ifelse(county == "Cook", "Cook County (Chicago)", "other IL counties"))
+```
+
+Cook County (Chicago included) has a population of `r mean(pull(chicago_df, population))`, and the mean population of the 10 randomly selected IL counties is `r mean(pull(il_lessppl_df, population))`.
+
+```{r}
+il_confirmed_plot =
+  il_df %>% 
+  group_by(ppl, date) %>% 
+  summarize(mean_cases = mean(new_case_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_cases, color = ppl)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Cook County (Chicago)/Less Populated IL Counties Covid Cases",
+       y = "Confirmed Cases",
+       x = "Date") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+il_deaths_plot =
+  il_df %>% 
+  group_by(ppl, date) %>% 
+  summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_deaths, color = ppl)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Cook County (Chicago)/Less Populated IL Counties Covid Deaths",
+       y = "Confirmed deaths",
+       x = "Date") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+il_confirmed_plot + il_deaths_plot
+```
+
+The fourth populated city - Houston vs. other less populated counties in Texas.
+
+```{r}
+houston_df =
+  confirmed_deaths_df %>% 
+  filter(county == "Houston")
+
+tx_lessppl_df = 
+  lessppl_df %>% 
+  filter(state == "Texas") 
+
+tx_df = 
+  houston_df %>% 
+  rbind(tx_lessppl_df) %>% 
+  mutate(ppl = ifelse(county == "Houston", "Houston", "other TX counties"))
+```
+
+Houston has a population of `r mean(pull(houston_df, population))`, and the mean population of the 10 randomly selected TX counties is `r mean(pull(tx_lessppl_df, population))`.
+
+```{r}
+tx_confirmed_plot =
+  tx_df %>% 
+  group_by(ppl, date) %>% 
+  summarize(mean_cases = mean(new_case_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_cases, color = ppl)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_color_manual(values = c("Houston" = "black", "other TX counties" = "orange")) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Houston/Less Populated TX Counties Covid Cases",
+       y = "Confirmed Cases",
+       x = "Date") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) 
+
+tx_deaths_plot =
+  tx_df %>% 
+  group_by(ppl, date) %>% 
+  summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %>% 
+  ggplot(aes(x = date, y = mean_deaths, color = ppl)) +
+  geom_point(alpha = 0.5) +
+  geom_line() +
+  scale_color_manual(values = c("Houston" = "black", "other TX counties" = "orange")) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Houston/Less Populated TX Counties Covid Deaths",
+       y = "Confirmed deaths",
+       x = "Date") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+tx_confirmed_plot + tx_deaths_plot
+```
+
+Texas is one of the sub-tropical states.
