@@ -106,11 +106,8 @@ selectInput("state_sel",
 ```
 
 
-Column {.tabset}
------------------------------------------------------------------------
-### Trend graphs
 
-Column {data-width=650}
+Column {.tabset data-width=650}
 -----------------------------------------------------------------------
 
 ### Chart A
@@ -132,6 +129,9 @@ renderPlotly({
     
 })
 ```
+
+### Trend graphs
+
 
 Column {data-width=350}
 -----------------------------------------------------------------------
@@ -184,6 +184,7 @@ renderPlotly({
          yaxis = list(title = 'Count'))
 })
 ```
+
 
 
 

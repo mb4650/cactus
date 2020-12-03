@@ -4,11 +4,14 @@ navbar:
   type: inverse
   title: "Home"
   right:
-    - text: "Cactus_report"
+    - text: "Project Report"
       href: project_report.html
-    - text: "Shiny dashboard"
+    - text: "Interactive Dashboard Visualizations"
       href: https://mb4650.shinyapps.io/plotly/#section-trends-in-cases-hospitalizations-and-death-for-each-state
-
+    - text: "Descriptives"
+      href: descriptive_plotly.html
+    - text: "Predictive Tool"
+      href: predictive_tool.html 
 output:
   html_document:
     theme: journal
