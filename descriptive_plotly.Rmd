@@ -2,7 +2,8 @@
 title: "descriptive_plotly"
 author: "Ling Yi"
 date: "12/2/2020"
-output: html_document
+output: html_document 
+code_folding: hide
 ---
 
 ```{r setup, include = FALSE}
@@ -30,6 +31,7 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
+*Importing relevent dataset which includes the data from the COVID19 R package and a locally made dataset with dates of mask mandate per state.* 
 
 ```{r}
 covid_df = covid19(c("US"), level = 2, start = "2020-01-01")
@@ -62,17 +64,17 @@ cactus_df = left_join(covid_df, mask_df, by.x = c("state", "date"), by.y = c("st
 
 ```
 
-Making the first plot: Look at trends of covid cases corresponding with important 2020
+**Making the first plot: Look at trends of new COVID cases by state over the past year^I^.**
 
-```{r}
+```{r, include = FALSE}
 time_plot = 
 covid_df %>% 
   ggplot(aes(x = date, y = new_case_updated, color = state)) +
   geom_point(alpha = 0.5) +
   geom_line() +
   theme(legend.position = "none") +
-  labs(title = "Covid Cases Over Time",
-       y = "Confirmed cases",
+  labs(title = "Daily New Covid Cases Over Time",
+       y = "Confirmed new cases",
        x = "Date") +
       scale_x_date(breaks = seq.Date(from = as.Date("2020-01-31"), 
                                      to = as.Date("2020-11-01"), by = 15)) +
@@ -83,14 +85,21 @@ time_plot
 ```
 
 ```{r}
+time_plot
+```
+
+
+**Making the first plot: Look at trends of new COVID deaths by state over the past year^I^.**
+
+```{r, include = FALSE}
 death_plot = 
 covid_df %>% 
   ggplot(aes(x = date, y = new_death_updated, color = state)) +
   geom_point(alpha = 0.5) +
   geom_line() +
   theme(legend.position = "none") +
-  labs(title = "Covid Related Deaths in last year",
-       y = "Confirmed Deaths",
+  labs(title = "Daily New Covid Deaths Over Time",
+       y = "Confirmed new deaths",
        x = "Date") +
       scale_x_date(breaks = seq.Date(from = as.Date("2020-01-31"), 
                                      to = as.Date("2020-11-01"), by = 15)) +
@@ -100,10 +109,15 @@ death_plot <- death_plot + scale_y_continuous(labels = comma)
 death_plot
 ```
 
-
-Working on the second graph
-
 ```{r}
+death_plot
+```
+
+
+
+**Daily new COVID case of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state**
+
+```{r, include = FALSE}
 state_plot = 
 covid_df %>% 
   group_by(state_binary, date, temperate) %>% 
@@ -113,17 +127,22 @@ covid_df %>%
   geom_line() +
   scale_y_continuous(labels = comma) +
   facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom") +
-  labs(title = "Red/Blue state Covid Cases",
-       y = "Confirmed Cases",
+  labs(title = "Average Daily New COVID cases by Red/Blue states",
+       y = "Confirmed new cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+```
 
+```{r}
 state_plot
 ```
 
 
-```{r}
+
+**Daily new COVID deaths of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state**
+
+```{r, include = FALSE}
 state_death = 
 covid_df %>% 
   group_by(state_binary, date, temperate) %>% 
@@ -133,21 +152,22 @@ covid_df %>%
   geom_line() +
   scale_y_continuous(labels = comma) +
   facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom") +
-  labs(title = "Red/Blue states Covid Deaths",
-       y = "Confirmed deaths",
+  labs(title = "Average Daily New COVID deaths by Red/Blue states",
+       y = "Confirmed new deaths",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+```
 
+```{r}
 state_death
 ```
 
 
 
-will now make the difference between dates that have mask mandate vs those that do not have mask mandate 
+```{r, incldue = FALSE}
+#creating new variables to look at two week difference in new COVID cases and COVID deaths two weeks to one month after mask mandate respectively. 
 
-
-```{r}
 cactus_df = 
   cactus_df %>% 
   mutate(in_two_weeks_mask = if_else(mask == "Yes", lead(new_case_updated, 14), NA_real_)) %>%
@@ -159,6 +179,8 @@ cactus_df =
   mutate(in_two_weeks_death = if_else(mask == "Yes", lead(new_death_updated, 30), NA_real_)) %>% 
   mutate(diff_death = in_two_weeks_death - new_death_updated)
 ```
+
+**Observing 
 
 ```{r}
 cactus_df %>% 
