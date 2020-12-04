@@ -334,7 +334,7 @@ $(document).ready(function () {
 </div>
 <div id="hypothesis" class="section level2">
 <h2>Hypothesis</h2>
-<p>Our team hypothesizes that there is a relationship between temperature and COVID-19 cases.</p>
+<p>Our team hypothesizes that the relationship between temperature and COVID-19 cases are correlated. We have looked at the trends in COVID and Climate in the United States between Jan 2020 and October 2020. <em>Include a plot here of covid cases vs temperature</em> Check out our interactive map here "<em>insert link to Maya and Michelle’s map</em>. We want to conduct an analysis to see if cases increase with increase in temperature.</p>
 <div id="relevant-predictors" class="section level3">
 <h3>Relevant predictors</h3>
 <p>The following are the relevant predictors we want to include in the model</p>
@@ -352,13 +352,15 @@ $(document).ready(function () {
 <div id="assessing-crude-correlation-among-our-selected-variables" class="section level3">
 <h3>Assessing crude correlation among our selected variables</h3>
 <p><img src="Regression-Analysis_files/figure-html/correlation-1.png" width="90%" /></p>
+<p>In order to select the most significant variables in our model we first conducted a crude correlation assessment using a correlation matrix as shown above. From this assessment we decided to remove <code>state_tmax</code> and <code>state_tmin</code> since the r is 0.97 - 0.99, indicating that there is an extreme co-linearity among other predictors.</p>
 </div>
 <div id="confounding" class="section level3">
 <h3>Confounding</h3>
+<p>There are many variables that would confound the relationship between temperature and case count. We have included ones that we felt are the most important. However, in order to maintain parsimonious model we restricted the number of predictors. This could also be a limitation of our model.</p>
 </div>
 <div id="modeling---poisson-vs-negative-binomial-regression" class="section level3">
 <h3>Modeling - Poisson vs Negative binomial regression</h3>
-<p>Since the AIC for Poisson is 28597532 and the AIC for negative binomia regression model is 9174.884, we decided to proceed with negative binomial regression model</p>
+<p>Since the AIC for Poisson is 28597532 and the AIC for negative binomial regression model is 9174.884, we decided to proceed with negative binomial regression model</p>
 </div>
 </div>
 <div id="cross-validation" class="section level2">

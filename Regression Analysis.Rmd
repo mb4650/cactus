@@ -191,7 +191,7 @@ neg_bin_mod %>%
   dplyr::select(AIC) %>% 
   knitr::kable(digits = 3)
 ```
-Since the AIC for Poisson is 28597532 and the AIC for negative binomia regression model is 9174.884, we decided to proceed with negative binomial regression model 
+Since the AIC for Poisson is 28597532 and the AIC for negative binomial regression model is 9174.884, we decided to proceed with negative binomial regression model 
 
 ## Cross validation 
 
