@@ -22,6 +22,9 @@ table_lat_long_df =
   first() %>%
   html_table()
 
+neg_bin_mod = glm.nb(new_cases ~ as.factor(month) + state_name + state_tavg + state_total_prcp,
+                     data = covid_noaa_dataset)
+
 ui <- fluidPage(
   titlePanel("Case count Predictor"),
   
@@ -42,7 +45,7 @@ ui <- fluidPage(
                    value = 30),
       
       sliderInput(inputId = "prcp",
-                  label = "prcp",
+                  label = "enter precipitation",
                   min = -10,
                   max = max(covid_noaa_dataset["state_total_prcp"])+10,
                   value = 1)
@@ -51,8 +54,8 @@ ui <- fluidPage(
     
     mainPanel(
       fluidRow(
-        column(12, leafletOutput("selected_var")),
-        column(12, leafletOutput("plot1"))
+        column(12,label = "Prediction", leafletOutput("selected_var")),
+        column(12, label = "general trend", leafletOutput("plot1"))
       )
     )
   )
