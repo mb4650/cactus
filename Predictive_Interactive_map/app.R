@@ -39,7 +39,7 @@ ui <- fluidPage(
                   choices =unique(covid_noaa_dataset["state_name"]),selected = 10),
       
       sliderInput( "tavg",
-                   label = "tavg",
+                   label = "Average temperature",
                    min = 1,
                    max = max(covid_noaa_dataset["state_tmax"])+20,
                    value = 30),
