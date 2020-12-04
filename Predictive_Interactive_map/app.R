@@ -30,7 +30,7 @@ ui <- fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      helpText(h2("enter details")),
+      helpText(h2("Enter details")),
       
       selectInput("Month", h3("Select Month"),
                   choices =unique(covid_noaa_dataset["month"]),selected = 4),
