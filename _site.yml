@@ -10,13 +10,19 @@ navbar:
     - text: "Project Report"
       href: project_report.html
     - text: "Interactive Dashboard Visualizations"
-      href: https://mb4650.shinyapps.io/plotly/
+      menu:
+        - text: "Report on Creating Interactive Plots"
+          href: create_shiny.html
+        - text: "View Interactive Shiny Dashboard"
+          href: https://mb4650.shinyapps.io/plotly/
     - text: "Descriptives"
       href: descriptive_plotly.html
     - text: "Regression Analysis"
       href: Regression-Analysis.html
     - text: "Predictive Tool"
       href: predictive_tool.html 
+    - dropdown:
+      text: 
 output:
   html_document:
     theme: journal
