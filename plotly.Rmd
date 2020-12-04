@@ -176,8 +176,18 @@ renderPlotly({
 })
 ```
 
-### Description
-Trend graphs
+### Descriptions
+**COVID-19 trends over time for confirmed cases, deaths, and hospitalization**
+Line graph with overlayed trends in cumulative confirmed cases, deaths, and hospitalization cases from January 2020 to October 2020 in the state selected, as determined by CDC
+
+**Confirmed COVID-19 Cases over time**
+Bar graph of cumulative confirmed cases from January 2020 to October 2020 in the state selected, as determined by CDC
+
+**COVID-19 Deaths over time**
+Bar graph of cumulative deaths from COVID-19 from January 2020 to October 2020 in the state selected, as determined by CDC
+
+**COVID-19 Hospitalization Cases over time**
+Bar graph of hospitalizations from COVID-19 from January 2020 to October 2020 in the state selected, as determined by CDC
 
 Column {data-width=350}
 -----------------------------------------------------------------------
@@ -307,7 +317,59 @@ renderPlotly({
 ```
 
 ### Description
-Description of US map
+***Description of US map***
+
+This US map allows users to choose between month, date, COVID variable, and climate variable. Changes in variables can be seen over time for all 50 states, and difference in COVID variables specifically can be visualized by changes in color from state to state on the map. Hovering over each state can allow the user to see the statistic for the COVID variable selected, the statistic for the climate variable selected, as well as the state abbreviation.
+
+The COVID variables included are: Number of Confirmed Cases, Number of Deaths, Number of Hospitalizations, Number of New Cases, Number of Tests, Proportion of Confirms Cases who Died of COVID-19, Proportin of COnfirmed Cases who were Hospitalized with COVID-19, Proportion of State Population who Died of COVID-19, Proportion of State Population who were Hospitalized with COVID-19, Proportion of State Population who were Tested, Proportion of State Population with Confirmed Cases.
+
+**Number of Confirmed Cases**
+Number of cumulative confirmed COVID-19 cases determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Number of Deaths**
+Number of cumulative confirmed COVID-19 cases determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Number of Hospitalizations** 
+Number of COVID-19 hospitalization cases determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Number of New Cases**
+Number of new COVID-19 hospitalization cases determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Number of Tests**
+Number of cumulative COVID-19 tests done as determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Proportion of Confirmed Cases who Died of COVID-19**
+Number of cumulative confirmed COVID-19 deaths divided by cumulative confirmed COVID-19 cases, as determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Proportion of Confirmed Cases who were Hospitalized with COVID-19**
+Number of COVID-19 hospitalization cases divided by cumulative COVID-19 cases, determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Proportion of State Population who Died of COVID-19**
+Number of cumulative confirmed COVID-19 deaths divided by total state population determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Proportion of State Population who were Hospitalized with COVID-19** 
+Number of COVID-19 cases that were hospitalized divided by total state population determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Proportion of State Population who were Tested**
+Number of cumulative COVID-19 tests done divided by total state population determined by CDC since January 1st, 2020, on date selected in state selected
+
+**Proportion of State Population with Confirmed Cases**
+Number of cumulative confirmed COVID-19 cases divided by total state population determined by CDC since January 1st, 2020, on date selected in state selected
+
+The climate variables included are: Average temperature, Maximum temperature, Minimum temperature, and Precipitation.
+
+**Average temperature**
+Average temperature of day selected in Farhenheit as determined by ____ stations across the state selected
+
+**Maximum temperature**
+Maximum temperature of day selected in Farhenheit as determined by ____ stations across the state selected
+
+**Minimum temperature**
+Minimum temperature of day selected in Farhenheit as determined by ____ stations across the state selected
+
+**Precipitation**
+Precipitation in millimeters of day selected as determined by ____ stations across the state selected
+
 
 ```{r, ignore = TRUE}
 month_noaa_avg = 
@@ -373,4 +435,10 @@ renderPlotly({
 ```
 
 ### Description
-Description of temperature trends
+***Description of temperature trends***
+
+This plot allows users to choose between the states: Alaska, Alabama, Arizona, California, FLorida, Georgia, Hawaii, Idaho, Illinois, Kansas, Kentucky, Louisiana, Maryland, Maine, Michigan, Missouri, Mississippi, Montana, Nebraska, New Mexico, Nevada, New York, Ohio, Oregon, Pennsylvania, Rhode Island, South Carolina, Tennessee, Washington, West Virgina, and Wyoming. States that were excluded were states that did not have data for maximum temperature.
+
+The graph overlays the monthly average minimum temperature (F), maximum temperature (F), and average temperature(F) per state from January 2020 to October 2020.
+
+
