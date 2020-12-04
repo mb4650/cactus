@@ -321,19 +321,23 @@ $(document).ready(function () {
 
 
 <p>Add information on how we did it!</p>
-<div id="inspirations" class="section level3">
-<h3>Inspirations</h3>
-<p>wanted to create an interactive map similar to what we see on the news</p>
-</div>
-<div id="how-project-changed-over-time" class="section level3">
-<h3>How project changed over time</h3>
+<div id="evolution-of-the-interactive-plots" class="section level3">
+<h3>Evolution of the Interactive Plots</h3>
+<p>When looking at the data for the project, we wanted to create graphs and maps that look similar to what is seen in the news, but add an interactive aspect that allows users to look at the specific information they are interested in. For example, if a user to see the trends in cases over the year in their specific state, we wanted to create a map that would let them look at that specifically. We also wanted a map that allowed users to see what cases looked like across the US. One of the initial questions also included looking at how temperature and COVID-19 were correlated, however the NOAA dataset we used for temperature values has many missing values. Weather data was still included in the form of monthly trend graphs by state and in the hover in the map. However there many datapoints are missing, and we were not able to analyze temperature in the US the way we originally intended.</p>
 </div>
 <div id="data" class="section level3">
 <h3>Data</h3>
+<p>COVID-19 data was obtained from the <code>COVID19</code> package, and was filtered to include only information for the US until 10/31/2020 to match the dates in the NOAA dataset. This dataset included information on the date, state, as well as the number of cases, tests, and hospitalizations for that given day.</p>
+<p>The other dataset used for this section was from the <code>rnoaa</code> package. The NOAA dataset included the daily max, min, and average temperatures, as well as thed daily precipitation from 10 randomly selected weather stations for each state, giving weather data from 500 stations between the 1/1/2020 and 10/31/2020. The temperatures were converted into Fahrenheit and averaged across the state for a given day, so there was only one datapoint per state per day.</p>
+<p>The NOAA dataset was then joined with the COVID-19 one.</p>
+<p>This combined dataset was filtered and used to create the COVID-19 trends over time graphs.</p>
+<p>To set the data up for the map, the date was separated into month, day, and year columns. Columns that were not needed for the visualizations were removed and new columns were created. The variables included: <br> <code>id</code> - Unique state ID <br> <code>key_apple_mobility</code> - State name <br> <code>key_alpha_2</code> - State abbreviation <br> <code>population</code> - State population <br> <code>year</code> - Year the data is from <br> <code>month</code> - Month the data is from <br> <code>day</code> - Day the data is from <br> <code>confirmed</code> - Number of confirmed COVID-19 cases <br> <code>tests</code> - Number of COVID-19 tests <br> <code>deaths</code> - Number of COVID-19 related deaths <br> <code>hosp</code> - Numbe rof COVID-19 related hospitalizations <br> <code>prop_cases</code> - Proportion of confirmed COVID-19 cases in the state <br> <code>prop_deaths_pop</code> - Proportion of COVID-19 related deaths in the state <br> <code>prop_deaths_case</code> - Proportion of COVID-19 related deaths among the confirmed cases in the state <br> <code>prop_hospital_pop</code> - Proportion of COVID-19 related hospitalizations in the state <br> <code>prop_hospital_case</code> - Proportion of COVID-19 related <br> hospitalizations among confirmed cases in the state <br> <code>prop_tested</code> - Proportion of the state tested for COVID-19 <br> <code>new_cases</code> - Number of new <br> <code>state_tavg</code> - Average state temperature <br> <code>state_tmax</code> - Max state temperature <br> <code>state_tmin</code> - Min state temperature <br> <code>state_prcp</code> - Average precipitation level <br></p>
+<p>The dataset was then pivoted longer to create <code>covid_stat_type</code> and <code>covid_stat</code>, which included the names of the COVID-19 related variables and the associated value, respectively. We pivoted longer once more to get <code>noaa_stat_type</code> and <code>noaa_stat</code>, so the names of the NOAA related variables were in one column and their associated value in another. This ensured that we could filter by the appropriate values when creating the interactive map.</p>
+<p>The temperature plots used the NOAA dataset. The data were grouped and new variables averages of the temperature and precipitation variables were created to obtain the average for the month.</p>
 </div>
 <div id="plots" class="section level3">
 <h3>Plots</h3>
-<p>define what each plot is and how we set it up</p>
+<p>Can probably use the description sections here</p>
 </div>
 
 

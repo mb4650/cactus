@@ -11,30 +11,37 @@ output:
 # Related Work
 
 # Initial Questions
-I feel like each group had initial questions and they evolves, so might be easier to divide and explain that way?
 
-### Descriptives
+Our initial questions involved looking deeper into trends in COVID-19 over the year and how those trends were affected by climate. We also wanted to see what the case counts might look like in the future based on the data that we have. To answer these broader questions, we divided into multiple smaller sections to better address more specific questions. For more information on what these initial questions looked like and how they evolved over time, please click on one of the following:
 
-### Shiny plots
+[Descriptives](descriptive_plotly.html)
 
-### Prediction tool
+[Interactive Dashboard Visualizations](create_shiny.html)
+
+[Regression Analysis](Regression-Analysis.html)
+
+[Predictive Tool](predictive_tool.html)
+
 
 # Data
 
-This part can be about the sources - and the parts below can be about how we cleaned and sorted the data in each one?
+For each section, COVID-19 data were obtained from the `COVID19` package in R. Additional datasets were utilized for the analysis and are defined in the following reports.
 
-### Descriptives
+[Descriptives](descriptive_plotly.html)
 
-### Shiny plots
+[Interactive Dashboard Visualizations](create_shiny.html)
 
-### Prediction tool
+[Regression Analysis](Regression-Analysis.html)
+
+[Predictive Tool](predictive_tool.html)
 
 # Exploratory Analysis
 
-### Descriptives
+Exploratory analysis was done in [Descriptives](descriptive_plotly.html) as well as [Interactive Dashboard Visualizations](create_shiny.html). The purpose and results
 
-### Shiny plots
+# Formal Analysy
 
-# Analysis with Predictive Tool
+More formal analysis was done with [Regression Analysis](Regression-Analysis.html) and [Predictive Tool](predictive_tool.html). Add more details on what that included
 
 # Discussion
+include formal discussion that is a combination of all the conclusions from other sections
