@@ -273,21 +273,39 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="about.html">About the Memebers</a>
+  <a href="about.html">About the Members</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="project_report.html">Project Report</a>
 </li>
-<li>
-  <a href="https://mb4650.shinyapps.io/plotly/">Interactive Dashboard Visualizations</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Interactive Dashboard Visualizations
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="create_shiny.html">Report on Creating Interactive Plots</a>
+    </li>
+    <li>
+      <a href="https://mb4650.shinyapps.io/plotly/">View Interactive Shiny Dashboard</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="descriptive_plotly.html">Descriptives</a>
 </li>
 <li>
+  <a href="Regression-Analysis.html">Regression Analysis</a>
+</li>
+<li>
   <a href="predictive_tool.html">Predictive Tool</a>
+</li>
+<li>
+  <a></a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -561,7 +579,7 @@ ny_df =
   nyc_df %&gt;% 
   rbind(ny_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;New York&quot;, &quot;NYC&quot;, &quot;other NY counties&quot;))</code></pre>
-<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 2.838607510^{5}.</p>
+<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 2.796882910^{5}.</p>
 <pre class="r"><code>ny_confirmed_plot =
   ny_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -592,7 +610,6 @@ ny_df =
 <pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
 <pre class="r"><code>ny_confirmed_plot + ny_deaths_plot</code></pre>
 <pre><code>## Warning: Removed 16 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <p>The second populated city - Los Angeles vs. other less populated counties in California.</p>
 <pre class="r"><code>la_df =
@@ -607,7 +624,7 @@ ca_df =
   la_df %&gt;% 
   rbind(ca_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Los Angeles&quot;, &quot;LA&quot;, &quot;other CA counties&quot;))</code></pre>
-<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 7.978269110^{5}.</p>
+<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 3.182959110^{5}.</p>
 <pre class="r"><code>ca_confirmed_plot =
   ca_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -651,7 +668,7 @@ il_df =
   chicago_df %&gt;% 
   rbind(il_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Cook&quot;, &quot;Cook County (Chicago)&quot;, &quot;other IL counties&quot;))</code></pre>
-<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 1.433836510^{5}.</p>
+<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 8.822192910^{4}.</p>
 <pre class="r"><code>il_confirmed_plot =
   il_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -695,7 +712,7 @@ tx_df =
   houston_df %&gt;% 
   rbind(tx_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Houston&quot;, &quot;Houston&quot;, &quot;other TX counties&quot;))</code></pre>
-<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 6.58672510^{4}.</p>
+<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 4.61538510^{5}.</p>
 <pre class="r"><code>tx_confirmed_plot =
   tx_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -753,7 +770,7 @@ tx_df =
 <pre class="r"><code>us_df = jhu_data() %&gt;% 
   janitor::clean_names() %&gt;% 
   filter(country_region == &quot;US&quot;)</code></pre>
-<pre><code>## using temporary cache /var/folders/pm/yx829l4n349__d6ybqgzj4_m0000gn/T//RtmpJekYE0/BiocFileCache</code></pre>
+<pre><code>## using temporary cache /var/folders/_d/qhg0zsqj40x770p3cxkcl_7m0000gn/T//Rtmp3YOFSV/BiocFileCache</code></pre>
 <pre class="r"><code>us_covid_df = 
   us_df %&gt;% 
     pivot_wider(names_from = subset,
