@@ -39,7 +39,7 @@ For each section, COVID-19 data were obtained from the `COVID19` package in R. A
 
 Exploratory analysis was done in [Descriptives](descriptive_plotly.html) as well as [Interactive Dashboard Visualizations](create_shiny.html). The purpose and results
 
-# Formal Analysy
+# Formal Analysis
 
 More formal analysis was done with [Regression Analysis](Regression-Analysis.html) and [Predictive Tool](predictive_tool.html). Add more details on what that included
 
