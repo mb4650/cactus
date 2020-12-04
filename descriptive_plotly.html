@@ -273,21 +273,39 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="about.html">About the Memebers</a>
+  <a href="about.html">About the Members</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="project_report.html">Project Report</a>
 </li>
-<li>
-  <a href="https://mb4650.shinyapps.io/plotly/">Interactive Dashboard Visualizations</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Interactive Dashboard Visualizations
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="create_shiny.html">Report on Creating Interactive Plots</a>
+    </li>
+    <li>
+      <a href="https://mb4650.shinyapps.io/plotly/">View Interactive Shiny Dashboard</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="descriptive_plotly.html">Descriptives</a>
 </li>
 <li>
+  <a href="Regression-Analysis.html">Regression Analysis</a>
+</li>
+<li>
   <a href="predictive_tool.html">Predictive Tool</a>
+</li>
+<li>
+  <a></a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -561,7 +579,7 @@ ny_df =
   nyc_df %&gt;% 
   rbind(ny_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;New York&quot;, &quot;NYC&quot;, &quot;other NY counties&quot;))</code></pre>
-<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 2.838607510^{5}.</p>
+<p>NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 384084.8.</p>
 <pre class="r"><code>ny_confirmed_plot =
   ny_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -570,7 +588,7 @@ ny_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;NYC/Less Populated NY Counties Covid Cases&quot;,
+  labs(title = &quot;NYC/Less Populated NY Counties Covid Cases and Deaths&quot;,
        y = &quot;Confirmed Cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
@@ -584,15 +602,13 @@ ny_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;NYC/Less Populated NY Counties Covid Deaths&quot;,
-       y = &quot;Confirmed deaths&quot;,
+  labs(y = &quot;Confirmed deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
 <pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
 <pre class="r"><code>ny_confirmed_plot + ny_deaths_plot</code></pre>
 <pre><code>## Warning: Removed 16 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <p>The second populated city - Los Angeles vs. other less populated counties in California.</p>
 <pre class="r"><code>la_df =
@@ -607,7 +623,7 @@ ca_df =
   la_df %&gt;% 
   rbind(ca_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Los Angeles&quot;, &quot;LA&quot;, &quot;other CA counties&quot;))</code></pre>
-<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 7.978269110^{5}.</p>
+<p>Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 528095.</p>
 <pre class="r"><code>ca_confirmed_plot =
   ca_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -616,7 +632,7 @@ ca_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;Los Angeles/Less Populated CA Counties Covid Cases&quot;,
+  labs(title = &quot;LA/Less Populated CA Counties Covid Cases and Deaths&quot;,
        y = &quot;Confirmed Cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
@@ -630,8 +646,7 @@ ca_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;Los Angeles/Less Populated CA Counties Covid Deaths&quot;,
-       y = &quot;Confirmed deaths&quot;,
+  labs(y = &quot;Confirmed deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
@@ -651,7 +666,7 @@ il_df =
   chicago_df %&gt;% 
   rbind(il_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Cook&quot;, &quot;Cook County (Chicago)&quot;, &quot;other IL counties&quot;))</code></pre>
-<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 1.433836510^{5}.</p>
+<p>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 95294.8.</p>
 <pre class="r"><code>il_confirmed_plot =
   il_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -660,7 +675,7 @@ il_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;Cook County (Chicago)/Less Populated IL Counties Covid Cases&quot;,
+  labs(title = &quot;Cook County/Less Populated IL Counties Covid Cases and Deaths&quot;,
        y = &quot;Confirmed Cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
@@ -674,8 +689,7 @@ il_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;Cook County (Chicago)/Less Populated IL Counties Covid Deaths&quot;,
-       y = &quot;Confirmed deaths&quot;,
+  labs(y = &quot;Confirmed deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
@@ -695,7 +709,7 @@ tx_df =
   houston_df %&gt;% 
   rbind(tx_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Houston&quot;, &quot;Houston&quot;, &quot;other TX counties&quot;))</code></pre>
-<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 6.58672510^{4}.</p>
+<p>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 13727.3.</p>
 <pre class="r"><code>tx_confirmed_plot =
   tx_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -705,7 +719,7 @@ tx_df =
   geom_line() +
   scale_color_manual(values = c(&quot;Houston&quot; = &quot;black&quot;, &quot;other TX counties&quot; = &quot;orange&quot;)) +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;Houston/Less Populated TX Counties Covid Cases&quot;,
+  labs(title = &quot;Houston/Less Populated TX Counties Covid Cases and Deaths&quot;,
        y = &quot;Confirmed Cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
@@ -720,8 +734,7 @@ tx_df =
   geom_line() +
   scale_color_manual(values = c(&quot;Houston&quot; = &quot;black&quot;, &quot;other TX counties&quot; = &quot;orange&quot;)) +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;Houston/Less Populated TX Counties Covid Deaths&quot;,
-       y = &quot;Confirmed deaths&quot;,
+  labs(y = &quot;Confirmed deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
@@ -746,15 +759,16 @@ tx_df =
 ## 
 ##     select</code></pre>
 <pre><code>## Loading required package: sf</code></pre>
-<pre><code>## Linking to GEOS 3.8.1, GDAL 3.1.4, PROJ 6.3.1</code></pre>
+<pre><code>## Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1</code></pre>
 <pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
 ##   method            from
 ##   as.zoo.data.frame zoo</code></pre>
 <pre class="r"><code>us_df = jhu_data() %&gt;% 
   janitor::clean_names() %&gt;% 
-  filter(country_region == &quot;US&quot;)</code></pre>
-<pre><code>## using temporary cache /var/folders/pm/yx829l4n349__d6ybqgzj4_m0000gn/T//RtmpJekYE0/BiocFileCache</code></pre>
-<pre class="r"><code>us_covid_df = 
+  filter(country_region == &quot;US&quot;)
+
+
+us_covid_df = 
   us_df %&gt;% 
     pivot_wider(names_from = subset,
               values_from = count) %&gt;% 
@@ -787,7 +801,7 @@ us_events_df =
        y = &quot;new cases&quot;,
        x = &quot;date&quot;) +
       geom_vline(data = events_df, mapping = aes(xintercept = date) ,linetype = &quot;dotted&quot;,color = &quot;blue&quot;, show.legend = TRUE) +
-  geom_text(data = events_df, mapping = aes(x = date, y = 127500, label = event), size = 3.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
+  geom_text(data = events_df, mapping = aes(x = date, y = 75000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
 <pre class="r"><code>us_events_df %&gt;%  
   ggplot(aes(x = date, y = new_deaths)) +
@@ -796,7 +810,7 @@ us_events_df =
        y = &quot;new deaths&quot;,
        x = &quot;date&quot;) +
       geom_vline(data = events_df, mapping = aes(xintercept = date) , linetype = &quot;dotted&quot;, color = &quot;blue&quot;, show.legend = TRUE) +
-  geom_text(data = events_df, mapping = aes(x = date, y = 1750, label = event), size = 3.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
+  geom_text(data = events_df, mapping = aes(x = date, y = 1000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-20-1.png" width="90%" /></p>
 
 

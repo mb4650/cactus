@@ -272,7 +272,7 @@ ny_df =
   mutate(ppl = ifelse(county == "New York", "NYC", "other NY counties"))
 ```
 
-NYC has a population of `r mean(pull(nyc_df, population))`, and the mean population of the 10 randomly selected NY counties is `r mean(pull(ny_lessppl_df, population))`.
+NYC has a population of `r format(mean(pull(nyc_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected NY counties is `r format(mean(pull(ny_lessppl_df, population)), scientific=FALSE)`.
 
 ```{r}
 ny_confirmed_plot =
@@ -283,7 +283,7 @@ ny_confirmed_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "NYC/Less Populated NY Counties Covid Cases",
+  labs(title = "NYC/Less Populated NY Counties Covid Cases and Deaths",
        y = "Confirmed Cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -297,8 +297,7 @@ ny_deaths_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "NYC/Less Populated NY Counties Covid Deaths",
-       y = "Confirmed deaths",
+  labs(y = "Confirmed deaths",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
@@ -323,7 +322,7 @@ ca_df =
   mutate(ppl = ifelse(county == "Los Angeles", "LA", "other CA counties"))
 ```
 
-Los Angeles has a population of `r mean(pull(la_df, population))`, and the mean population of the 10 randomly selected CA counties is `r mean(pull(ca_lessppl_df, population))`.
+Los Angeles has a population of `r format(mean(pull(la_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected CA counties is `r format(mean(pull(ca_lessppl_df, population)), scientific=FALSE)`.
 
 ```{r}
 ca_confirmed_plot =
@@ -334,7 +333,7 @@ ca_confirmed_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "Los Angeles/Less Populated CA Counties Covid Cases",
+  labs(title = "LA/Less Populated CA Counties Covid Cases and Deaths",
        y = "Confirmed Cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -348,8 +347,7 @@ ca_deaths_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "Los Angeles/Less Populated CA Counties Covid Deaths",
-       y = "Confirmed deaths",
+  labs(y = "Confirmed deaths",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
@@ -374,7 +372,7 @@ il_df =
   mutate(ppl = ifelse(county == "Cook", "Cook County (Chicago)", "other IL counties"))
 ```
 
-Cook County (Chicago included) has a population of `r mean(pull(chicago_df, population))`, and the mean population of the 10 randomly selected IL counties is `r mean(pull(il_lessppl_df, population))`.
+Cook County (Chicago included) has a population of `r format(mean(pull(chicago_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected IL counties is `r format(mean(pull(il_lessppl_df, population)), scientific=FALSE)`.
 
 ```{r}
 il_confirmed_plot =
@@ -385,7 +383,7 @@ il_confirmed_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "Cook County (Chicago)/Less Populated IL Counties Covid Cases",
+  labs(title = "Cook County/Less Populated IL Counties Covid Cases and Deaths",
        y = "Confirmed Cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -399,8 +397,7 @@ il_deaths_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "Cook County (Chicago)/Less Populated IL Counties Covid Deaths",
-       y = "Confirmed deaths",
+  labs(y = "Confirmed deaths",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
@@ -425,7 +422,7 @@ tx_df =
   mutate(ppl = ifelse(county == "Houston", "Houston", "other TX counties"))
 ```
 
-Houston has a population of `r mean(pull(houston_df, population))`, and the mean population of the 10 randomly selected TX counties is `r mean(pull(tx_lessppl_df, population))`.
+Houston has a population of `r format(mean(pull(houston_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected TX counties is `r format(mean(pull(tx_lessppl_df, population)), scientific=FALSE)`.
 
 ```{r}
 tx_confirmed_plot =
@@ -437,7 +434,7 @@ tx_confirmed_plot =
   geom_line() +
   scale_color_manual(values = c("Houston" = "black", "other TX counties" = "orange")) +
   scale_y_continuous(labels = comma) +
-  labs(title = "Houston/Less Populated TX Counties Covid Cases",
+  labs(title = "Houston/Less Populated TX Counties Covid Cases and Deaths",
        y = "Confirmed Cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -452,8 +449,7 @@ tx_deaths_plot =
   geom_line() +
   scale_color_manual(values = c("Houston" = "black", "other TX counties" = "orange")) +
   scale_y_continuous(labels = comma) +
-  labs(title = "Houston/Less Populated TX Counties Covid Deaths",
-       y = "Confirmed deaths",
+  labs(y = "Confirmed deaths",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
@@ -511,7 +507,7 @@ us_events_df %>%
        y = "new cases",
        x = "date") +
       geom_vline(data = events_df, mapping = aes(xintercept = date) ,linetype = "dotted",color = "blue", show.legend = TRUE) +
-  geom_text(data = events_df, mapping = aes(x = date, y = 127500, label = event), size = 3.5, angle = 90, vjust = -0.4, hjust = 0)
+  geom_text(data = events_df, mapping = aes(x = date, y = 75000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)
 ```
 
 
@@ -523,7 +519,7 @@ us_events_df %>%
        y = "new deaths",
        x = "date") +
       geom_vline(data = events_df, mapping = aes(xintercept = date) , linetype = "dotted", color = "blue", show.legend = TRUE) +
-  geom_text(data = events_df, mapping = aes(x = date, y = 1750, label = event), size = 3.5, angle = 90, vjust = -0.4, hjust = 0)
+  geom_text(data = events_df, mapping = aes(x = date, y = 1000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)
   
 ```
 
