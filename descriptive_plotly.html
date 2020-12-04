@@ -28,15 +28,6 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-      </style>
-
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -492,7 +483,7 @@ cactus_df = left_join(covid_df, mask_df, by.x = c(&quot;state&quot;, &quot;date&
 </div>
 <div id="state-aggregated-new-covid-cases-and-deaths-over-the-last-year" class="section level1">
 <h1>State Aggregated New COVID Cases and Deaths Over the Last Year</h1>
-<p><strong>Comparing new COVID cases by state over the past year<sup>I</sup></strong></p>
+<p><strong>Comparing new COVID cases by state over the past year<sup>1</sup></strong></p>
 <pre class="r"><code>time_plot = 
 covid_df %&gt;% 
   ggplot(aes(x = date, y = new_case_updated, color = state)) +
@@ -509,7 +500,7 @@ covid_df %&gt;%
 time_plot &lt;- time_plot + scale_y_continuous(labels = comma)
 time_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
-<p><strong>Comparing new COVID deaths by state over the past year<sup>I</sup></strong></p>
+<p><strong>Comparing new COVID deaths by state over the past year<sup>1</sup></strong></p>
 <pre class="r"><code>death_plot = 
 covid_df %&gt;% 
   ggplot(aes(x = date, y = new_death_updated, color = state)) +
@@ -597,7 +588,7 @@ cactus_df =
 </div>
 <div id="citycounty-aggregated-new-covid-cases-and-deaths-over-the-last-year" class="section level1">
 <h1>City/County Aggregated New COVID Cases and Deaths Over the Last Year</h1>
-<p><strong>A comparison of new COVID cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties<sup>II</sup></strong></p>
+<p><strong>A comparison of new COVID cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties</strong></p>
 <pre class="r"><code>confirmed_df = 
   read_csv(&quot;https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv&quot;) %&gt;% 
   select_all(tolower) %&gt;% 
@@ -661,7 +652,7 @@ lessppl_df =
   ) %&gt;% 
   select(-c(state.x, state.y)) %&gt;% 
   select(state, everything())</code></pre>
-<p><strong>The most populated city - New York City vs. other less populated counties in New York state regarding new COVID cases and deaths<sup>II</sup>.</strong></p>
+<p><strong>The most populated city - New York City vs. other less populated counties in New York state regarding new COVID cases and deaths<sup>2</sup>.</strong></p>
 <pre class="r"><code>nyc_df =
   confirmed_deaths_df %&gt;% 
   filter(county == &quot;New York&quot;)
@@ -702,8 +693,11 @@ ny_deaths_plot =
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 
 ny_confirmed_plot + ny_deaths_plot</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /> NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 651826.9.</p>
-<p><strong>The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths<sup>II</sup>.</strong></p>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
+<ul>
+<li>NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 221168.8.</li>
+</ul>
+<p><strong>The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths<sup>2</sup>.</strong></p>
 <pre class="r"><code>la_df =
   confirmed_deaths_df %&gt;% 
   filter(county == &quot;Los Angeles&quot;)
@@ -744,8 +738,11 @@ ca_deaths_plot =
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 
 ca_confirmed_plot + ca_deaths_plot</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-13-1.png" width="90%" /> Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 540699.2.</p>
-<p><strong>The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths<sup>II</sup>.</strong></p>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
+<ul>
+<li>Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 581612.1.</li>
+</ul>
+<p><strong>The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths<sup>2</sup>.</strong></p>
 <pre class="r"><code>chicago_df =
   confirmed_deaths_df %&gt;% 
   filter(county == &quot;Cook&quot;)
@@ -787,8 +784,10 @@ il_deaths_plot =
 
 il_confirmed_plot + il_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-15-1.png" width="90%" /></p>
-<p>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 85807.4.</p>
-<p><strong>The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths<sup>II</sup>.</strong></p>
+<ul>
+<li>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 80795.75.</li>
+</ul>
+<p><strong>The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths<sup>2</sup>.</strong></p>
 <pre class="r"><code>houston_df =
   confirmed_deaths_df %&gt;% 
   filter(county == &quot;Houston&quot;)
@@ -832,7 +831,9 @@ tx_deaths_plot =
 
 tx_confirmed_plot + tx_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
-<p>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 13519.07.</p>
+<ul>
+<li>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 57536.36.</li>
+</ul>
 <p><em>Texas is one of the sub-tropical states compared to NY, CA and IL (temperate), and it is marked by different colors.</em></p>
 </div>
 <div id="national-new-covid-cases-and-deaths" class="section level1">
@@ -872,7 +873,7 @@ us_events_df =
   us_events_df %&gt;% 
   mutate(in_two_weeks_death = if_else(!(is.na(event)), lead(new_deaths, 30), NA_real_)) %&gt;% 
   mutate(diff_death = in_two_weeks_death - new_deaths)</code></pre>
-<p><strong>Daily new COVID cases over the past year with important national events<sup>III</sup></strong></p>
+<p><strong>Daily new COVID cases over the past year with important national events<sup>3</sup></strong></p>
 <pre class="r"><code>us_events_df %&gt;%  
   ggplot(aes(x = date, y = new_case)) +
   geom_point() +
@@ -882,7 +883,7 @@ us_events_df =
       geom_vline(data = events_df, mapping = aes(xintercept = date) ,linetype = &quot;dotted&quot;,color = &quot;blue&quot;, show.legend = TRUE) +
   geom_text(data = events_df, mapping = aes(x = date, y = 75000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
-<p><strong>Daily new COVID deaths over the past year with important national events<sup>III</sup></strong></p>
+<p><strong>Daily new COVID deaths over the past year with important national events<sup>3</sup></strong></p>
 <pre class="r"><code>us_events_df %&gt;%  
   ggplot(aes(x = date, y = new_deaths)) +
   geom_point() +
@@ -895,11 +896,13 @@ us_events_df =
 <div id="citations" class="section level3">
 <h3>Citations</h3>
 <ul>
-<li><p>I. Guidotti, E., Ardia, D., (2020), “COVID-19 Data Hub”, Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.</p></li>
-<li><ol start="2" style="list-style-type: upper-roman">
+<li><ol style="list-style-type: decimal">
+<li>Guidotti, E., Ardia, D., (2020), “COVID-19 Data Hub”, Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
 <li>Dong E, Du H, Gardner L. An interactive web-based dashboard to track COVID-19 in real time. Lancet Inf Dis. 20(5):533-534. doi: 10.1016/S1473-3099(20)30120-1"</li>
 </ol></li>
-<li><ol start="3" style="list-style-type: upper-roman">
+<li><ol start="3" style="list-style-type: decimal">
 <li><a href="https://github.com/seandavi/sars2pack" class="uri">https://github.com/seandavi/sars2pack</a></li>
 </ol></li>
 </ul>
