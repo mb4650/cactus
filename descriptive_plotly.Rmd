@@ -1,13 +1,16 @@
 ---
-title: "descriptive_plots"
+title: "Descriptive Visualizations"
 author: "Ling Yi & Lunbei Hu"
-date: "12/2/2020"
 output:
   html_document:
     code_folding: hide
+    toc: true
+    toc_float: true
 ---
 
-```{r setup, warning = FALSE}
+# Descriptive visualizations of confirmed COVID cases and deaths in the U.S.
+
+```{r setup, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(plotly)
 library(flexdashboard)
@@ -32,9 +35,9 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
-*Importing relevent dataset which includes the data from the COVID19 R package and a locally made dataset with dates of mask mandate per state.* 
+*Importing relevent dataset which includes the data from the COVID19 R package and a locally made dataset with dates of mask mandate per state.*
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 covid_df = covid19(c("US"), level = 2, start = "2020-01-01")
 
 covid_df = 
@@ -65,9 +68,12 @@ cactus_df = left_join(covid_df, mask_df, by.x = c("state", "date"), by.y = c("st
 
 ```
 
-**Making the first plot: Look at trends of new COVID cases by state over the past year^I^.**
+# State Aggregated New COVID Cases and Deaths Over the Last Year 
 
-```{r, warning = FALSE}
+
+**Comparing new COVID cases by state over the past year^I^**
+
+```{r message=FALSE, warning=FALSE}
 time_plot = 
 covid_df %>% 
   ggplot(aes(x = date, y = new_case_updated, color = state)) +
@@ -82,16 +88,12 @@ covid_df %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 
 time_plot <- time_plot + scale_y_continuous(labels = comma)
-```
-
-```{r}
 time_plot
 ```
 
+**Comparing new COVID deaths by state over the past year^I^**
 
-**Making the first plot: Look at trends of new COVID deaths by state over the past year^I^.**
-
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 death_plot = 
 covid_df %>% 
   ggplot(aes(x = date, y = new_death_updated, color = state)) +
@@ -106,16 +108,12 @@ covid_df %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 
 death_plot <- death_plot + scale_y_continuous(labels = comma)
-```
-
-```{r}
 death_plot
 ```
 
-
 **Daily new COVID case of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 state_plot = 
 covid_df %>% 
   group_by(state_binary, date, temperate) %>% 
@@ -130,15 +128,13 @@ covid_df %>%
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
-```
-
-```{r}
 state_plot
 ```
 
+
 **Daily new COVID deaths of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 state_death = 
 covid_df %>% 
   group_by(state_binary, date, temperate) %>% 
@@ -153,15 +149,11 @@ covid_df %>%
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
-```
-
-```{r}
 state_death
 ```
 
 
-
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 #creating new variables to look at two week difference in new COVID cases and COVID deaths two weeks to one month after mask mandate respectively. 
 
 cactus_df = 
@@ -178,7 +170,7 @@ cactus_df =
 
 **Observing two week difference in confirmed new COVID cases from date of mask mandate in states that enforced a mandate**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 cactus_df %>% 
   ggplot(aes(x = state, y = diff, color = state_binary)) +
   geom_point() +
@@ -193,7 +185,7 @@ cactus_df %>%
 
 **Observing two week difference in confirmed new COVID deaths from date of mask mandate in states that enforced a mandate**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 cactus_df %>% 
   ggplot(aes(x = state, y = diff_death, color = state_binary)) +
   geom_point() +
@@ -205,10 +197,14 @@ cactus_df %>%
        x = "State")
 ```
 
+# City/County Aggregated New COVID Cases and Deaths Over the Last Year
 
-**In comparison of new COVID cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties^II^**
 
-```{r, warning = FALSE}
+
+
+**A comparison of new COVID cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties^II^**
+
+```{r message=FALSE, warning=FALSE}
 confirmed_df = 
   read_csv("https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv") %>% 
   select_all(tolower) %>% 
@@ -278,7 +274,7 @@ lessppl_df =
 
 **The most populated city - New York City vs. other less populated counties in New York state regarding new COVID cases and deaths^II^.**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 nyc_df =
   confirmed_deaths_df %>% 
   filter(county == "New York")
@@ -293,9 +289,7 @@ ny_df =
   mutate(ppl = ifelse(county == "New York", "NYC", "other NY counties"))
 ```
 
-NYC has a population of `r format(mean(pull(nyc_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected NY counties is `r format(mean(pull(ny_lessppl_df, population)), scientific=FALSE)`.
-
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 ny_confirmed_plot =
   ny_df %>% 
   group_by(ppl, date) %>% 
@@ -325,10 +319,13 @@ ny_deaths_plot =
 
 ny_confirmed_plot + ny_deaths_plot
 ```
+NYC has a population of `r format(mean(pull(nyc_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected NY counties is `r format(mean(pull(ny_lessppl_df, population)), scientific=FALSE)`.
+
+
 
 **The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths^II^.**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 la_df =
   confirmed_deaths_df %>% 
   filter(county == "Los Angeles")
@@ -343,9 +340,7 @@ ca_df =
   mutate(ppl = ifelse(county == "Los Angeles", "LA", "other CA counties"))
 ```
 
-Los Angeles has a population of `r format(mean(pull(la_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected CA counties is `r format(mean(pull(ca_lessppl_df, population)), scientific=FALSE)`.
-
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 ca_confirmed_plot =
   ca_df %>% 
   group_by(ppl, date) %>% 
@@ -375,10 +370,12 @@ ca_deaths_plot =
 
 ca_confirmed_plot + ca_deaths_plot
 ```
+Los Angeles has a population of `r format(mean(pull(la_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected CA counties is `r format(mean(pull(ca_lessppl_df, population)), scientific=FALSE)`.
+
 
 **The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths^II^.**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 chicago_df =
   confirmed_deaths_df %>% 
   filter(county == "Cook")
@@ -393,9 +390,7 @@ il_df =
   mutate(ppl = ifelse(county == "Cook", "Cook County (Chicago)", "other IL counties"))
 ```
 
-Cook County (Chicago included) has a population of `r format(mean(pull(chicago_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected IL counties is `r format(mean(pull(il_lessppl_df, population)), scientific=FALSE)`.
-
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 il_confirmed_plot =
   il_df %>% 
   group_by(ppl, date) %>% 
@@ -426,9 +421,12 @@ il_deaths_plot =
 il_confirmed_plot + il_deaths_plot
 ```
 
+Cook County (Chicago included) has a population of `r format(mean(pull(chicago_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected IL counties is `r format(mean(pull(il_lessppl_df, population)), scientific=FALSE)`.
+
+
 **The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths^II^.**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 houston_df =
   confirmed_deaths_df %>% 
   filter(county == "Houston")
@@ -443,9 +441,7 @@ tx_df =
   mutate(ppl = ifelse(county == "Houston", "Houston", "other TX counties"))
 ```
 
-Houston has a population of `r format(mean(pull(houston_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected TX counties is `r format(mean(pull(tx_lessppl_df, population)), scientific=FALSE)`.
-
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 tx_confirmed_plot =
   tx_df %>% 
   group_by(ppl, date) %>% 
@@ -478,12 +474,18 @@ tx_deaths_plot =
 tx_confirmed_plot + tx_deaths_plot
 ```
 
-Texas is one of the sub-tropical states compared to NY, CA and IL (temperate), and it is marked by different colors.
+Houston has a population of `r format(mean(pull(houston_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected TX counties is `r format(mean(pull(tx_lessppl_df, population)), scientific=FALSE)`.
 
 
-*Comparing overall US new COVID cases and deaths with important national events*
+*Texas is one of the sub-tropical states compared to NY, CA and IL (temperate), and it is marked by different colors.*
 
-```{r, warning = FALSE}
+
+# National New COVID Cases and Deaths
+
+
+**Comparing overall US new COVID cases and deaths with important national events**
+
+```{r message=FALSE, warning=FALSE}
 library(sars2pack)
 
 us_df = jhu_data() %>% 
@@ -523,7 +525,7 @@ us_events_df =
 
 **Daily new COVID cases over the past year with important national events^III^**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 us_events_df %>%  
   ggplot(aes(x = date, y = new_case)) +
   geom_point() +
@@ -536,7 +538,7 @@ us_events_df %>%
 
 **Daily new COVID deaths over the past year with important national events^III^**
 
-```{r, warning = FALSE}
+```{r message=FALSE, warning=FALSE}
 us_events_df %>%  
   ggplot(aes(x = date, y = new_deaths)) +
   geom_point() +
@@ -548,3 +550,10 @@ us_events_df %>%
   
 ```
 
+### Citations
+
+* I. Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.
+  
+* II. Dong E, Du H, Gardner L. An interactive web-based dashboard to track COVID-19 in real time. Lancet Inf Dis. 20(5):533-534. doi: 10.1016/S1473-3099(20)30120-1"
+
+* III. https://github.com/seandavi/sars2pack

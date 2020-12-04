@@ -12,7 +12,7 @@
 <meta name="author" content="Ling Yi &amp; Lunbei Hu" />
 
 
-<title>descriptive_plots</title>
+<title>Descriptive Visualizations</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,10 +20,22 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -253,6 +265,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -260,6 +335,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -328,59 +413,22 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">descriptive_plots</h1>
+<h1 class="title toc-ignore">Descriptive Visualizations</h1>
 <h4 class="author">Ling Yi &amp; Lunbei Hu</h4>
-<h4 class="date">12/2/2020</h4>
 
 </div>
 
 
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
-## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
-## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(plotly)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plotly&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     last_plot</code></pre>
-<pre><code>## The following object is masked from &#39;package:stats&#39;:
-## 
-##     filter</code></pre>
-<pre><code>## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     layout</code></pre>
-<pre class="r"><code>library(flexdashboard)
+<div id="descriptive-visualizations-of-confirmed-covid-cases-and-deaths-in-the-u.s." class="section level1">
+<h1>Descriptive visualizations of confirmed COVID cases and deaths in the U.S.</h1>
+<pre class="r"><code>library(tidyverse)
+library(plotly)
+library(flexdashboard)
 library(readxl)
-require(scales)</code></pre>
-<pre><code>## Loading required package: scales</code></pre>
-<pre><code>## 
-## Attaching package: &#39;scales&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     discard</code></pre>
-<pre><code>## The following object is masked from &#39;package:readr&#39;:
-## 
-##     col_factor</code></pre>
-<pre class="r"><code>library(lubridate)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     date, intersect, setdiff, union</code></pre>
-<pre class="r"><code>library(httr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;httr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:plotly&#39;:
-## 
-##     config</code></pre>
-<pre class="r"><code>library(patchwork)
+require(scales)
+library(lubridate)
+library(httr)
+library(patchwork)
 library(COVID19)
 
 knitr::opts_chunk$set(
@@ -438,12 +486,13 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 mask_df = read_excel(&quot;./data/mask_state.xlsx&quot;) %&gt;% 
   janitor::clean_names() %&gt;% 
   mutate(date = as.Date(as.numeric(as.character(date)), origin = &quot;1899-12-30&quot;)) %&gt;%
-  dplyr::select(-x4)</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...4</code></pre>
-<pre class="r"><code>cactus_df = left_join(covid_df, mask_df, by.x = c(&quot;state&quot;, &quot;date&quot;), by.y = c(&quot;state&quot;, &quot;date&quot;))</code></pre>
-<pre><code>## Joining, by = c(&quot;date&quot;, &quot;state&quot;)</code></pre>
-<p><strong>Making the first plot: Look at trends of new COVID cases by state over the past year<sup>I</sup>.</strong></p>
+  dplyr::select(-x4)
+
+cactus_df = left_join(covid_df, mask_df, by.x = c(&quot;state&quot;, &quot;date&quot;), by.y = c(&quot;state&quot;, &quot;date&quot;))</code></pre>
+</div>
+<div id="state-aggregated-new-covid-cases-and-deaths-over-the-last-year" class="section level1">
+<h1>State Aggregated New COVID Cases and Deaths Over the Last Year</h1>
+<p><strong>Comparing new COVID cases by state over the past year<sup>I</sup></strong></p>
 <pre class="r"><code>time_plot = 
 covid_df %&gt;% 
   ggplot(aes(x = date, y = new_case_updated, color = state)) +
@@ -457,12 +506,10 @@ covid_df %&gt;%
                                      to = as.Date(&quot;2020-11-01&quot;), by = 15)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 
-time_plot &lt;- time_plot + scale_y_continuous(labels = comma)</code></pre>
-<pre class="r"><code>time_plot</code></pre>
-<pre><code>## Warning: Removed 185 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 162 row(s) containing missing values (geom_path).</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
-<p><strong>Making the first plot: Look at trends of new COVID deaths by state over the past year<sup>I</sup>.</strong></p>
+time_plot &lt;- time_plot + scale_y_continuous(labels = comma)
+time_plot</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
+<p><strong>Comparing new COVID deaths by state over the past year<sup>I</sup></strong></p>
 <pre class="r"><code>death_plot = 
 covid_df %&gt;% 
   ggplot(aes(x = date, y = new_death_updated, color = state)) +
@@ -476,11 +523,9 @@ covid_df %&gt;%
                                      to = as.Date(&quot;2020-11-01&quot;), by = 15)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 
-death_plot &lt;- death_plot + scale_y_continuous(labels = comma)</code></pre>
-<pre class="r"><code>death_plot</code></pre>
-<pre><code>## Warning: Removed 930 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 861 row(s) containing missing values (geom_path).</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+death_plot &lt;- death_plot + scale_y_continuous(labels = comma)
+death_plot</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
 <p><strong>Daily new COVID case of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state</strong></p>
 <pre class="r"><code>state_plot = 
 covid_df %&gt;% 
@@ -495,11 +540,9 @@ covid_df %&gt;%
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;state_binary&#39;, &#39;date&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>state_plot</code></pre>
-<pre><code>## Warning: Removed 18 rows containing missing values (geom_point).</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+state_plot</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 <p><strong>Daily new COVID deaths of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state</strong></p>
 <pre class="r"><code>state_death = 
 covid_df %&gt;% 
@@ -514,12 +557,9 @@ covid_df %&gt;%
        y = &quot;Confirmed new deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;state_binary&#39;, &#39;date&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>state_death</code></pre>
-<pre><code>## Warning: Removed 94 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 47 row(s) containing missing values (geom_path).</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-9-1.png" width="90%" /></p>
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+state_death</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
 <pre class="r"><code>#creating new variables to look at two week difference in new COVID cases and COVID deaths two weeks to one month after mask mandate respectively. 
 
 cactus_df = 
@@ -542,7 +582,7 @@ cactus_df =
     labs(title = &quot;Difference in new cases and mask mandate&quot;,
        y = &quot;Two week difference in confirmed new cases&quot;,
        x = &quot;State&quot;)</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
 <p><strong>Observing two week difference in confirmed new COVID deaths from date of mask mandate in states that enforced a mandate</strong></p>
 <pre class="r"><code>cactus_df %&gt;% 
   ggplot(aes(x = state, y = diff_death, color = state_binary)) +
@@ -553,8 +593,11 @@ cactus_df =
     labs(title = &quot;Difference in new deaths and mask mandate&quot;,
        y = &quot;Four week difference in confirmed new deaths&quot;,
        x = &quot;State&quot;)</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-12-1.png" width="90%" /></p>
-<p><strong>In comparison of new COVID cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties<sup>II</sup></strong></p>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
+</div>
+<div id="citycounty-aggregated-new-covid-cases-and-deaths-over-the-last-year" class="section level1">
+<h1>City/County Aggregated New COVID Cases and Deaths Over the Last Year</h1>
+<p><strong>A comparison of new COVID cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties<sup>II</sup></strong></p>
 <pre class="r"><code>confirmed_df = 
   read_csv(&quot;https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv&quot;) %&gt;% 
   select_all(tolower) %&gt;% 
@@ -575,19 +618,10 @@ cactus_df =
     date = mdy(date),
     new_case = case_total - lag(case_total, default = 0),
     new_case_updated = replace(new_case, which(new_case &lt; 0), NA)
-  )</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_double(),
-##   iso2 = col_character(),
-##   iso3 = col_character(),
-##   Admin2 = col_character(),
-##   Province_State = col_character(),
-##   Country_Region = col_character(),
-##   Combined_Key = col_character()
-## )</code></pre>
-<pre><code>## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>deaths_df = read_csv(&quot;https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv&quot;) %&gt;% 
+  )
+
+
+deaths_df = read_csv(&quot;https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv&quot;) %&gt;% 
   select_all(tolower) %&gt;% 
   mutate(
     state = province_state,
@@ -606,19 +640,9 @@ cactus_df =
     date = mdy(date),
     new_death = death_total - lag(death_total, default = 0),
     new_death_updated = replace(new_death, which(new_death &lt; 0), NA)
-  )</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_double(),
-##   iso2 = col_character(),
-##   iso3 = col_character(),
-##   Admin2 = col_character(),
-##   Province_State = col_character(),
-##   Country_Region = col_character(),
-##   Combined_Key = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>confirmed_deaths_df = 
+  )
+
+confirmed_deaths_df = 
   inner_join(confirmed_df, deaths_df, by = c(&quot;state&quot;, &quot;county&quot;, &quot;date&quot;)) %&gt;% 
   group_by(state, county)
 
@@ -650,7 +674,6 @@ ny_df =
   nyc_df %&gt;% 
   rbind(ny_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;New York&quot;, &quot;NYC&quot;, &quot;other NY counties&quot;))</code></pre>
-<p>NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 271662.6.</p>
 <pre class="r"><code>ny_confirmed_plot =
   ny_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -663,9 +686,9 @@ ny_df =
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>ny_deaths_plot =
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+ny_deaths_plot =
   ny_df %&gt;% 
   group_by(ppl, date) %&gt;% 
   summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %&gt;% 
@@ -676,10 +699,10 @@ ny_df =
   labs(y = &quot;Confirmed new deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>ny_confirmed_plot + ny_deaths_plot</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-15-1.png" width="90%" /></p>
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+ny_confirmed_plot + ny_deaths_plot</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /> NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 651826.9.</p>
 <p><strong>The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths<sup>II</sup>.</strong></p>
 <pre class="r"><code>la_df =
   confirmed_deaths_df %&gt;% 
@@ -693,7 +716,6 @@ ca_df =
   la_df %&gt;% 
   rbind(ca_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Los Angeles&quot;, &quot;LA&quot;, &quot;other CA counties&quot;))</code></pre>
-<p>Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 207461.7.</p>
 <pre class="r"><code>ca_confirmed_plot =
   ca_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -706,9 +728,9 @@ ca_df =
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>ca_deaths_plot =
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+ca_deaths_plot =
   ca_df %&gt;% 
   group_by(ppl, date) %&gt;% 
   summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %&gt;% 
@@ -719,10 +741,10 @@ ca_df =
   labs(y = &quot;Confirmed new deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>ca_confirmed_plot + ca_deaths_plot</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+ca_confirmed_plot + ca_deaths_plot</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-13-1.png" width="90%" /> Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 540699.2.</p>
 <p><strong>The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths<sup>II</sup>.</strong></p>
 <pre class="r"><code>chicago_df =
   confirmed_deaths_df %&gt;% 
@@ -736,7 +758,6 @@ il_df =
   chicago_df %&gt;% 
   rbind(il_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Cook&quot;, &quot;Cook County (Chicago)&quot;, &quot;other IL counties&quot;))</code></pre>
-<p>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 165878.3.</p>
 <pre class="r"><code>il_confirmed_plot =
   il_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -749,9 +770,9 @@ il_df =
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>il_deaths_plot =
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+il_deaths_plot =
   il_df %&gt;% 
   group_by(ppl, date) %&gt;% 
   summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %&gt;% 
@@ -762,10 +783,11 @@ il_df =
   labs(y = &quot;Confirmed new deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>il_confirmed_plot + il_deaths_plot</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+il_confirmed_plot + il_deaths_plot</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-15-1.png" width="90%" /></p>
+<p>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 85807.4.</p>
 <p><strong>The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths<sup>II</sup>.</strong></p>
 <pre class="r"><code>houston_df =
   confirmed_deaths_df %&gt;% 
@@ -779,7 +801,6 @@ tx_df =
   houston_df %&gt;% 
   rbind(tx_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Houston&quot;, &quot;Houston&quot;, &quot;other TX counties&quot;))</code></pre>
-<p>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 41614.7.</p>
 <pre class="r"><code>tx_confirmed_plot =
   tx_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -793,9 +814,9 @@ tx_df =
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) </code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>tx_deaths_plot =
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) 
+
+tx_deaths_plot =
   tx_df %&gt;% 
   group_by(ppl, date) %&gt;% 
   summarize(mean_deaths = mean(new_death_updated, na.rm = TRUE)) %&gt;% 
@@ -807,32 +828,19 @@ tx_df =
   labs(y = &quot;Confirmed new deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;ppl&#39; (override with `.groups` argument)</code></pre>
-<pre class="r"><code>tx_confirmed_plot + tx_deaths_plot</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-21-1.png" width="90%" /></p>
-<p>Texas is one of the sub-tropical states compared to NY, CA and IL (temperate), and it is marked by different colors.</p>
-<p><em>Comparing overall US new COVID cases and deaths with important national events</em></p>
-<pre class="r"><code>library(sars2pack)</code></pre>
-<pre><code>## Loading required package: R0</code></pre>
-<pre><code>## Loading required package: MASS</code></pre>
-<pre><code>## 
-## Attaching package: &#39;MASS&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:patchwork&#39;:
-## 
-##     area</code></pre>
-<pre><code>## The following object is masked from &#39;package:plotly&#39;:
-## 
-##     select</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     select</code></pre>
-<pre><code>## Loading required package: sf</code></pre>
-<pre><code>## Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
-##   method            from
-##   as.zoo.data.frame zoo</code></pre>
-<pre class="r"><code>us_df = jhu_data() %&gt;% 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+
+tx_confirmed_plot + tx_deaths_plot</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
+<p>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 13519.07.</p>
+<p><em>Texas is one of the sub-tropical states compared to NY, CA and IL (temperate), and it is marked by different colors.</em></p>
+</div>
+<div id="national-new-covid-cases-and-deaths" class="section level1">
+<h1>National New COVID Cases and Deaths</h1>
+<p><strong>Comparing overall US new COVID cases and deaths with important national events</strong></p>
+<pre class="r"><code>library(sars2pack)
+
+us_df = jhu_data() %&gt;% 
   janitor::clean_names() %&gt;% 
   filter(country_region == &quot;US&quot;)
 
@@ -851,9 +859,10 @@ events_df =
   read_excel(&quot;./data/national_events.xlsx&quot;) 
 
 
-us_events_df = left_join(us_covid_df, events_df, by.x = c(&quot;date&quot;), by.y = c( &quot;date&quot;))</code></pre>
-<pre><code>## Joining, by = &quot;date&quot;</code></pre>
-<pre class="r"><code>us_events_df = 
+us_events_df = left_join(us_covid_df, events_df, by.x = c(&quot;date&quot;), by.y = c( &quot;date&quot;))
+
+
+us_events_df = 
   us_events_df %&gt;% 
   mutate(in_two_weeks_mask = if_else(!(is.na(event)), lead(new_case, 14), NA_real_)) %&gt;%
   mutate(diff = in_two_weeks_mask - new_case)
@@ -872,7 +881,7 @@ us_events_df =
        x = &quot;Date&quot;) +
       geom_vline(data = events_df, mapping = aes(xintercept = date) ,linetype = &quot;dotted&quot;,color = &quot;blue&quot;, show.legend = TRUE) +
   geom_text(data = events_df, mapping = aes(x = date, y = 75000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-23-1.png" width="90%" /></p>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
 <p><strong>Daily new COVID deaths over the past year with important national events<sup>III</sup></strong></p>
 <pre class="r"><code>us_events_df %&gt;%  
   ggplot(aes(x = date, y = new_deaths)) +
@@ -882,10 +891,25 @@ us_events_df =
        x = &quot;Date&quot;) +
       geom_vline(data = events_df, mapping = aes(xintercept = date) , linetype = &quot;dotted&quot;, color = &quot;blue&quot;, show.legend = TRUE) +
   geom_text(data = events_df, mapping = aes(x = date, y = 1000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
-<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-24-1.png" width="90%" /></p>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-20-1.png" width="90%" /></p>
+<div id="citations" class="section level3">
+<h3>Citations</h3>
+<ul>
+<li><p>I. Guidotti, E., Ardia, D., (2020), “COVID-19 Data Hub”, Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.</p></li>
+<li><ol start="2" style="list-style-type: upper-roman">
+<li>Dong E, Du H, Gardner L. An interactive web-based dashboard to track COVID-19 in real time. Lancet Inf Dis. 20(5):533-534. doi: 10.1016/S1473-3099(20)30120-1"</li>
+</ol></li>
+<li><ol start="3" style="list-style-type: upper-roman">
+<li><a href="https://github.com/seandavi/sars2pack" class="uri">https://github.com/seandavi/sars2pack</a></li>
+</ol></li>
+</ul>
+</div>
+</div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -923,6 +947,32 @@ $(document).ready(function () {
 });
 </script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

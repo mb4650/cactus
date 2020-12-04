@@ -29,6 +29,8 @@ For each section, COVID-19 data were obtained from the `COVID19` package in R. A
 
 [Descriptives](descriptive_plotly.html)
 
+For descriptive visualizations, we retrieved data from the aforementioned COVID19 package in R, JHU CSSE database, and the sars2pack from GitHub along with two locally created datasets with date of mask mandate per state and important national events. 
+
 [Interactive Dashboard Visualizations](create_shiny.html)
 
 [Regression Analysis](Regression-Analysis.html)
