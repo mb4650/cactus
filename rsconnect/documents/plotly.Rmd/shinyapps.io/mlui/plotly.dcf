@@ -5,6 +5,6 @@ account: mlui
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3341399
-bundleId: 3940259
+bundleId: 3940883
 url: https://mlui.shinyapps.io/plotly/
-when: 1607033731.83608
+when: 1607044450.56042
