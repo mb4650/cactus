@@ -387,7 +387,7 @@ il_lessppl_df =
 il_df = 
   chicago_df %>% 
   rbind(il_lessppl_df) %>% 
-  mutate(ppl = ifelse(county == "Cook", "Cook/Chicago", "other IL counties"))
+  mutate(ppl = ifelse(county == "Cook", "Cook", "other IL counties"))
 ```
 
 ```{r message=FALSE, warning=FALSE}

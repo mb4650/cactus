@@ -382,7 +382,7 @@ div.tocify {
   <a href="Regression-Analysis.html">Regression Analysis</a>
 </li>
 <li>
-  <a href="predictive_tool.html">Predictive Tool</a>
+  <a href="https://gaurib2685.shinyapps.io/predictive_interactive_map/">Predictive Tool</a>
 </li>
 <li>
   <a></a>
@@ -693,7 +693,7 @@ ny_deaths_plot =
 ny_confirmed_plot + ny_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <ul>
-<li>NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 182772.1.</li>
+<li>NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 288132.7.</li>
 </ul>
 <p><strong>The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths<sup>2</sup>.</strong></p>
 <pre class="r"><code>la_df =
@@ -738,7 +738,7 @@ ca_deaths_plot =
 ca_confirmed_plot + ca_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
 <ul>
-<li>Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 427112.5.</li>
+<li>Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 425978.2.</li>
 </ul>
 <p><strong>The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths<sup>2</sup>.</strong></p>
 <pre class="r"><code>chicago_df =
@@ -752,7 +752,7 @@ il_lessppl_df =
 il_df = 
   chicago_df %&gt;% 
   rbind(il_lessppl_df) %&gt;% 
-  mutate(ppl = ifelse(county == &quot;Cook&quot;, &quot;Cook/Chicago&quot;, &quot;other IL counties&quot;))</code></pre>
+  mutate(ppl = ifelse(county == &quot;Cook&quot;, &quot;Cook&quot;, &quot;other IL counties&quot;))</code></pre>
 <pre class="r"><code>il_confirmed_plot =
   il_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -783,7 +783,7 @@ il_deaths_plot =
 il_confirmed_plot + il_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-15-1.png" width="90%" /></p>
 <ul>
-<li>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 73572.93.</li>
+<li>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 90544.75.</li>
 </ul>
 <p><strong>The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths<sup>2</sup>.</strong></p>
 <pre class="r"><code>houston_df =
@@ -830,7 +830,7 @@ tx_deaths_plot =
 tx_confirmed_plot + tx_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
 <ul>
-<li>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 72698.38.</li>
+<li>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 151856.5.</li>
 </ul>
 <p><em>Texas is one of the sub-tropical states compared to NY, CA and IL (temperate), and it is marked by different colors.</em></p>
 </div>
