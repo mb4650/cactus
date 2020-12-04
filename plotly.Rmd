@@ -21,9 +21,10 @@ covid_dataset = covid19(c("US"), level = 2, raw = FALSE, verbose = FALSE) %>%
   janitor::clean_names() %>%
   filter(date <= '2020-10-31')
 
-noaa = read_csv("data/noaadata.csv")%>%
-        select (-c(X1))%>%
-        janitor::clean_names()
+noaa = read_csv("./data/noaadata.csv") %>%
+       janitor::clean_names() %>%
+       dplyr::select(id:prcp)
+
 
 noaa_avg = noaa %>%
   mutate(

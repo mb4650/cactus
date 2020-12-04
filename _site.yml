@@ -4,7 +4,7 @@ navbar:
   type: inverse
   title: "Home"
   left:
-    - text: "About the Memebers"
+    - text: "About the Members"
       href: about.html
   right:
     - text: "Project Report"
@@ -13,6 +13,8 @@ navbar:
       href: https://mb4650.shinyapps.io/plotly/
     - text: "Descriptives"
       href: descriptive_plotly.html
+    - text: "Regression Analysis"
+      href: Regression-Analysis.html
     - text: "Predictive Tool"
       href: predictive_tool.html 
 output:

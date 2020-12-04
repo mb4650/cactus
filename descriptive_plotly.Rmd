@@ -55,8 +55,8 @@ covid_df =
 
 mask_df = read_excel("./data/mask_state.xlsx") %>% 
   janitor::clean_names() %>% 
-  mutate(date = as.Date(as.numeric(as.character(date)), origin = "1899-12-30")) %>% 
-  select(-x4)
+  mutate(date = as.Date(as.numeric(as.character(date)), origin = "1899-12-30")) %>%
+  dplyr::select(-x4)
 
 cactus_df = left_join(covid_df, mask_df, by.x = c("state", "date"), by.y = c("state", "date"))
 

@@ -346,8 +346,8 @@ $(document).ready(function () {
 
 mask_df = read_excel(&quot;./data/mask_state.xlsx&quot;) %&gt;% 
   janitor::clean_names() %&gt;% 
-  mutate(date = as.Date(as.numeric(as.character(date)), origin = &quot;1899-12-30&quot;)) %&gt;% 
-  select(-x4)</code></pre>
+  mutate(date = as.Date(as.numeric(as.character(date)), origin = &quot;1899-12-30&quot;)) %&gt;%
+  dplyr::select(-x4)</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...4</code></pre>
 <pre><code>## Warning: Problem with `mutate()` input `date`.
@@ -452,7 +452,7 @@ cactus_df =
     labs(title = &quot;Difference in cases and mask mandate&quot;,
        y = &quot;Two week difference in cases&quot;,
        x = &quot;State&quot;)</code></pre>
-<pre><code>## Warning: Removed 15379 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 15435 rows containing missing values (geom_point).</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
 <pre class="r"><code>cactus_df %&gt;% 
   ggplot(aes(x = state, y = diff_death, color = state_binary)) +
@@ -463,7 +463,7 @@ cactus_df =
     labs(title = &quot;Difference in deaths and mask mandate&quot;,
        y = &quot;Four week difference in deaths&quot;,
        x = &quot;State&quot;)</code></pre>
-<pre><code>## Warning: Removed 15384 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 15440 rows containing missing values (geom_point).</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
 <p>Main cities (New York City, Los Angeles, Chicago/Cook County and Houston) compared to less populated counties regarding new cases and new death</p>
 <pre class="r"><code>confirmed_df = 
@@ -561,7 +561,7 @@ ny_df =
   nyc_df %&gt;% 
   rbind(ny_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;New York&quot;, &quot;NYC&quot;, &quot;other NY counties&quot;))</code></pre>
-<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 3.780416210^{5}.</p>
+<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 2.838607510^{5}.</p>
 <pre class="r"><code>ny_confirmed_plot =
   ny_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -607,7 +607,7 @@ ca_df =
   la_df %&gt;% 
   rbind(ca_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Los Angeles&quot;, &quot;LA&quot;, &quot;other CA counties&quot;))</code></pre>
-<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 5.942249110^{5}.</p>
+<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 7.978269110^{5}.</p>
 <pre class="r"><code>ca_confirmed_plot =
   ca_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -651,7 +651,7 @@ il_df =
   chicago_df %&gt;% 
   rbind(il_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Cook&quot;, &quot;Cook County (Chicago)&quot;, &quot;other IL counties&quot;))</code></pre>
-<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 7.029316710^{4}.</p>
+<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 1.433836510^{5}.</p>
 <pre class="r"><code>il_confirmed_plot =
   il_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -695,7 +695,7 @@ tx_df =
   houston_df %&gt;% 
   rbind(tx_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Houston&quot;, &quot;Houston&quot;, &quot;other TX counties&quot;))</code></pre>
-<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 1.848458310^{4}.</p>
+<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 6.58672510^{4}.</p>
 <pre class="r"><code>tx_confirmed_plot =
   tx_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -746,16 +746,15 @@ tx_df =
 ## 
 ##     select</code></pre>
 <pre><code>## Loading required package: sf</code></pre>
-<pre><code>## Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1</code></pre>
+<pre><code>## Linking to GEOS 3.8.1, GDAL 3.1.4, PROJ 6.3.1</code></pre>
 <pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
 ##   method            from
 ##   as.zoo.data.frame zoo</code></pre>
 <pre class="r"><code>us_df = jhu_data() %&gt;% 
   janitor::clean_names() %&gt;% 
-  filter(country_region == &quot;US&quot;)
-
-
-us_covid_df = 
+  filter(country_region == &quot;US&quot;)</code></pre>
+<pre><code>## using temporary cache /var/folders/pm/yx829l4n349__d6ybqgzj4_m0000gn/T//RtmpJekYE0/BiocFileCache</code></pre>
+<pre class="r"><code>us_covid_df = 
   us_df %&gt;% 
     pivot_wider(names_from = subset,
               values_from = count) %&gt;% 
