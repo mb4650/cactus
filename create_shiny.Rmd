@@ -35,7 +35,7 @@ To set the data up for the map, the date was separated into month, day, and year
 `prop_deaths_pop` - Proportion of COVID-19 related deaths in the state <br>
 `prop_deaths_case` - Proportion of COVID-19 related deaths among the confirmed cases in the state <br>
 `prop_hospital_pop` - Proportion of COVID-19 related hospitalizations in the state <br>
-`prop_hospital_case` - Proportion of COVID-19 related <br> hospitalizations among confirmed cases in the state <br>
+`prop_hospital_case` - Proportion of COVID-19 related hospitalizations among confirmed cases in the state <br>
 `prop_tested` - Proportion of the state tested for COVID-19 <br>
 `new_cases` - Number of new <br>
 `state_tavg` - Average state temperature <br>
