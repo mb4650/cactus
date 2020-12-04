@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, echo = FALSE}
+```{r setup, echo = FALSE, message=FALSE, results='hide'}
 library(tidyverse)
 library(COVID19)
 library(lubridate)
@@ -106,7 +106,7 @@ covid_data =
 
 ## Merging the two dataset 
 
-```{r}
+```{r creating dataset 3, echo = FALSE, message=FALSE, results='hide'}
 covid_noaa_dataset =
   inner_join(covid_data,noaa_dataset, by = c("key_alpha_2" = "state_code", "month" = "month")) %>%
   mutate(
@@ -136,7 +136,7 @@ The following are the relevant predictors we want to include in the model
 
 ### Assessing crude correlation among our selected variables
 
-```{r}
+```{r correlation, echo = FALSE, message=FALSE, results='hide'}
 library(MASS)
 covid_noaa_dataset_cor =
 covid_noaa_dataset %>%
@@ -162,7 +162,7 @@ covid_noaa_dataset %>%
 ### Modeling - Poisson vs Negative binomial regression 
 
 
-```{r}
+```{r regression model, echo = FALSE, message=FALSE, results='hide'}
 poisson_mod = glm(new_cases ~  as.factor(month) + state_tavg + state_total_prcp, 
                     family = "poisson"(link = "log"), data = covid_noaa_dataset)
 
@@ -184,7 +184,7 @@ Since the AIC for Poisson is 28597532 and the AIC for negative binomia regressio
 ## Cross validation 
 
 
-```{r}
+```{r cross validation, echo = FALSE, message=FALSE, results='hide'}
 count_cv = 
   crossv_mc(covid_noaa_dataset, 100)
 count_cv = 
