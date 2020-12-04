@@ -561,7 +561,7 @@ ny_df =
   nyc_df %&gt;% 
   rbind(ny_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;New York&quot;, &quot;NYC&quot;, &quot;other NY counties&quot;))</code></pre>
-<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 2.16114610^{5}.</p>
+<p>NYC has a population of 1.62870610^{6}, and the mean population of the 10 randomly selected NY counties is 3.780416210^{5}.</p>
 <pre class="r"><code>ny_confirmed_plot =
   ny_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -607,7 +607,7 @@ ca_df =
   la_df %&gt;% 
   rbind(ca_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Los Angeles&quot;, &quot;LA&quot;, &quot;other CA counties&quot;))</code></pre>
-<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 7.027838310^{5}.</p>
+<p>Los Angeles has a population of 1.003910710^{7}, and the mean population of the 10 randomly selected CA counties is 5.942249110^{5}.</p>
 <pre class="r"><code>ca_confirmed_plot =
   ca_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -651,7 +651,7 @@ il_df =
   chicago_df %&gt;% 
   rbind(il_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Cook&quot;, &quot;Cook County (Chicago)&quot;, &quot;other IL counties&quot;))</code></pre>
-<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 5.745111810^{4}.</p>
+<p>Cook County (Chicago included) has a population of 5.15023310^{6}, and the mean population of the 10 randomly selected IL counties is 7.029316710^{4}.</p>
 <pre class="r"><code>il_confirmed_plot =
   il_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -695,7 +695,7 @@ tx_df =
   houston_df %&gt;% 
   rbind(tx_lessppl_df) %&gt;% 
   mutate(ppl = ifelse(county == &quot;Houston&quot;, &quot;Houston&quot;, &quot;other TX counties&quot;))</code></pre>
-<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 1.256887310^{5}.</p>
+<p>Houston has a population of 2.296810^{4}, and the mean population of the 10 randomly selected TX counties is 1.848458310^{4}.</p>
 <pre class="r"><code>tx_confirmed_plot =
   tx_df %&gt;% 
   group_by(ppl, date) %&gt;% 
@@ -730,6 +730,75 @@ tx_df =
 <pre><code>## Warning: Removed 14 rows containing missing values (geom_point).</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
 <p>Texas is one of the sub-tropical states.</p>
+<p>Comparing overall us cases and deaths with important national events</p>
+<pre class="r"><code>library(sars2pack)</code></pre>
+<pre><code>## Loading required package: R0</code></pre>
+<pre><code>## Loading required package: MASS</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:patchwork&#39;:
+## 
+##     area</code></pre>
+<pre><code>## The following object is masked from &#39;package:plotly&#39;:
+## 
+##     select</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre><code>## Loading required package: sf</code></pre>
+<pre><code>## Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
+##   method            from
+##   as.zoo.data.frame zoo</code></pre>
+<pre class="r"><code>us_df = jhu_data() %&gt;% 
+  janitor::clean_names() %&gt;% 
+  filter(country_region == &quot;US&quot;)
+
+
+us_covid_df = 
+  us_df %&gt;% 
+    pivot_wider(names_from = subset,
+              values_from = count) %&gt;% 
+    mutate(
+    new_case = confirmed - lag(confirmed, default = 0),
+    new_deaths = deaths - lag(deaths, default = 0),
+    date = as.Date(date)
+    )
+
+events_df = 
+  read_excel(&quot;./data/national_events.xlsx&quot;) 
+
+
+us_events_df = left_join(us_covid_df, events_df, by.x = c(&quot;date&quot;), by.y = c( &quot;date&quot;))</code></pre>
+<pre><code>## Joining, by = &quot;date&quot;</code></pre>
+<pre class="r"><code>us_events_df = 
+  us_events_df %&gt;% 
+  mutate(in_two_weeks_mask = if_else(!(is.na(event)), lead(new_case, 14), NA_real_)) %&gt;%
+  mutate(diff = in_two_weeks_mask - new_case)
+
+
+us_events_df = 
+  us_events_df %&gt;% 
+  mutate(in_two_weeks_death = if_else(!(is.na(event)), lead(new_deaths, 30), NA_real_)) %&gt;% 
+  mutate(diff_death = in_two_weeks_death - new_deaths)</code></pre>
+<pre class="r"><code>us_events_df %&gt;%  
+  ggplot(aes(x = date, y = new_case)) +
+  geom_point() +
+    labs(title = &quot;New cases over time&quot;,
+       y = &quot;new cases&quot;,
+       x = &quot;date&quot;) +
+      geom_vline(data = events_df, mapping = aes(xintercept = date) ,linetype = &quot;dotted&quot;,color = &quot;blue&quot;, show.legend = TRUE) +
+  geom_text(data = events_df, mapping = aes(x = date, y = 127500, label = event), size = 3.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
+<pre class="r"><code>us_events_df %&gt;%  
+  ggplot(aes(x = date, y = new_deaths)) +
+  geom_point() +
+    labs(title = &quot;New deaths over time&quot;,
+       y = &quot;new deaths&quot;,
+       x = &quot;date&quot;) +
+      geom_vline(data = events_df, mapping = aes(xintercept = date) , linetype = &quot;dotted&quot;, color = &quot;blue&quot;, show.legend = TRUE) +
+  geom_text(data = events_df, mapping = aes(x = date, y = 1750, label = event), size = 3.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
+<p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-20-1.png" width="90%" /></p>
 
 
 
