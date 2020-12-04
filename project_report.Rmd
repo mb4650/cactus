@@ -39,7 +39,9 @@ For descriptive visualizations, we retrieved data from the aforementioned COVID1
 
 # Exploratory Analysis
 
-Exploratory analysis was done in [Descriptives](descriptive_plotly.html) as well as [Interactive Dashboard Visualizations](create_shiny.html). The purpose and results were to see whether there are any differences between new daily COVID cases and deaths between states that are temperate and sub-tropical, red/blue states as per 2020 election, and between US cities among those are most populated compared to 10 randomly selected less populated counties.
+Exploratory analysis was done in [Descriptives](descriptive_plotly.html) as well as [Interactive Dashboard Visualizations](create_shiny.html). 
+
+The purpose and results were to see whether there are any differences between new daily COVID cases and deaths between states that are temperate and sub-tropical, red/blue states as per 2020 election, and between US cities among those are most populated compared to 10 randomly selected less populated counties.
 
 Our results show that COVID cases dropped from April to May, but increased again in the summer, before decreasing in August and September, and peaking again as we got closer to the winter. We see that COVID death peaked at the beginning of the pandemic around March and April before decreasing. The pattern of COVID cases is similar between sub-tropical and temperate states, but the total count in cases in sub-tropical states is slightly higher and fluctuates more, with similar observations for COVID deaths. Patterns or populated cities and less populated counties are similar, however peak for COVID cases and deaths are more pronounced for populated cities. From our visualizations, COVID cases and deaths do not seem to be responsive to national events. However, as we move into the winter months, cases and deaths are increasing, but we are not sure if that is a result of the national events in the fall and winter.
 
