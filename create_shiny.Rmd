@@ -48,5 +48,14 @@ The dataset was then pivoted longer to create `covid_stat_type` and `covid_stat`
 The temperature plots used the NOAA dataset. The data were grouped and new variables averages of the temperature and precipitation variables were created to obtain the average for the month.
 
 
+The other noaa dataset that we used was from the [https://www.ncdc.noaa.gov/cag/statewide/mapping](ncdc.noaa.gov) website. We retrieved 4 individual datasets from the noaa website. The retrieved dataset includes: 
+1. tmax: Data for the maximum temperature for each state by month.
+2. tmin: Data for the minimum temperature for each state by month. 
+3. tavg: Data for the average temperaure for each state by month. 
+4. prcp: Data for the precipitation values for each state by month. 
+
+The datasets were scraped from the website using read_csv and were then merged with the COVID19 dataset by month and state. 
+
+
 ### Plots 
 Can probably use the description sections here
