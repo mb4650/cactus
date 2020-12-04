@@ -62,7 +62,6 @@ ui <- fluidPage(
 )
 
 
-
 server <- function(input, output) {
   
   output$selected_var <- renderLeaflet({
@@ -72,23 +71,24 @@ server <- function(input, output) {
     
     count = as.integer( predict(neg_bin_mod, df, type = "response") )
     
+    display = sprintf(
+      "<strong>Predicted number of cases: %s</strong>",
+      count
+    ) %>% lapply(htmltools::HTML)
+    
     #paste( "you chose", a)
     map_df = covid_noaa_dataset%>% 
-              filter(month == as.factor(input$Month),
-                    state_name ==input$State)
+      filter(month == as.factor(input$Month),
+             state_name ==input$State)
     
-    url = "https://urldefense.proofpoint.com/v2/url?u=https-3A__developers.google.com_public-2Ddata_docs_canonical_states-5Fcsv&d=DwIFAg&c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&m=ZLDhVDaJRa8xTJd2UCndV5ZKTHV5ZrzOcRkhqHloTko&s=RJ-z_AUb_Xy-Yw9rP8euzOmNJCXWGMMWkgyuhy97A8M&e= "
-    lat_long_html = read_html(url)
-    
-    table_lat_long_df =
-      lat_long_html %>%
-      html_nodes(css = "table") %>%
-      first() %>%
-      html_table()
     
     map_df = inner_join(map_df, table_lat_long_df, by = c("key_alpha_2" = "state" ))
     
-    leaflet(data = mapStates)%>%
+    states_merged_sb <- geo_join(states, map_df, "STUSPS", "key_alpha_2")
+    
+    
+    leaflet(states_merged_sb)%>%
+      setView(-96, 40, 3.5) %>%
       addPolygons(
         fillColor = "pink",
         weight = 2,
@@ -101,10 +101,12 @@ server <- function(input, output) {
           color = "#666",
           dashArray = "",
           fillOpacity = 0.7,
-          bringToFront = TRUE)) %>%
+          bringToFront = FALSE)) %>%
       
       addCircleMarkers(lat =map_df$latitude.y, lng = map_df$longitude.y,
-                       radius =count/10000,color = "red",popup =map_df$state_name)
+                       radius =count/10000,color = "red",popup =map_df$state_name) %>%
+      
+      addControl(display, position = "bottomleft")
     
   })
   
