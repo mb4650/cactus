@@ -9,8 +9,16 @@ library(modelr)
 library(mgcv)
 library(rvest)
 library(httr)
+library(sp)
+library(tigris)
+library(MASS)
 
 covid_noaa_dataset = read_csv("covid_noaa_dataset.csv")
+states <- states(cb=T)
+
+
+
+# Downloading the shapefiles for states at the lowest resolution
 states <- states(cb=T)
 
 url = "https://urldefense.proofpoint.com/v2/url?u=https-3A__developers.google.com_public-2Ddata_docs_canonical_states-5Fcsv&d=DwIFAg&c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&m=ZLDhVDaJRa8xTJd2UCndV5ZKTHV5ZrzOcRkhqHloTko&s=RJ-z_AUb_Xy-Yw9rP8euzOmNJCXWGMMWkgyuhy97A8M&e= "

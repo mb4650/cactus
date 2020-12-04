@@ -20,7 +20,7 @@ navbar:
     - text: "Regression Analysis"
       href: Regression-Analysis.html
     - text: "Predictive Tool"
-      href: predictive_tool.html 
+      href: https://gaurib2685.shinyapps.io/predictive_interactive_map/
     - dropdown:
       text: 
 output:

@@ -1,43 +1,44 @@
 ---
-title: "predictive_tool"
-output: html_document
-editor_options: 
-  chunk_output_type: console
+title: "Plotly Graphics"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+runtime: shiny
 ---
 
-```{r}
+```{r setup, echo = FALSE, message=FALSE, results='hide'}
+library(shiny)
+library(readr)
+library(leaflet)
+library(maps)
 library(tidyverse)
 library(COVID19)
-library(dplyr)
+library(lubridate)
+library(modelr)
+library(mgcv)
+library(rvest)
+library(httr)
 
-#level = 2 gives state level data and raw = false cleans the dataset
-covid_dataset = covid19(c("US"), level = 2, raw = FALSE) %>%
-                janitor::clean_names()
+covid_noaa_dataset = read_csv("covid_noaa_dataset.csv")
+states <- states(cb=T)
 
-noaa = read_csv("data/noaadata.csv")%>%
-        select (-c(X1))%>%
-        janitor::clean_names()
+url = "https://urldefense.proofpoint.com/v2/url?u=https-3A__developers.google.com_public-2Ddata_docs_canonical_states-5Fcsv&d=DwIFAg&c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&m=ZLDhVDaJRa8xTJd2UCndV5ZKTHV5ZrzOcRkhqHloTko&s=RJ-z_AUb_Xy-Yw9rP8euzOmNJCXWGMMWkgyuhy97A8M&e= "
+lat_long_html = read_html(url)
 
-covid_noaa_dataset = full_join(covid_dataset,noaa, by = c("key_alpha_2" = "state", "date" = "date"))
+table_lat_long_df =
+  lat_long_html %>%
+  html_nodes(css = "table") %>%
+  first() %>%
+  html_table()
+
+neg_bin_mod = glm.nb(new_cases ~ as.factor(month) + state_name + state_tavg + state_total_prcp,
+                     data = covid_noaa_dataset)
 
 ```
 
 
-```{r}
-#creating a df  using cdc dataset as well
 
-cdc_dataset = cdc_dataset = read_csv("data/covid.csv")
 
-#extracting population of each state from covid library dataset
-population_by_state = covid_dataset%>%
-                select(c("key_alpha_2","population"))%>%
-                distinct( key_alpha_2, population)
-
-cdc_pop = left_join(cdc_dataset,population_by_state, by =c('state' = "key_alpha_2") )
-
-cdc_noaa_dataset = cdc_pop%>%
-                    mutate(submission_date = as.Date(submission_date, "%m/%d/%Y")) %>%
-                    full_join(noaa, by = c("state" = "state", "submission_date" = "date"))%>%
-janitor::clean_names()
-```
 
