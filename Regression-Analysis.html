@@ -321,12 +321,12 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
-## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.0
+## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
 ## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(COVID19)
@@ -480,7 +480,7 @@ covid_data =
 <pre class="r"><code>covid_noaa_dataset =
   inner_join(covid_data,noaa_dataset, by = c(&quot;key_alpha_2&quot; = &quot;state_code&quot;, &quot;month&quot; = &quot;month&quot;)) %&gt;%
   mutate(
-    month = factor(month)
+    month_name = month(ymd(date), label = TRUE, abbr = FALSE)
   ) %&gt;%
   rename(case_count = &quot;confirmed&quot;)
 write_csv(covid_noaa_dataset, &quot;data/covid_noaa_dataset.csv&quot; )</code></pre>

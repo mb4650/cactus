@@ -110,7 +110,7 @@ covid_data =
 covid_noaa_dataset =
   inner_join(covid_data,noaa_dataset, by = c("key_alpha_2" = "state_code", "month" = "month")) %>%
   mutate(
-    month = factor(month)
+    month_name = month(ymd(date), label = TRUE, abbr = FALSE)
   ) %>%
   rename(case_count = "confirmed")
 write_csv(covid_noaa_dataset, "data/covid_noaa_dataset.csv" )
