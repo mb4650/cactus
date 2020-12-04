@@ -10,9 +10,20 @@ library(mgcv)
 library(rvest)
 library(httr)
 
-mapStates = map("state", fill = TRUE, plot = FALSE)
 covid_noaa_dataset = read_csv("covid_noaa_dataset.csv")
+states <- states(cb=T)
 
+url = "https://urldefense.proofpoint.com/v2/url?u=https-3A__developers.google.com_public-2Ddata_docs_canonical_states-5Fcsv&d=DwIFAg&c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&m=ZLDhVDaJRa8xTJd2UCndV5ZKTHV5ZrzOcRkhqHloTko&s=RJ-z_AUb_Xy-Yw9rP8euzOmNJCXWGMMWkgyuhy97A8M&e= "
+lat_long_html = read_html(url)
+
+table_lat_long_df =
+  lat_long_html %>%
+  html_nodes(css = "table") %>%
+  first() %>%
+  html_table()
+
+neg_bin_mod = glm.nb(new_cases ~ as.factor(month) + state_name + state_tavg + state_total_prcp,
+                     data = covid_noaa_dataset)
 
 ui <- fluidPage(
   titlePanel("Case count Predictor"),
@@ -34,7 +45,7 @@ ui <- fluidPage(
                    value = 30),
       
       sliderInput(inputId = "prcp",
-                  label = "prcp",
+                  label = "enter precipitation",
                   min = -10,
                   max = max(covid_noaa_dataset["state_total_prcp"])+10,
                   value = 1)
@@ -43,8 +54,8 @@ ui <- fluidPage(
     
     mainPanel(
       fluidRow(
-        column(12, leafletOutput("selected_var")),
-        column(12, leafletOutput("plot1"))
+        column(12,label = "Prediction", leafletOutput("selected_var")),
+        column(12, label = "general trend", leafletOutput("plot1"))
       )
     )
   )
