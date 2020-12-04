@@ -113,35 +113,29 @@ server <- function(input, output) {
   output$plot1 <- renderLeaflet({
     map_df = covid_noaa_dataset%>% filter(month == as.factor(input$Month))
     
-    url = "https://developers.google.com/public-data/docs/canonical/states_csv"
-    lat_long_html = read_html(url)
-    
-    table_lat_long_df = 
-      lat_long_html %>% 
-      html_nodes(css = "table") %>% 
-      first() %>%
-      html_table()
-    
     map_df = inner_join(map_df, table_lat_long_df, by = c("key_alpha_2" = "state" ))
     
     pal <- colorNumeric(
       palette = "Blues",
       domain = map_df$state_tavg)
     
+    
     pal1 <- colorNumeric(
       palette = colorRampPalette(c('red', 'dark red'))(length(map_df$new_cases)), 
       domain = map_df$new_cases)
     
+    
+    states_merged_sb <- geo_join(states, map_df, "STUSPS", "key_alpha_2")
+    
     labels <- sprintf(
-      "<strong>%s</strong><br/>",
-      map_df$state_name, map_df$state_tavg
+      "<strong>%s</strong><br/>%s",
+      states_merged_sb$state_name, states_merged_sb$new_cases
     ) %>% lapply(htmltools::HTML)
     
-    
-    leaflet(data = mapStates) %>%
-      setView(-96, 37.8, 4) %>%
+    leaflet(states_merged_sb)%>%addTiles()%>%
+      setView(-97, 40, 4) %>%
       addPolygons(
-        fillColor = ~pal(map_df$state_tavg),
+        fillColor = ~pal(states_merged_sb$state_tavg),
         weight = 2,
         opacity = 1,
         color = "white",
@@ -153,19 +147,19 @@ server <- function(input, output) {
           dashArray = "",
           fillOpacity = 0.7,
           bringToFront = FALSE),
-        #label = labels,
+        label = labels,
         labelOptions = labelOptions(
           style = list("font-weight" = "normal", padding = "3px 8px"),
           textsize = "15px",
           direction = "auto")) %>%
       
-      addCircleMarkers(lat =map_df$latitude.y,
-                       lng = map_df$longitude.y,
-                       radius = map_df$new_cases/10000,
-                       color = pal1(map_df$new_cases), 
-                        popup =map_df$state_name ) %>%
+      addCircleMarkers(lat =states_merged_sb$latitude.y,
+                       lng = states_merged_sb$longitude.y,
+                       radius = states_merged_sb$new_cases/20000,
+                       color = pal1(states_merged_sb$new_cases), 
+                       popup =states_merged_sb$confirmed ) %>%
       
-      addLegend("bottomright", pal = pal, values = ~map_df$state_tavg,
+      addLegend("bottomright", pal = pal, values = ~states_merged_sb$state_tavg,
                 title = "temp",
                 labFormat = labelFormat(prefix = "F"),
                 opacity = 1)
