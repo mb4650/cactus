@@ -33,10 +33,10 @@ ui <- fluidPage(
       helpText("enter details"),
       
       selectInput("Month", h3("Select Month"),
-                  choices =unique(covid_noaa_dataset["month"]),selected = 1),
+                  choices =unique(covid_noaa_dataset["month"]),selected = 4),
       
       selectInput("State", h3("Select state"),
-                  choices =unique(covid_noaa_dataset["state_name"]),selected = 1),
+                  choices =unique(covid_noaa_dataset["state_name"]),selected = 10),
       
       sliderInput( "tavg",
                    label = "tavg",
@@ -104,7 +104,7 @@ server <- function(input, output) {
           bringToFront = FALSE)) %>%
       
       addCircleMarkers(lat =map_df$latitude.y, lng = map_df$longitude.y,
-                       radius =count/10000,color = "red",popup =map_df$state_name) %>%
+                       radius =count/20000,color = "red",popup =map_df$state_name) %>%
       
       addControl(display, position = "bottomleft")
     
