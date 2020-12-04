@@ -6,6 +6,9 @@ output:
 We can add little descriptions and links to any personal webpages we may want to show
 
 ### Maya Bunyan 
+[Email](mailto:<mb4650@cumc.columbia.edu) <br>
+[GitHub](http://github.com/mb4650/) <br>
+[LinkedIn](https://www.linkedin.com/in/mayabunyan/) <br>
 
 ### Lunbei Hu
 

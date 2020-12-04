@@ -49,7 +49,7 @@ covid_noaa_dataset =
 plot_df = 
   covid_noaa_dataset %>%
   separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
-  select(id:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
+  dplyr::select(id:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
   mutate(
     prop_cases = confirmed/population,
     prop_deaths_pop = deaths/population,
@@ -60,7 +60,7 @@ plot_df =
   ) %>%
   group_by(key_alpha_2) %>%
   mutate(new_cases = (confirmed - lag(confirmed))) %>%
-  select(key_apple_mobility, key_alpha_2, id, population, year:confirmed, deaths, hosp, prop_cases:new_cases) %>%
+  dplyr::select(key_apple_mobility, key_alpha_2, id, population, year:confirmed, deaths, hosp, prop_cases:new_cases) %>%
   pivot_longer(
     (tests:new_cases),
     names_to = "stat_type",
@@ -85,7 +85,7 @@ plot_df =
 plot2_df = 
   covid_noaa_dataset %>%
   separate(date, into = c("year", "month", "day"), convert = TRUE) %>%
-  select(id:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
+  dplyr::select(id:population, key_apple_mobility, key_alpha_2, state_tavg:state_prcp) %>%
   mutate(
     prop_cases = confirmed/population,
     prop_deaths_pop = deaths/population,
@@ -96,7 +96,7 @@ plot2_df =
   ) %>%
   group_by(key_alpha_2) %>%
   mutate(new_cases = (confirmed - lag(confirmed))) %>%
-  select(key_apple_mobility, key_alpha_2, id, population, year:confirmed, deaths, hosp, prop_cases:new_cases, state_tavg:state_prcp) %>%
+  dplyr::select(key_apple_mobility, key_alpha_2, id, population, year:confirmed, deaths, hosp, prop_cases:new_cases, state_tavg:state_prcp) %>%
   pivot_longer(
     (tests:new_cases),
     names_to = "covid_stat_type",
