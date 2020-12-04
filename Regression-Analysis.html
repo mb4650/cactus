@@ -320,7 +320,6 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
 ## ✓ tibble  3.0.3     ✓ dplyr   1.0.0
@@ -329,15 +328,11 @@ $(document).ready(function () {
 <pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(COVID19)
-library(lubridate)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;lubridate&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     date, intersect, setdiff, union</code></pre>
-<pre class="r"><code>library(modelr)
-library(mgcv)</code></pre>
 <pre><code>## Loading required package: nlme</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;nlme&#39;</code></pre>
@@ -345,7 +340,6 @@ library(mgcv)</code></pre>
 ## 
 ##     collapse</code></pre>
 <pre><code>## This is mgcv 1.8-33. For overview type &#39;help(&quot;mgcv-package&quot;)&#39;.</code></pre>
-<pre class="r"><code>library(rvest)</code></pre>
 <pre><code>## Loading required package: xml2</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;rvest&#39;</code></pre>
@@ -355,125 +349,11 @@ library(mgcv)</code></pre>
 <pre><code>## The following object is masked from &#39;package:readr&#39;:
 ## 
 ##     guess_encoding</code></pre>
-<pre class="r"><code>library(httr)
-
-knitr::opts_chunk$set(
-  fig.width = 6,
-  fig.asp = 0.6,
-  out.width = &quot;90%&quot;
-)
-
-theme_set(theme_minimal() + theme(legend.position = &quot;bottom&quot;))
-
-options(
-  ggplot2.continuous.colour = &quot;viridis&quot;,
-  ggplot2.continuous.fill = &quot;viridis&quot;
-)
-
-scale_colour_discrete = scale_colour_viridis_d
-scale_fill_discrete = scale_fill_viridis_d</code></pre>
 <div id="create-dataset-with-noaa-data" class="section level2">
 <h2>Create dataset with noaa data</h2>
-<pre class="r"><code>tmin_df = read_csv(&quot;https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dtmin.csv&amp;d=DwIFAg&amp;c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&amp;r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&amp;m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&amp;s=hmGOQjY_Ej_kzF9vStPclRFQpAr4mQSKOX5ce_tmlsE&amp;e= &quot;, skip = 3) %&gt;%
-  janitor::clean_names() %&gt;%
-   separate(date, into = c(&quot;year&quot;, &quot;month&quot;), sep = 4) %&gt;%
-  mutate(
-    month = as.numeric(month),
-    state_code = state.abb[match(location,state.name)],
-    state_name = location,
-    state_tmin = value) %&gt;%
-  filter(year == 2020) %&gt;%
-  select(state_name,state_code, month, state_tmin)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Location ID` = col_character(),
-##   Location = col_character(),
-##   Date = col_double(),
-##   Value = col_double(),
-##   Rank = col_double(),
-##   `Anomaly (1901-2000 base period)` = col_double(),
-##   `1901-2000 Mean` = col_double()
-## )</code></pre>
-<pre class="r"><code>tmax_df = read_csv(&quot;https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dtmax.csv&amp;d=DwIFAg&amp;c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&amp;r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&amp;m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&amp;s=kFXvvcnRWOVQuIlHG8ufptNh9-TGtc8HeymdMUmu_Dw&amp;e= &quot;, skip = 3) %&gt;%
-  janitor::clean_names() %&gt;%
-   separate(date, into = c(&quot;year&quot;, &quot;month&quot;), sep = 4) %&gt;%
-  mutate(
-    month = as.numeric(month),
-    state_code = state.abb[match(location,state.name)],
-    state_name = location,
-    state_tmax = value) %&gt;%
-  filter(year == 2020) %&gt;%
-  select(state_name,state_code, month, state_tmax)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Location ID` = col_character(),
-##   Location = col_character(),
-##   Date = col_double(),
-##   Value = col_double(),
-##   Rank = col_double(),
-##   `Anomaly (1901-2000 base period)` = col_double(),
-##   `1901-2000 Mean` = col_double()
-## )</code></pre>
-<pre class="r"><code>tavg_df = read_csv(&quot;https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dtavg.csv&amp;d=DwIFAg&amp;c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&amp;r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&amp;m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&amp;s=wY9iFojIMOK8mzQ7AkPJQDUUj3FfapibffutaytqzXU&amp;e= &quot;, skip = 3) %&gt;%
-  janitor::clean_names() %&gt;%
-  separate(date, into = c(&quot;year&quot;, &quot;month&quot;), sep = 4) %&gt;%
-  mutate(
-    month = as.numeric(month),
-    state_code = state.abb[match(location,state.name)],
-    state_name = location,
-    state_tavg = value) %&gt;%
-  filter(year == 2020) %&gt;%
-  select(state_name,state_code, month, state_tavg)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Location ID` = col_character(),
-##   Location = col_character(),
-##   Date = col_double(),
-##   Value = col_double(),
-##   Rank = col_double(),
-##   `Anomaly (1901-2000 base period)` = col_double(),
-##   `1901-2000 Mean` = col_double()
-## )</code></pre>
-<pre class="r"><code>prcp_df = read_csv(&quot;https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dpcp.csv&amp;d=DwIFAg&amp;c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&amp;r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&amp;m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&amp;s=VPeiJ1-NI637AZPZMfUV8exXyubpArhFG_u6KBXJlEI&amp;e= &quot;, skip = 3) %&gt;%
-  janitor::clean_names() %&gt;%
-  separate(date, into = c(&quot;year&quot;, &quot;month&quot;), sep = 4) %&gt;%
-  mutate(
-    month = as.numeric(month),
-    state_code = state.abb[match(location,state.name)],
-    state_name = location,
-    state_total_prcp = value) %&gt;%
-  filter(year == 2020) %&gt;%
-  select(state_name,state_code, month, state_total_prcp)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Location ID` = col_character(),
-##   Location = col_character(),
-##   Date = col_double(),
-##   Value = col_double(),
-##   Rank = col_double(),
-##   `Anomaly (1901-2000 base period)` = col_double(),
-##   `1901-2000 Mean` = col_double()
-## )</code></pre>
-<pre class="r"><code>noaa_dataset =
-  inner_join(tavg_df, tmin_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;)) %&gt;%
-  inner_join(tmax_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;)) %&gt;%
-  inner_join(prcp_df, by = c(&quot;state_name&quot; = &quot;state_name&quot;, &quot;month&quot; = &quot;month&quot;, &quot;state_code&quot; = &quot;state_code&quot;))
-write_csv (noaa_dataset,&quot;data/noaa_dataset.csv&quot;)</code></pre>
 </div>
 <div id="import-covid-datase.-clean-and-tidy-data" class="section level2">
 <h2>Import Covid datase. Clean and tidy data</h2>
-<pre class="r"><code>#level = 2 gives state level data and raw = false cleans the dataset
-covid_dataset = covid19(c(&quot;US&quot;), level = 2, raw = FALSE, verbose = FALSE) %&gt;%
-  janitor::clean_names()
-
-covid_data =
-  covid_dataset %&gt;%
-  mutate(month = month(date),
-         day = day(date),
-         month = as.numeric(month),
-         day = day(date)) %&gt;%
-  group_by(month, key_alpha_2) %&gt;% top_n(1, day) %&gt;%
-  mutate(new_cases = confirmed - lag(confirmed, default = 0))</code></pre>
 </div>
 <div id="merging-the-two-dataset" class="section level2">
 <h2>Merging the two dataset</h2>
@@ -524,7 +404,7 @@ covid_noaa_dataset %&gt;%
                      tl.col = &quot;red&quot;,
                      tl.cex = .9,
                      tl.srt = 45)</code></pre>
-<p><img src="Regression-Analysis_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
+<p><img src="Regression-Analysis_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
 </div>
 <div id="confounding" class="section level3">
 <h3>Confounding</h3>
@@ -598,7 +478,7 @@ count_cv %&gt;%
   labs(
     title = &quot;Prediction Error Distributions&quot;
   )</code></pre>
-<p><img src="Regression-Analysis_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+<p><img src="Regression-Analysis_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 </div>
 
 

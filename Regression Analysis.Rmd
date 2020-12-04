@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup}
+```{r setup, echo = FALSE}
 library(tidyverse)
 library(COVID19)
 library(lubridate)
@@ -33,7 +33,7 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ## Create dataset with noaa data
 
-```{r}
+```{r creating dataset 1, echo = FALSE, message=FALSE, results='hide'}
 
 tmin_df = read_csv("https://urldefense.proofpoint.com/v2/url?u=https-3A__www.ncdc.noaa.gov_cag_statewide_mapping_110-2Dtmin.csv&d=DwIFAg&c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&m=ilRLcOY5-22-ot8YTUHjYK-tstakLha43P2L-7wwJSc&s=hmGOQjY_Ej_kzF9vStPclRFQpAr4mQSKOX5ce_tmlsE&e= ", skip = 3) %>%
   janitor::clean_names() %>%
@@ -83,12 +83,12 @@ noaa_dataset =
   inner_join(tavg_df, tmin_df, by = c("state_name" = "state_name", "month" = "month", "state_code" = "state_code")) %>%
   inner_join(tmax_df, by = c("state_name" = "state_name", "month" = "month", "state_code" = "state_code")) %>%
   inner_join(prcp_df, by = c("state_name" = "state_name", "month" = "month", "state_code" = "state_code"))
-write_csv (noaa_dataset,"data/noaa_dataset.csv")
+write_csv(noaa_dataset,"data/noaa_dataset.csv")
 ```
 
 ## Import Covid datase. Clean and tidy data 
 
-```{r}
+```{r creating dataset 2, echo = FALSE, message=FALSE, results='hide'}
 #level = 2 gives state level data and raw = false cleans the dataset
 covid_dataset = covid19(c("US"), level = 2, raw = FALSE, verbose = FALSE) %>%
   janitor::clean_names()
