@@ -359,16 +359,16 @@ Number of cumulative confirmed COVID-19 cases divided by total state population 
 The climate variables included are: Average temperature, Maximum temperature, Minimum temperature, and Precipitation.
 
 **Average temperature:**
-Average temperature of day selected in Farhenheit as determined by ____ stations across the state selected
+Average temperature of day selected in Farhenheit as determined by 10 stations across the state selected
 
 **Maximum temperature:**
-Maximum temperature of day selected in Farhenheit as determined by ____ stations across the state selected
+Maximum temperature of day selected in Farhenheit as determined by 10 stations across the state selected
 
 **Minimum temperature:**
-Minimum temperature of day selected in Farhenheit as determined by ____ stations across the state selected
+Minimum temperature of day selected in Farhenheit as determined by 10 stations across the state selected
 
 **Precipitation:**
-Precipitation in millimeters of day selected as determined by ____ stations across the state selected
+Precipitation in millimeters of day selected as determined by 10 stations across the state selected
 
 
 ```{r, ignore = TRUE}
@@ -439,6 +439,6 @@ renderPlotly({
 
 This plot allows users to choose between the states: Alaska, Alabama, Arizona, California, FLorida, Georgia, Hawaii, Idaho, Illinois, Kansas, Kentucky, Louisiana, Maryland, Maine, Michigan, Missouri, Mississippi, Montana, Nebraska, New Mexico, Nevada, New York, Ohio, Oregon, Pennsylvania, Rhode Island, South Carolina, Tennessee, Washington, West Virgina, and Wyoming. States that were excluded were states that did not have data for maximum temperature.
 
-The graph overlays the monthly average minimum temperature (F), maximum temperature (F), and average temperature(F) per state from January 2020 to October 2020.
+The graph overlays the monthly average minimum temperature (F), maximum temperature (F), and average temperature(F) across 10 stations per state from January 2020 to October 2020.
 
 
