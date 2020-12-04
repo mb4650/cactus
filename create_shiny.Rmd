@@ -1,0 +1,16 @@
+---
+title: "Creating the Interactive Plots"
+output: 
+  html_document
+---
+Add information on how we did it!
+
+### Inspirations
+wanted to create an interactive map similar to what we see on the news
+
+### How project changed over time 
+
+### Data
+
+### Plots
+define what each plot is and how we set it up
