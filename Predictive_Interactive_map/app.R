@@ -10,9 +10,17 @@ library(mgcv)
 library(rvest)
 library(httr)
 
-mapStates = map("state", fill = TRUE, plot = FALSE)
 covid_noaa_dataset = read_csv("covid_noaa_dataset.csv")
+states <- states(cb=T)
 
+url = "https://urldefense.proofpoint.com/v2/url?u=https-3A__developers.google.com_public-2Ddata_docs_canonical_states-5Fcsv&d=DwIFAg&c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&m=ZLDhVDaJRa8xTJd2UCndV5ZKTHV5ZrzOcRkhqHloTko&s=RJ-z_AUb_Xy-Yw9rP8euzOmNJCXWGMMWkgyuhy97A8M&e= "
+lat_long_html = read_html(url)
+
+table_lat_long_df =
+  lat_long_html %>%
+  html_nodes(css = "table") %>%
+  first() %>%
+  html_table()
 
 ui <- fluidPage(
   titlePanel("Case count Predictor"),
