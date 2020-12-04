@@ -30,7 +30,7 @@ ui <- fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      helpText("enter details"),
+      helpText(h2("enter details")),
       
       selectInput("Month", h3("Select Month"),
                   choices =unique(covid_noaa_dataset["month"]),selected = 4),
@@ -39,13 +39,13 @@ ui <- fluidPage(
                   choices =unique(covid_noaa_dataset["state_name"]),selected = 10),
       
       sliderInput( "tavg",
-                   label = "Average temperature",
+                   label = "Select Average temperature",
                    min = 1,
                    max = max(covid_noaa_dataset["state_tmax"])+20,
                    value = 30),
       
       sliderInput(inputId = "prcp",
-                  label = "enter precipitation",
+                  label = "Select precipitation",
                   min = -10,
                   max = max(covid_noaa_dataset["state_total_prcp"])+10,
                   value = 1)
