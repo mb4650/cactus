@@ -351,7 +351,6 @@ $(document).ready(function () {
 </div>
 <div id="assessing-crude-correlation-among-our-selected-variables" class="section level3">
 <h3>Assessing crude correlation among our selected variables</h3>
-<p><img src="Regression-Analysis_files/figure-html/correlation-1.png" width="90%" /></p>
 <p>In order to select the most significant variables in our model we first conducted a crude correlation assessment using a correlation matrix as shown above. From this assessment we decided to remove <code>state_tmax</code> and <code>state_tmin</code> since the r is 0.97 - 0.99, indicating that there is an extreme co-linearity among other predictors.</p>
 </div>
 <div id="confounding" class="section level3">
@@ -360,18 +359,23 @@ $(document).ready(function () {
 </div>
 <div id="modeling---poisson-vs-negative-binomial-regression" class="section level3">
 <h3>Modeling - Poisson vs Negative binomial regression</h3>
-<p>Since the AIC for Poisson is 28597532 and the AIC for negative binomial regression model is 9174.884, we decided to proceed with negative binomial regression model</p>
+<p>Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression.</p>
+<p>A poisson distribution assumes that the mean and variance are the same. Sometimes the data shows extra variation that is greater than the mean. This situation is called overdispersion. Negative binomial is more flexible in that regard. Negative binomial has one more parameter the adjusts for the variance independently from the mean.</p>
+<p>In order to decide which model to use we cross validate between the two models to see the distribution. We also assess the AIC to determine the model with the smaller AIC.</p>
 </div>
 </div>
 <div id="cross-validation" class="section level2">
 <h2>Cross validation</h2>
 <p><img src="Regression-Analysis_files/figure-html/cross%20validation-1.png" width="90%" /></p>
-<pre class="r"><code>poisson_output = poisson_mod %&gt;%
+<p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
+<p>The poisson model has an AIC of The negative binomial model has an AIC of</p>
+<p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
+<pre class="r"><code>nb_output = neg_bin_mod %&gt;%
   broom::tidy() %&gt;%
   dplyr::select(term, estimate, p.value) %&gt;%
   mutate(exp(estimate)) 
 
-poisson_output %&gt;% 
+nb_output %&gt;% 
   knitr::kable(digits = 3)</code></pre>
 <table>
 <thead>
@@ -385,357 +389,357 @@ poisson_output %&gt;%
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">9.722</td>
-<td align="right">0.000</td>
-<td align="right">16673.773</td>
+<td align="right">7.530</td>
+<td align="right">1.000</td>
+<td align="right">1.863414e+03</td>
 </tr>
 <tr class="even">
 <td align="left">as.factor(month_name).L</td>
-<td align="right">17.944</td>
-<td align="right">0.001</td>
-<td align="right">62091083.111</td>
+<td align="right">32.058</td>
+<td align="right">1.000</td>
+<td align="right">8.366116e+13</td>
 </tr>
 <tr class="odd">
 <td align="left">as.factor(month_name).Q</td>
-<td align="right">-12.304</td>
-<td align="right">0.035</td>
-<td align="right">0.000</td>
+<td align="right">-26.479</td>
+<td align="right">1.000</td>
+<td align="right">0.000000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">as.factor(month_name).C</td>
-<td align="right">5.689</td>
-<td align="right">0.262</td>
-<td align="right">295.496</td>
+<td align="right">17.489</td>
+<td align="right">1.000</td>
+<td align="right">3.939529e+07</td>
 </tr>
 <tr class="odd">
 <td align="left">as.factor(month_name)^4</td>
-<td align="right">-1.603</td>
-<td align="right">0.670</td>
-<td align="right">0.201</td>
+<td align="right">-10.588</td>
+<td align="right">1.000</td>
+<td align="right">0.000000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">as.factor(month_name)^5</td>
-<td align="right">-0.935</td>
-<td align="right">0.698</td>
-<td align="right">0.393</td>
+<td align="right">5.062</td>
+<td align="right">1.000</td>
+<td align="right">1.578500e+02</td>
 </tr>
 <tr class="odd">
 <td align="left">as.factor(month_name)^6</td>
-<td align="right">1.834</td>
-<td align="right">0.162</td>
-<td align="right">6.259</td>
+<td align="right">-1.507</td>
+<td align="right">1.000</td>
+<td align="right">2.220000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">as.factor(month_name)^7</td>
-<td align="right">-1.225</td>
-<td align="right">0.039</td>
-<td align="right">0.294</td>
+<td align="right">0.279</td>
+<td align="right">1.000</td>
+<td align="right">1.322000e+00</td>
 </tr>
 <tr class="odd">
 <td align="left">as.factor(month_name)^8</td>
-<td align="right">0.517</td>
-<td align="right">0.015</td>
-<td align="right">1.677</td>
+<td align="right">-0.002</td>
+<td align="right">1.000</td>
+<td align="right">9.980000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">as.factor(month_name)^9</td>
-<td align="right">-0.228</td>
-<td align="right">0.000</td>
-<td align="right">0.796</td>
+<td align="right">-0.084</td>
+<td align="right">1.000</td>
+<td align="right">9.190000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateAR</td>
-<td align="right">-0.725</td>
+<td align="right">-0.797</td>
 <td align="right">0.000</td>
-<td align="right">0.485</td>
+<td align="right">4.510000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateAZ</td>
-<td align="right">0.265</td>
-<td align="right">0.000</td>
-<td align="right">1.303</td>
+<td align="right">0.350</td>
+<td align="right">0.104</td>
+<td align="right">1.419000e+00</td>
 </tr>
 <tr class="odd">
 <td align="left">stateCA</td>
-<td align="right">1.421</td>
+<td align="right">1.497</td>
 <td align="right">0.000</td>
-<td align="right">4.140</td>
+<td align="right">4.469000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateCO</td>
-<td align="right">-1.157</td>
-<td align="right">0.000</td>
-<td align="right">0.315</td>
+<td align="right">-0.826</td>
+<td align="right">0.001</td>
+<td align="right">4.380000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateCT</td>
-<td align="right">-0.950</td>
-<td align="right">0.000</td>
-<td align="right">0.387</td>
+<td align="right">-0.446</td>
+<td align="right">0.043</td>
+<td align="right">6.400000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateDE</td>
-<td align="right">-1.920</td>
+<td align="right">-1.668</td>
 <td align="right">0.000</td>
-<td align="right">0.147</td>
+<td align="right">1.890000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateFL</td>
-<td align="right">1.753</td>
+<td align="right">1.788</td>
 <td align="right">0.000</td>
-<td align="right">5.773</td>
+<td align="right">5.979000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateGA</td>
-<td align="right">0.743</td>
+<td align="right">0.899</td>
 <td align="right">0.000</td>
-<td align="right">2.102</td>
+<td align="right">2.457000e+00</td>
 </tr>
 <tr class="odd">
 <td align="left">stateIA</td>
-<td align="right">-1.001</td>
+<td align="right">-0.962</td>
 <td align="right">0.000</td>
-<td align="right">0.367</td>
+<td align="right">3.820000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateID</td>
-<td align="right">-1.991</td>
+<td align="right">-2.221</td>
 <td align="right">0.000</td>
-<td align="right">0.137</td>
+<td align="right">1.090000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateIL</td>
-<td align="right">0.500</td>
+<td align="right">0.773</td>
 <td align="right">0.000</td>
-<td align="right">1.649</td>
+<td align="right">2.166000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateIN</td>
-<td align="right">-0.454</td>
-<td align="right">0.000</td>
-<td align="right">0.635</td>
+<td align="right">-0.291</td>
+<td align="right">0.173</td>
+<td align="right">7.470000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateKS</td>
-<td align="right">-1.277</td>
+<td align="right">-1.237</td>
 <td align="right">0.000</td>
-<td align="right">0.279</td>
+<td align="right">2.900000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateKY</td>
-<td align="right">-0.986</td>
+<td align="right">-1.066</td>
 <td align="right">0.000</td>
-<td align="right">0.373</td>
+<td align="right">3.450000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateLA</td>
-<td align="right">0.276</td>
+<td align="right">0.773</td>
 <td align="right">0.000</td>
-<td align="right">1.318</td>
+<td align="right">2.166000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateMA</td>
-<td align="right">-0.143</td>
-<td align="right">0.000</td>
-<td align="right">0.867</td>
+<td align="right">0.321</td>
+<td align="right">0.150</td>
+<td align="right">1.378000e+00</td>
 </tr>
 <tr class="odd">
 <td align="left">stateMD</td>
-<td align="right">-0.201</td>
-<td align="right">0.000</td>
-<td align="right">0.818</td>
+<td align="right">0.014</td>
+<td align="right">0.948</td>
+<td align="right">1.014000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateME</td>
-<td align="right">-3.714</td>
+<td align="right">-3.456</td>
 <td align="right">0.000</td>
-<td align="right">0.024</td>
+<td align="right">3.200000e-02</td>
 </tr>
 <tr class="odd">
 <td align="left">stateMI</td>
-<td align="right">-0.370</td>
-<td align="right">0.000</td>
-<td align="right">0.691</td>
+<td align="right">0.221</td>
+<td align="right">0.349</td>
+<td align="right">1.248000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateMN</td>
-<td align="right">-0.972</td>
+<td align="right">-0.977</td>
 <td align="right">0.000</td>
-<td align="right">0.378</td>
+<td align="right">3.770000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateMO</td>
-<td align="right">-0.525</td>
-<td align="right">0.000</td>
-<td align="right">0.592</td>
+<td align="right">-0.577</td>
+<td align="right">0.005</td>
+<td align="right">5.620000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateMS</td>
-<td align="right">-0.417</td>
-<td align="right">0.000</td>
-<td align="right">0.659</td>
+<td align="right">-0.292</td>
+<td align="right">0.142</td>
+<td align="right">7.470000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateMT</td>
-<td align="right">-3.076</td>
+<td align="right">-3.500</td>
 <td align="right">0.000</td>
-<td align="right">0.046</td>
+<td align="right">3.000000e-02</td>
 </tr>
 <tr class="even">
 <td align="left">stateNC</td>
-<td align="right">0.265</td>
-<td align="right">0.000</td>
-<td align="right">1.304</td>
+<td align="right">0.212</td>
+<td align="right">0.291</td>
+<td align="right">1.236000e+00</td>
 </tr>
 <tr class="odd">
 <td align="left">stateND</td>
-<td align="right">-2.625</td>
+<td align="right">-2.923</td>
 <td align="right">0.000</td>
-<td align="right">0.072</td>
+<td align="right">5.400000e-02</td>
 </tr>
 <tr class="even">
 <td align="left">stateNE</td>
-<td align="right">-1.584</td>
+<td align="right">-1.493</td>
 <td align="right">0.000</td>
-<td align="right">0.205</td>
+<td align="right">2.250000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateNH</td>
-<td align="right">-3.143</td>
+<td align="right">-2.867</td>
 <td align="right">0.000</td>
-<td align="right">0.043</td>
+<td align="right">5.700000e-02</td>
 </tr>
 <tr class="even">
 <td align="left">stateNJ</td>
-<td align="right">0.503</td>
+<td align="right">1.134</td>
 <td align="right">0.000</td>
-<td align="right">1.654</td>
+<td align="right">3.108000e+00</td>
 </tr>
 <tr class="odd">
 <td align="left">stateNM</td>
-<td align="right">-1.834</td>
+<td align="right">-1.654</td>
 <td align="right">0.000</td>
-<td align="right">0.160</td>
+<td align="right">1.910000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateNV</td>
-<td align="right">-1.089</td>
+<td align="right">-1.075</td>
 <td align="right">0.000</td>
-<td align="right">0.337</td>
+<td align="right">3.410000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateNY</td>
-<td align="right">1.074</td>
+<td align="right">1.795</td>
 <td align="right">0.000</td>
-<td align="right">2.927</td>
+<td align="right">6.017000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateOH</td>
-<td align="right">-0.242</td>
-<td align="right">0.000</td>
-<td align="right">0.785</td>
+<td align="right">-0.169</td>
+<td align="right">0.430</td>
+<td align="right">8.440000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateOK</td>
-<td align="right">-0.808</td>
+<td align="right">-0.878</td>
 <td align="right">0.000</td>
-<td align="right">0.446</td>
+<td align="right">4.160000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateOR</td>
-<td align="right">-2.089</td>
+<td align="right">-2.080</td>
 <td align="right">0.000</td>
-<td align="right">0.124</td>
+<td align="right">1.250000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">statePA</td>
-<td align="right">-0.128</td>
-<td align="right">0.000</td>
-<td align="right">0.880</td>
+<td align="right">0.188</td>
+<td align="right">0.394</td>
+<td align="right">1.207000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateRI</td>
-<td align="right">-1.864</td>
+<td align="right">-1.519</td>
 <td align="right">0.000</td>
-<td align="right">0.155</td>
+<td align="right">2.190000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateSC</td>
-<td align="right">-0.066</td>
-<td align="right">0.000</td>
-<td align="right">0.936</td>
+<td align="right">-0.082</td>
+<td align="right">0.680</td>
+<td align="right">9.210000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateSD</td>
-<td align="right">-2.374</td>
+<td align="right">-2.445</td>
 <td align="right">0.000</td>
-<td align="right">0.093</td>
+<td align="right">8.700000e-02</td>
 </tr>
 <tr class="odd">
 <td align="left">stateTN</td>
-<td align="right">0.104</td>
-<td align="right">0.000</td>
-<td align="right">1.110</td>
+<td align="right">0.095</td>
+<td align="right">0.639</td>
+<td align="right">1.099000e+00</td>
 </tr>
 <tr class="even">
 <td align="left">stateTX</td>
-<td align="right">1.486</td>
+<td align="right">1.523</td>
 <td align="right">0.000</td>
-<td align="right">4.421</td>
+<td align="right">4.587000e+00</td>
 </tr>
 <tr class="odd">
 <td align="left">stateUT</td>
-<td align="right">-1.172</td>
+<td align="right">-1.184</td>
 <td align="right">0.000</td>
-<td align="right">0.310</td>
+<td align="right">3.060000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateVA</td>
-<td align="right">-0.105</td>
-<td align="right">0.000</td>
-<td align="right">0.901</td>
+<td align="right">-0.031</td>
+<td align="right">0.878</td>
+<td align="right">9.690000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateVT</td>
-<td align="right">-4.656</td>
+<td align="right">-4.000</td>
 <td align="right">0.000</td>
-<td align="right">0.010</td>
+<td align="right">1.800000e-02</td>
 </tr>
 <tr class="even">
 <td align="left">stateWA</td>
-<td align="right">-1.015</td>
-<td align="right">0.000</td>
-<td align="right">0.362</td>
+<td align="right">-0.165</td>
+<td align="right">0.492</td>
+<td align="right">8.480000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">stateWI</td>
-<td align="right">-0.670</td>
+<td align="right">-0.839</td>
 <td align="right">0.000</td>
-<td align="right">0.512</td>
+<td align="right">4.320000e-01</td>
 </tr>
 <tr class="even">
 <td align="left">stateWV</td>
-<td align="right">-2.607</td>
+<td align="right">-2.701</td>
 <td align="right">0.000</td>
-<td align="right">0.074</td>
+<td align="right">6.700000e-02</td>
 </tr>
 <tr class="odd">
 <td align="left">stateWY</td>
-<td align="right">-3.806</td>
+<td align="right">-3.950</td>
 <td align="right">0.000</td>
-<td align="right">0.022</td>
+<td align="right">1.900000e-02</td>
 </tr>
 <tr class="even">
 <td align="left">state_tavg</td>
-<td align="right">-0.030</td>
+<td align="right">-0.044</td>
 <td align="right">0.000</td>
-<td align="right">0.971</td>
+<td align="right">9.570000e-01</td>
 </tr>
 <tr class="odd">
 <td align="left">state_total_prcp</td>
-<td align="right">-0.038</td>
-<td align="right">0.000</td>
-<td align="right">0.962</td>
+<td align="right">-0.016</td>
+<td align="right">0.353</td>
+<td align="right">9.840000e-01</td>
 </tr>
 </tbody>
 </table>

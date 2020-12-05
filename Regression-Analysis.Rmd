@@ -148,21 +148,21 @@ The following are the relevant predictors we want to include in the model
 
 ```{r correlation, echo = FALSE, message=FALSE, results='hide'}
 library(MASS)
-covid_noaa_dataset_cor =
-covid_noaa_dataset %>%
-  dplyr::select(new_cases, state_tavg, state_tmax, state_tmin, state_total_prcp)
+#covid_noaa_dataset_cor =
+#covid_noaa_dataset %>%
+#  dplyr::select(new_cases, state_tavg, state_tmax, state_tmin, state_total_prcp)
 
-  covid_noaa_dataset_cor[,3:7] %>%
-  cor() %>%
-  corrplot::corrplot(type = "lower",
-                     method = "square",
-                     addCoef.col = "red",
-                     diag = FALSE,
-                     number.cex = .6,
-                     tl.col = "red",
-                     tl.cex = .9,
-                     tl.srt = 45,
-                     is.corr = FALSE)
+#  covid_noaa_dataset_cor[,3:7] %>%
+#  cor() %>%
+#  corrplot::corrplot(type = "lower",
+#                     method = "square",
+#                     addCoef.col = "red",
+#                     diag = FALSE,
+#                     number.cex = .6,
+#                     tl.col = "red",
+#                     tl.cex = .9,
+#                     tl.srt = 45,
+#                     is.corr = FALSE)
  
 ```
 
@@ -174,6 +174,12 @@ There are many variables that would confound the relationship between temperatur
 
 ### Modeling - Poisson vs Negative binomial regression
 
+Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression. 
+
+A poisson distribution assumes that the mean and variance are the same. Sometimes the data shows extra variation that is greater than the mean. This situation is called overdispersion. Negative binomial is more flexible in that regard.
+Negative binomial has one more parameter the adjusts for the variance independently from the mean. 
+
+In order to decide which model to use we cross validate between the two models to see the distribution. We also assess the AIC to determine the model with the smaller AIC.
 
 ```{r regression model, echo = FALSE, message=FALSE, results='hide'}
 poisson_mod = glm(new_cases ~  as.factor(month_name) + state + state_tavg + state_total_prcp,
@@ -192,7 +198,7 @@ neg_bin_mod %>%
   dplyr::select(AIC) %>%
   knitr::kable(digits = 3)
 ```
-Since the AIC for Poisson is 28597532 and the AIC for negative binomial regression model is 9174.884, we decided to proceed with negative binomial regression model
+
 
 ## Cross validation
 
@@ -224,13 +230,20 @@ count_cv %>%
   )
 ```
 
+From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC. 
+
+The poisson model has an AIC of 
+The negative binomial model has an AIC of 
+
+Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.
+
 ```{r}
-poisson_output = poisson_mod %>%
+nb_output = neg_bin_mod %>%
   broom::tidy() %>%
   dplyr::select(term, estimate, p.value) %>%
   mutate(exp(estimate)) 
 
-poisson_output %>% 
+nb_output %>% 
   knitr::kable(digits = 3)
 ```
 
