@@ -70,9 +70,7 @@ ui <- fluidPage(
         ),
       
         mainPanel(
-           #fluidRow(
-            # column(15, leafletOutput("selected_var"))
-           #)
+          
           leafletOutput("plot1"),
           h3("Prediction of the number of new cases for a particular month based on average temperature and 
              precipitation"),
@@ -117,10 +115,7 @@ ui <- fluidPage(
              ),
              
              mainPanel(
-               # fluidRow(
-               #   column(12,label = "Prediction", leafletOutput("selected_var")),
-               #   column(12, label = "general trend", leafletOutput("plot1"))
-               # )
+             
                leafletOutput("plot3"),
                h3("Prediction of the number of new cases for a particular month based on restrictions"),
                p("Based on the user's choice of different restrictions and temperature , the negative binomial regression 
@@ -148,7 +143,7 @@ ui <- fluidPage(
                                           "Testing anyone with symptoms" = 2, "Open public testing" = 3),
                            selected = 2),
                
-               selectInput("contact", h4("Select Contatc Tracing Policy"),
+               selectInput("contact", h4("Select Contact Tracing Policy"),
                            choices = list("No contact tracing" = 0, "Limited contact tracing" = 1,
                                           "Comprehensive contact tracing" = 2),
                            selected = 2),
@@ -162,12 +157,8 @@ ui <- fluidPage(
              ),
              
              mainPanel(
-               # fluidRow(
-               #   column(12,label = "Prediction", leafletOutput("selected_var")),
-               #   column(12, label = "general trend", leafletOutput("plot1"))
-               # )
                leafletOutput("plot4"),
-               h3("Prediction of the number of new cases for a particular month based on health sector activity"),
+               h3("Prediction of the number of new cases for a particular month based on public health policies and discourse activity"),
                p("Based on the user's choice of various health sector policies, the negative binomial regression 
           model will predict the number of new cases that are expected for a particular month and
             state in the United States")
@@ -182,14 +173,11 @@ ui <- fluidPage(
              ),
              
              mainPanel(
-               # fluidRow(
-               #   column(12,label = "Prediction", leafletOutput("selected_var")),
-               #   column(12, label = "general trend", leafletOutput("plot1"))
-               # )
+    
                leafletOutput("plot2"),
                h3("General trend of the number of new cases for a particular month"),
-               p("This gives the general trend of the new covide cases thats actually been seen. the user can select the month
-                 to obeserve the covid case change over time")
+               p("This gives the general trend of the new covide cases thats actually been seen. The user can select the month
+                 to obeserve the covid case change over time for their respective monthly average temperatures.")
              )
              
     )
@@ -211,7 +199,7 @@ server <- function(input, output) {
       count
     ) %>% lapply(htmltools::HTML)
     
-    #paste( "you chose", a)
+ 
     map_df = covid_noaa_dataset%>% 
       filter(month_name == as.factor(input$month1),
              state_name ==input$state1)
@@ -318,7 +306,7 @@ server <- function(input, output) {
       count
     ) %>% lapply(htmltools::HTML)
     
-    #paste( "you chose", a)
+  
     map_df = covid_noaa_dataset%>% 
       filter(month_name == input$month3,
              state_name ==input$state3)
@@ -372,7 +360,7 @@ server <- function(input, output) {
       count
     ) %>% lapply(htmltools::HTML)
     
-    #paste( "you chose", a)
+  
     map_df = covid_noaa_dataset%>% 
       filter(month_name == input$month4,
              state_name == input$state4)
