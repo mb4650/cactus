@@ -322,7 +322,7 @@ $(document).ready(function () {
 
 <div id="create-dataset-with-noaa-data" class="section level2">
 <h2>Create dataset with noaa data</h2>
-<p>The noaa dataset that we used was from the <a href="ncdc.noaa.gov">https://www.ncdc.noaa.gov/cag/statewide/mapping</a> website. We retrieved 4 individual datasets from the noaa website. The retrieved dataset includes: 1. tmax: Data for the maximum temperature for each state by month. 2. tmin: Data for the minimum temperature for each state by month. 3. tavg: Data for the average temperaure for each state by month. 4. prcp: Data for the precipitation values for each state by month.</p>
+<p>The noaa dataset that we used was from the <a href="https://www.ncdc.noaa.gov/cag/statewide/mapping">ncdc.noaa.gov</a> website. We retrieved 4 individual datasets from the noaa website. The retrieved dataset includes: 1. tmax: Data for the maximum temperature for each state by month. 2. tmin: Data for the minimum temperature for each state by month. 3. tavg: Data for the average temperaure for each state by month. 4. prcp: Data for the precipitation values for each state by month.</p>
 <p>The datasets were scraped from the website using read_csv and were then merged with the COVID19 dataset by month and state.</p>
 </div>
 <div id="import-covid-datase.-clean-and-tidy-data" class="section level2">
@@ -366,6 +366,379 @@ $(document).ready(function () {
 <div id="cross-validation" class="section level2">
 <h2>Cross validation</h2>
 <p><img src="Regression-Analysis_files/figure-html/cross%20validation-1.png" width="90%" /></p>
+<pre class="r"><code>poisson_output = poisson_mod %&gt;%
+  broom::tidy() %&gt;%
+  dplyr::select(term, estimate, p.value) %&gt;%
+  mutate(exp(estimate)) 
+
+poisson_output %&gt;% 
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+<th align="right">exp(estimate)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">9.722</td>
+<td align="right">0.000</td>
+<td align="right">16673.773</td>
+</tr>
+<tr class="even">
+<td align="left">as.factor(month_name).L</td>
+<td align="right">17.944</td>
+<td align="right">0.001</td>
+<td align="right">62091083.111</td>
+</tr>
+<tr class="odd">
+<td align="left">as.factor(month_name).Q</td>
+<td align="right">-12.304</td>
+<td align="right">0.035</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">as.factor(month_name).C</td>
+<td align="right">5.689</td>
+<td align="right">0.262</td>
+<td align="right">295.496</td>
+</tr>
+<tr class="odd">
+<td align="left">as.factor(month_name)^4</td>
+<td align="right">-1.603</td>
+<td align="right">0.670</td>
+<td align="right">0.201</td>
+</tr>
+<tr class="even">
+<td align="left">as.factor(month_name)^5</td>
+<td align="right">-0.935</td>
+<td align="right">0.698</td>
+<td align="right">0.393</td>
+</tr>
+<tr class="odd">
+<td align="left">as.factor(month_name)^6</td>
+<td align="right">1.834</td>
+<td align="right">0.162</td>
+<td align="right">6.259</td>
+</tr>
+<tr class="even">
+<td align="left">as.factor(month_name)^7</td>
+<td align="right">-1.225</td>
+<td align="right">0.039</td>
+<td align="right">0.294</td>
+</tr>
+<tr class="odd">
+<td align="left">as.factor(month_name)^8</td>
+<td align="right">0.517</td>
+<td align="right">0.015</td>
+<td align="right">1.677</td>
+</tr>
+<tr class="even">
+<td align="left">as.factor(month_name)^9</td>
+<td align="right">-0.228</td>
+<td align="right">0.000</td>
+<td align="right">0.796</td>
+</tr>
+<tr class="odd">
+<td align="left">stateAR</td>
+<td align="right">-0.725</td>
+<td align="right">0.000</td>
+<td align="right">0.485</td>
+</tr>
+<tr class="even">
+<td align="left">stateAZ</td>
+<td align="right">0.265</td>
+<td align="right">0.000</td>
+<td align="right">1.303</td>
+</tr>
+<tr class="odd">
+<td align="left">stateCA</td>
+<td align="right">1.421</td>
+<td align="right">0.000</td>
+<td align="right">4.140</td>
+</tr>
+<tr class="even">
+<td align="left">stateCO</td>
+<td align="right">-1.157</td>
+<td align="right">0.000</td>
+<td align="right">0.315</td>
+</tr>
+<tr class="odd">
+<td align="left">stateCT</td>
+<td align="right">-0.950</td>
+<td align="right">0.000</td>
+<td align="right">0.387</td>
+</tr>
+<tr class="even">
+<td align="left">stateDE</td>
+<td align="right">-1.920</td>
+<td align="right">0.000</td>
+<td align="right">0.147</td>
+</tr>
+<tr class="odd">
+<td align="left">stateFL</td>
+<td align="right">1.753</td>
+<td align="right">0.000</td>
+<td align="right">5.773</td>
+</tr>
+<tr class="even">
+<td align="left">stateGA</td>
+<td align="right">0.743</td>
+<td align="right">0.000</td>
+<td align="right">2.102</td>
+</tr>
+<tr class="odd">
+<td align="left">stateIA</td>
+<td align="right">-1.001</td>
+<td align="right">0.000</td>
+<td align="right">0.367</td>
+</tr>
+<tr class="even">
+<td align="left">stateID</td>
+<td align="right">-1.991</td>
+<td align="right">0.000</td>
+<td align="right">0.137</td>
+</tr>
+<tr class="odd">
+<td align="left">stateIL</td>
+<td align="right">0.500</td>
+<td align="right">0.000</td>
+<td align="right">1.649</td>
+</tr>
+<tr class="even">
+<td align="left">stateIN</td>
+<td align="right">-0.454</td>
+<td align="right">0.000</td>
+<td align="right">0.635</td>
+</tr>
+<tr class="odd">
+<td align="left">stateKS</td>
+<td align="right">-1.277</td>
+<td align="right">0.000</td>
+<td align="right">0.279</td>
+</tr>
+<tr class="even">
+<td align="left">stateKY</td>
+<td align="right">-0.986</td>
+<td align="right">0.000</td>
+<td align="right">0.373</td>
+</tr>
+<tr class="odd">
+<td align="left">stateLA</td>
+<td align="right">0.276</td>
+<td align="right">0.000</td>
+<td align="right">1.318</td>
+</tr>
+<tr class="even">
+<td align="left">stateMA</td>
+<td align="right">-0.143</td>
+<td align="right">0.000</td>
+<td align="right">0.867</td>
+</tr>
+<tr class="odd">
+<td align="left">stateMD</td>
+<td align="right">-0.201</td>
+<td align="right">0.000</td>
+<td align="right">0.818</td>
+</tr>
+<tr class="even">
+<td align="left">stateME</td>
+<td align="right">-3.714</td>
+<td align="right">0.000</td>
+<td align="right">0.024</td>
+</tr>
+<tr class="odd">
+<td align="left">stateMI</td>
+<td align="right">-0.370</td>
+<td align="right">0.000</td>
+<td align="right">0.691</td>
+</tr>
+<tr class="even">
+<td align="left">stateMN</td>
+<td align="right">-0.972</td>
+<td align="right">0.000</td>
+<td align="right">0.378</td>
+</tr>
+<tr class="odd">
+<td align="left">stateMO</td>
+<td align="right">-0.525</td>
+<td align="right">0.000</td>
+<td align="right">0.592</td>
+</tr>
+<tr class="even">
+<td align="left">stateMS</td>
+<td align="right">-0.417</td>
+<td align="right">0.000</td>
+<td align="right">0.659</td>
+</tr>
+<tr class="odd">
+<td align="left">stateMT</td>
+<td align="right">-3.076</td>
+<td align="right">0.000</td>
+<td align="right">0.046</td>
+</tr>
+<tr class="even">
+<td align="left">stateNC</td>
+<td align="right">0.265</td>
+<td align="right">0.000</td>
+<td align="right">1.304</td>
+</tr>
+<tr class="odd">
+<td align="left">stateND</td>
+<td align="right">-2.625</td>
+<td align="right">0.000</td>
+<td align="right">0.072</td>
+</tr>
+<tr class="even">
+<td align="left">stateNE</td>
+<td align="right">-1.584</td>
+<td align="right">0.000</td>
+<td align="right">0.205</td>
+</tr>
+<tr class="odd">
+<td align="left">stateNH</td>
+<td align="right">-3.143</td>
+<td align="right">0.000</td>
+<td align="right">0.043</td>
+</tr>
+<tr class="even">
+<td align="left">stateNJ</td>
+<td align="right">0.503</td>
+<td align="right">0.000</td>
+<td align="right">1.654</td>
+</tr>
+<tr class="odd">
+<td align="left">stateNM</td>
+<td align="right">-1.834</td>
+<td align="right">0.000</td>
+<td align="right">0.160</td>
+</tr>
+<tr class="even">
+<td align="left">stateNV</td>
+<td align="right">-1.089</td>
+<td align="right">0.000</td>
+<td align="right">0.337</td>
+</tr>
+<tr class="odd">
+<td align="left">stateNY</td>
+<td align="right">1.074</td>
+<td align="right">0.000</td>
+<td align="right">2.927</td>
+</tr>
+<tr class="even">
+<td align="left">stateOH</td>
+<td align="right">-0.242</td>
+<td align="right">0.000</td>
+<td align="right">0.785</td>
+</tr>
+<tr class="odd">
+<td align="left">stateOK</td>
+<td align="right">-0.808</td>
+<td align="right">0.000</td>
+<td align="right">0.446</td>
+</tr>
+<tr class="even">
+<td align="left">stateOR</td>
+<td align="right">-2.089</td>
+<td align="right">0.000</td>
+<td align="right">0.124</td>
+</tr>
+<tr class="odd">
+<td align="left">statePA</td>
+<td align="right">-0.128</td>
+<td align="right">0.000</td>
+<td align="right">0.880</td>
+</tr>
+<tr class="even">
+<td align="left">stateRI</td>
+<td align="right">-1.864</td>
+<td align="right">0.000</td>
+<td align="right">0.155</td>
+</tr>
+<tr class="odd">
+<td align="left">stateSC</td>
+<td align="right">-0.066</td>
+<td align="right">0.000</td>
+<td align="right">0.936</td>
+</tr>
+<tr class="even">
+<td align="left">stateSD</td>
+<td align="right">-2.374</td>
+<td align="right">0.000</td>
+<td align="right">0.093</td>
+</tr>
+<tr class="odd">
+<td align="left">stateTN</td>
+<td align="right">0.104</td>
+<td align="right">0.000</td>
+<td align="right">1.110</td>
+</tr>
+<tr class="even">
+<td align="left">stateTX</td>
+<td align="right">1.486</td>
+<td align="right">0.000</td>
+<td align="right">4.421</td>
+</tr>
+<tr class="odd">
+<td align="left">stateUT</td>
+<td align="right">-1.172</td>
+<td align="right">0.000</td>
+<td align="right">0.310</td>
+</tr>
+<tr class="even">
+<td align="left">stateVA</td>
+<td align="right">-0.105</td>
+<td align="right">0.000</td>
+<td align="right">0.901</td>
+</tr>
+<tr class="odd">
+<td align="left">stateVT</td>
+<td align="right">-4.656</td>
+<td align="right">0.000</td>
+<td align="right">0.010</td>
+</tr>
+<tr class="even">
+<td align="left">stateWA</td>
+<td align="right">-1.015</td>
+<td align="right">0.000</td>
+<td align="right">0.362</td>
+</tr>
+<tr class="odd">
+<td align="left">stateWI</td>
+<td align="right">-0.670</td>
+<td align="right">0.000</td>
+<td align="right">0.512</td>
+</tr>
+<tr class="even">
+<td align="left">stateWV</td>
+<td align="right">-2.607</td>
+<td align="right">0.000</td>
+<td align="right">0.074</td>
+</tr>
+<tr class="odd">
+<td align="left">stateWY</td>
+<td align="right">-3.806</td>
+<td align="right">0.000</td>
+<td align="right">0.022</td>
+</tr>
+<tr class="even">
+<td align="left">state_tavg</td>
+<td align="right">-0.030</td>
+<td align="right">0.000</td>
+<td align="right">0.971</td>
+</tr>
+<tr class="odd">
+<td align="left">state_total_prcp</td>
+<td align="right">-0.038</td>
+<td align="right">0.000</td>
+<td align="right">0.962</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>write_csv(covid_noaa_dataset, &quot;Predictive_Interactive_map/covid_noaa_dataset.csv&quot; )</code></pre>
 </div>
 
