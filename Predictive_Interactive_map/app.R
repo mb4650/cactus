@@ -66,11 +66,15 @@ ui <- fluidPage(
         ),
       
         mainPanel(
-          # fluidRow(
-          #   column(12,label = "Prediction", leafletOutput("selected_var")),
-          #   column(12, label = "general trend", leafletOutput("plot1"))
-          # )
-          leafletOutput("plot1")
+           #fluidRow(
+            # column(15, leafletOutput("selected_var"))
+           #)
+          leafletOutput("plot1"),
+          h3("Prediction of the number of new cases for a particular month based on average temperature and 
+             precipitation"),
+          p("Based on the user's choice of temperature and precipitation, the negative binomial regression 
+          model will predict the number of new cases that are expected for a particular month and
+            state in the United States")
         )
       
     ),
