@@ -3,7 +3,7 @@ title: "About The Members"
 output: 
   html_document
 ---
-We can add little descriptions and links to any personal webpages we may want to show
+We are all current Columbia MPH students at the Mailman School of Public Health in the Epidemiology and Biostatistics Departments, who are set to graduate in 2021. To find out more about us and some of the work we have done, please click on the links below.
 
 ### Maya Bunyan 
 [Email](mailto:<mb4650@cumc.columbia.edu) <br>
