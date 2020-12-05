@@ -35,6 +35,20 @@ One part of our project was to ask specific questions regarding COVID-19 and cli
 In order for people to get a better idea of the trends seen in the data, we created interactive maps to allow viewers to choose what variables they would like to see and help them better visualize the information. This includes trends graphs of COVID-19 data by state over time, a map of the U.S. displaying COVID-19 and climate data for each state depending on the month and day chosen by the user, as well as a graph to visualize temperature trends by state over time.
 
 ### Predictive Models
+<<<<<<< Updated upstream
+=======
+
+We wanted to see the relationship between COVID-19 and climate - more specifically if the case counts is related to rise in temperature. We decided to build three model - 
+The first model assess the relationship between covid-19 case counts and temperature. 
+The second model assess the relationship between covid-19 case counts, temperature and its relation to school closures, work place closures and gathering restrictions. 
+The thrid model assess the reltionship between covid-19 case counts and temperature and its relation to travel restrictions. 
+
+### Interactive Predictive Tool
+
+We went on to build a predictive tool which allows you to choose the temperature in the State that you are curious to predict the case counts and the interactive map would show you the data. 
+
+Our second interactive predictive tools allows you to predict the case counts based on school closures, work place closures and gathering restrictions. 
+>>>>>>> Stashed changes
 
 We wanted to see the relationship between COVID-19 and climate - more specifically if the case counts is related to rise in temperature. We decided to build three model and predict covid case counts. We went on to build a predictive tool which allows you to choose the temperature in the State that you are curious to predict the case counts and the interactive map would show you the data. 
 

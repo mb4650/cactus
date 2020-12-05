@@ -37,7 +37,11 @@ For interactive dashboard visualizations, we retrieved our data from the COVID19
 #### [Regression Analysis](Regression-Analysis.html)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 For the regression analysis we used the COVID-19 package in R as well as the noaa dataset. We created a separate dataset for the regression model and the predictive tool and pulled in the variables that we are interested in to run the analysis.
+=======
+For the regression analysis we used the COVID package in R and the noaa data. We created a separate noaa dataset for the regression analysis pulling in the variables we are interested in to help us build the prediction models and the predictive tool. 
+>>>>>>> Stashed changes
 =======
 For the regression analysis we used the COVID package in R and the noaa data. We created a separate noaa dataset for the regression analysis pulling in the variables we are interested in to help us build the prediction models and the predictive tool. 
 >>>>>>> Stashed changes
