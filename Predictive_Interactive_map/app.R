@@ -42,27 +42,27 @@ neg_bin_public_health = glm.nb(new_cases ~ month_name + state_name + as.factor(i
                                + state_tavg, data = covid_noaa_dataset) 
 
 ui <- fluidPage(
-  titlePanel("Case count Predictor"),
+  titlePanel("Case Count Predictor"),
   
   tabsetPanel(id='my_tabsetPanel',
-    tabPanel('temperature & precipitation',
+    tabPanel('Temperature & Precipitation',
         sidebarPanel(
-          helpText(h2("Enter details")),
+          helpText(h2("Enter Details")),
           
-          selectInput("month1", h3("Select Month"),
+          selectInput("month1", h4("Select Month"),
                       choices =unique(covid_noaa_dataset["month_name"]),selected = "May"),
           
-          selectInput("state1", h3("Select state"),
+          selectInput("state1", h4("Select State"),
                       choices =unique(covid_noaa_dataset["state_name"]),selected = "New York"),
           
           sliderInput( "tavg1",
-                       label = "Select Average temperature",
+                       h4("Select Average Temperature"),
                        min = 1,
                        max = max(covid_noaa_dataset["state_tmax"])+20,
                        value = 30),
           
           sliderInput(inputId = "prcp",
-                      label = "Select precipitation",
+                      h4("Select Precipitation"),
                       min = -10,
                       max = max(covid_noaa_dataset["state_total_prcp"])+10,
                       value = 1)
@@ -84,32 +84,32 @@ ui <- fluidPage(
     ),
     tabPanel('Restrictions',
              sidebarPanel(
-               helpText(h2("Enter details")),
+               helpText(h2("Enter Details")),
                
-               selectInput("month3", h3("Select Month"),
+               selectInput("month3", h4("Select Month"),
                            choices =unique(covid_noaa_dataset["month_name"]),selected = "May"),
                
-               selectInput("state3", h3("Select State"),
+               selectInput("state3", h4("Select State"),
                            choices =unique(covid_noaa_dataset["state_name"]),selected = "New York"),
                
-               selectInput("school", h3("Select School Policy"),
+               selectInput("school", h4("Select School Policy"),
                            choices = list("No measures" = 0, "Recommended closing" = 1,
                                           "Require closing some schools" = 2, "Require closing all schools" = 3),
                           selected = 0),
                
-               selectInput("workplace", h3("Select Workplace Policy"),
+               selectInput("workplace", h4("Select Workplace Policy"),
                            choices = list("No measures" = 0, "Recommended work from home" = 1,
                                           "Require closing some sectors" = 2, "Only essential sectors open" = 3),
                            selected = 0),
                
-               selectInput("gathering", h3("Select Gathering Policy"),
+               selectInput("gathering", h4("Select Gathering Policy"),
                            choices = list("No restrictions" = 0, "Limit very large gatherings" = 1,
                                           "Limit upto 100-1000 people " = 2, "Limit upto 10-100 people" = 3, 
                                           "Limit upto 10 people" = 4),
                            selected = 0),
                
                sliderInput( "tavg3",
-                            label = "Select Average temperature",
+                            h4("Select Average Temperature"),
                             min = 1,
                             max = max(covid_noaa_dataset["state_tmax"])+20,
                             value = 30),
@@ -130,31 +130,31 @@ ui <- fluidPage(
       ),
     tabPanel('Public Health Policies',
              sidebarPanel(
-               helpText(h2("Enter details")),
+               helpText(h2("Enter Details")),
                
-               selectInput("month4", h3("Select Month"),
+               selectInput("month4", h4("Select Month"),
                            choices =unique(covid_noaa_dataset["month_name"]),selected = "May"),
                
-               selectInput("state4", h3("Select State"),
+               selectInput("state4", h4("Select State"),
                            choices =unique(covid_noaa_dataset["state_name"]),selected = "New York"),
                
-               selectInput("campaign", h3("Select information campaign Policy"),
+               selectInput("campaign", h4("Select Information Campaign Policy"),
                            choices = list("No covid 19 public campaign" = 0, "Public officials urging caution " = 1,
                                           "Coordinated public information campaign" = 2),
-                           selected = 1),
+                           selected = 0),
                
-               selectInput("testing", h3("Select testing Policy"),
+               selectInput("testing", h4("Select Testing Policy"),
                            choices = list("No testing policy" = 0, "those with symptoms and  specific criteria (intl travel) tested" = 1,
                                           "Testing anyone with symptoms" = 2, "Open public testing" = 3),
                            selected = 2),
                
-               selectInput("contact", h3("Select contatc tracing Policy"),
+               selectInput("contact", h4("Select Contatc Tracing Policy"),
                            choices = list("No contact tracing" = 0, "Limited contact tracing" = 1,
                                           "Comprehensive contact tracing" = 2),
                            selected = 2),
                
                sliderInput( "tavg4",
-                            label = "Select Average temperature",
+                            h4("Select Average Temperature"),
                             min = 1,
                             max = max(covid_noaa_dataset["state_tmax"])+20,
                             value = 30),
@@ -175,9 +175,9 @@ ui <- fluidPage(
     ),
     tabPanel('General Trend',
              sidebarPanel(
-               helpText(h2("Enter details")),
+               helpText(h2("Enter Details")),
                
-               selectInput("month2", h3("Select Month"),
+               selectInput("month2", h4("Select Month"),
                            choices =unique(covid_noaa_dataset["month_name"]),selected = "August")
              ),
              
