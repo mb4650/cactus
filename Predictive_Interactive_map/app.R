@@ -45,13 +45,13 @@ ui <- fluidPage(
         sidebarPanel(
           helpText(h2("Enter details")),
           
-          selectInput("Month1", h3("Select Month"),
+          selectInput("month1", h3("Select Month"),
                       choices =unique(covid_noaa_dataset["month_name"]),selected = "May"),
           
-          selectInput("State", h3("Select state"),
+          selectInput("state1", h3("Select state"),
                       choices =unique(covid_noaa_dataset["state_name"]),selected = "New York"),
           
-          sliderInput( "tavg",
+          sliderInput( "tavg1",
                        label = "Select Average temperature",
                        min = 1,
                        max = max(covid_noaa_dataset["state_tmax"])+20,
@@ -78,7 +78,7 @@ ui <- fluidPage(
              sidebarPanel(
                helpText(h2("Enter details")),
                
-               selectInput("Month2", h3("Select Month"),
+               selectInput("month2", h3("Select Month"),
                            choices =unique(covid_noaa_dataset["month"]),selected = 4)
              ),
              
@@ -91,14 +91,14 @@ ui <- fluidPage(
              )
              
     ),
-    tabPanel('Map3',
+    tabPanel('map3',
              sidebarPanel(
                helpText(h2("Enter details")),
                
                selectInput("month3", h3("Select Month"),
                            choices =unique(covid_noaa_dataset["month"]),selected = 4),
                
-               selectInput("state1", h3("Select State"),
+               selectInput("state3", h3("Select State"),
                            choices =unique(covid_noaa_dataset["state_name"]),selected = 10),
                
                selectInput("school", h3("Select School Policy"),
@@ -117,7 +117,7 @@ ui <- fluidPage(
                                           "Limit upto 10 people"),
                            selected = 0),
                
-               sliderInput( "tavg1",
+               sliderInput( "tavg3",
                             label = "Select Average temperature",
                             min = 1,
                             max = max(covid_noaa_dataset["state_tmax"])+20,
@@ -141,8 +141,8 @@ server <- function(input, output) {
   
   output$plot1 <- renderLeaflet({
     
-    df = data.frame( month_name = as.factor(input$Month1), state_name = input$State ,
-                     state_tavg = input$tavg , state_total_prcp = input$prcp )
+    df = data.frame( month_name = as.factor(input$month1), state_name = input$state1 ,
+                     state_tavg = input$tavg1 , state_total_prcp = input$prcp )
     
     count = as.integer( predict(neg_bin_mod, df, type = "response") )
     
@@ -153,8 +153,8 @@ server <- function(input, output) {
     
     #paste( "you chose", a)
     map_df = covid_noaa_dataset%>% 
-      filter(month == as.factor(input$Month1),
-             state_name ==input$State)
+      filter(month_name == as.factor(input$month1),
+             state_name ==input$state1)
     
     
     map_df = inner_join(map_df, table_lat_long_df, by = c("state" = "state" ))
@@ -244,10 +244,10 @@ server <- function(input, output) {
   
   output$plot3 <- renderLeaflet({
     
-    df = data.frame( month = as.factor(input$Month1), state_name = input$State ,
+    df = data.frame( month_name = as.factor(input$month3), state_name = input$state1 ,
                      state_tavg = input$tavg , state_total_prcp = input$prcp )
     
-    count = as.integer( predict(neg_bin_mod, df, type = "response") )
+    count = as.integer( predict(neg_bin_mod_policy, df, type = "response") )
     
     display = sprintf(
       "<strong>Predicted number of cases: %s</strong>",
