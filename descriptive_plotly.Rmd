@@ -68,7 +68,7 @@ cactus_df = left_join(covid_df, mask_df, by.x = c("state", "date"), by.y = c("st
 # State Aggregated New COVID Cases and Deaths
 
 
-**Comparing new COVID cases by state over the past year^1^**
+**Comparing new COVID cases by state over the past year**
 
 ```{r message=FALSE, warning=FALSE}
 time_plot = 
@@ -88,7 +88,7 @@ time_plot <- time_plot + scale_y_continuous(labels = comma)
 time_plot
 ```
 
-**Comparing new COVID deaths by state over the past year^1^**
+**Comparing new COVID deaths by state over the past year**
 
 ```{r message=FALSE, warning=FALSE}
 death_plot = 
@@ -269,7 +269,7 @@ lessppl_df =
 
 
 
-**The most populated city - New York City vs. other less populated counties in New York state regarding new COVID cases and deaths^2^.**
+**The most populated city - New York City vs. other less populated counties in New York state regarding new COVID cases and deaths.**
 
 ```{r message=FALSE, warning=FALSE}
 nyc_df =
@@ -321,7 +321,7 @@ ny_confirmed_plot + ny_deaths_plot
 
 
 
-**The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths^2^.**
+**The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths.**
 
 ```{r message=FALSE, warning=FALSE}
 la_df =
@@ -372,7 +372,7 @@ ca_confirmed_plot + ca_deaths_plot
 * Los Angeles has a population of `r format(mean(pull(la_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected CA counties is `r format(mean(pull(ca_lessppl_df, population)), scientific=FALSE)`.
 
 
-**The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths^2^.**
+**The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths.**
 
 ```{r message=FALSE, warning=FALSE}
 chicago_df =
@@ -423,7 +423,7 @@ il_confirmed_plot + il_deaths_plot
 * Cook County (Chicago included) has a population of `r format(mean(pull(chicago_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected IL counties is `r format(mean(pull(il_lessppl_df, population)), scientific=FALSE)`.
 
 
-**The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths^2^.**
+**The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths.**
 
 ```{r message=FALSE, warning=FALSE}
 houston_df =
@@ -522,7 +522,7 @@ us_events_df =
 
 ```
 
-**Daily new COVID cases over the past year with important national events^3^**
+**Daily new COVID cases over the past year with important national events**
 
 ```{r message=FALSE, warning=FALSE}
 us_events_df %>%  
@@ -535,7 +535,7 @@ us_events_df %>%
   geom_text(data = events_df, mapping = aes(x = date, y = 75000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)
 ```
 
-**Daily new COVID deaths over the past year with important national events^3^**
+**Daily new COVID deaths over the past year with important national events**
 
 ```{r message=FALSE, warning=FALSE}
 us_events_df %>%  
@@ -549,10 +549,4 @@ us_events_df %>%
   
 ```
 
-### Citations
 
-* 1. Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.
-  
-* 2. Dong E, Du H, Gardner L. An interactive web-based dashboard to track COVID-19 in real time. Lancet Inf Dis. 20(5):533-534. doi: 10.1016/S1473-3099(20)30120-1.
-
-* 3. https://github.com/seandavi/sars2pack.

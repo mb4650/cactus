@@ -24,24 +24,20 @@ Our initial questions involved looking deeper into trends in COVID-19 over the y
 
 # Data
 
-For each section, COVID-19 data were obtained from the `COVID19` package in R. Additional datasets were utilized for the analysis and are defined in the following reports.
+For each section, COVID-19 data were obtained from the `COVID19` package^1^ in R. Additional datasets were utilized for the analysis and are defined in the following reports.
 
 #### [Descriptives](descriptive_plotly.html)
 
-For descriptive visualizations, we retrieved data from the aforementioned COVID19 package in R, JHU CSSE database, and the sars2pack from GitHub along with two locally created datasets with date of mask mandate per state and important national events. 
+For descriptive visualizations, we retrieved data from the aforementioned `COVID19` package^1^ in R, JHU CSSE database^2^, and the `sars2pack`^3^ from GitHub along with two locally created datasets with date of mask mandate per state and important national events. 
 
 #### [Interactive Dashboard Visualizations](create_shiny.html)
 
-For interactive dashboard visualizations, we retrieved our data from the COVID19 package in R as well as the rnoaa dataset.
+For interactive dashboard visualizations, we retrieved our data from the `COVID19` package^1^ in R as well as the `rnoaa` dataset.
 
 #### [Regression Analysis](regression_analysis.html)
 
-<<<<<<< HEAD
-For the regression analysis we used the COVID19 package in R as well as the noaa dataset. We created a separate dataset for the regression model and the predictive tool and pulled in the variables that we are interested in to run the analysis.
-=======
+For the regression analysis we used the `COVID19` package^1^ in R as well as the noaa dataset. We created a separate dataset for the regression model and the predictive tool and pulled in the variables that we are interested in to run the analysis.
 
-For the regression analysis we used the COVID package in R and the noaa data. We created a separate noaa dataset for the regression analysis pulling in the variables we are interested in to help us build the prediction models and the predictive tool. 
->>>>>>> origin
 
 # Discussion of Exploratory Analysis 
 
@@ -76,7 +72,6 @@ The descriptive visualizations evolved a lot from what we initially wanted it to
 
 For the interactive dashboard visualizations, creating the shiny app was a new experience that we are glad we got to apply outside of class. Although our original plan was to do a day-by-day comparison of COVID-19 and climate, we were unable to because there was a lot of missing temperature data. We ended up having to change what we wanted to plot due to this. A lot of what we did was tinkering with the Shiny app to see what would and wouldn't work, which allowed us to learn a lot about Shiny in the process. An additional issue that would come up often was that deploying the Shiny app sometimes wouldn't show our desired results, which was at times frustrating because it was difficult to tell whether or not we had an error. Overall, it was very exciting to reach our final product with the interactive dashboard, and creating it in a way that was user friendly and aesthetically pleasing. 
 
-
 When working on the regression analysis and the predictive model, the main challenge was figuring out the regression model and making sure it was correct, while also seeing how we could make the model fit the maps in a visually appealing way. Our regression analysis has several limitations - we primarily did not account for all the confounding variables, which may be the reason for our results being inconsistent with our hypothesis. More rigorous analysis would account for these discrepancies. Furthermore, we wanted to build on the regression models to help us predict the COVID-19 case counts based on temperature variation and we were successfully able to do so and map it out. This involved a lot of conceptualization to see how we would go from a model to a map, and making sure we formulated it in a way that would make sense for users. Seeing the final product after transmitting the regression models onto the map was very rewarding. 
 
 Overall, barriers for the entire team mainly consisted of issues that dealt with committing and 
@@ -85,4 +80,10 @@ pushing/pulling are edits, as we were often working on the project simultaneousl
 We had an enjoyable experience working as a team and applying concepts and material that we learned in class to relevant issues. Our topic of COVID-19 and climate was a very timely subject as we chose something that is affecting everyone's lives on many different levels, and used the available data to create a public-facing tool that could potentially be useful for people now and in the future. With this project, each one of us was constantly improvising and coming up with new ideas to add onto the website in a way that is coherent for users. This process itself was a unique experience, but also helped us develop a deeper and better understanding of the data and the methods used to analyze it. 
 
 
+### Citations
 
+1. Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.
+  
+2. Dong E, Du H, Gardner L. An interactive web-based dashboard to track COVID-19 in real time. Lancet Inf Dis. 20(5):533-534. doi: 10.1016/S1473-3099(20)30120-1.
+
+3. https://github.com/seandavi/sars2pack.

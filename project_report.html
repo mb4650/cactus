@@ -421,19 +421,18 @@ div.tocify {
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
-<p>For each section, COVID-19 data were obtained from the <code>COVID19</code> package in R. Additional datasets were utilized for the analysis and are defined in the following reports.</p>
+<p>For each section, COVID-19 data were obtained from the <code>COVID19</code> package<sup>1</sup> in R. Additional datasets were utilized for the analysis and are defined in the following reports.</p>
 <div id="descriptives-1" class="section level4">
 <h4><a href="descriptive_plotly.html">Descriptives</a></h4>
-<p>For descriptive visualizations, we retrieved data from the aforementioned COVID19 package in R, JHU CSSE database, and the sars2pack from GitHub along with two locally created datasets with date of mask mandate per state and important national events.</p>
+<p>For descriptive visualizations, we retrieved data from the aforementioned <code>COVID19</code> package<sup>1</sup> in R, JHU CSSE database<sup>2</sup>, and the <code>sars2pack</code><sup>3</sup> from GitHub along with two locally created datasets with date of mask mandate per state and important national events.</p>
 </div>
 <div id="interactive-dashboard-visualizations-1" class="section level4">
 <h4><a href="create_shiny.html">Interactive Dashboard Visualizations</a></h4>
-<p>For interactive dashboard visualizations, we retrieved our data from the COVID19 package in R as well as the rnoaa dataset.</p>
+<p>For interactive dashboard visualizations, we retrieved our data from the <code>COVID19</code> package<sup>1</sup> in R as well as the <code>rnoaa</code> dataset.</p>
 </div>
 <div id="regression-analysis-1" class="section level4">
 <h4><a href="regression_analysis.html">Regression Analysis</a></h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD For the regression analysis we used the COVID19 package in R as well as the noaa dataset. We created a separate dataset for the regression model and the predictive tool and pulled in the variables that we are interested in to run the analysis. =======</p>
-<p>For the regression analysis we used the COVID package in R and the noaa data. We created a separate noaa dataset for the regression analysis pulling in the variables we are interested in to help us build the prediction models and the predictive tool. &gt;&gt;&gt;&gt;&gt;&gt;&gt; origin</p>
+<p>For the regression analysis we used the <code>COVID19</code> package<sup>1</sup> in R as well as the noaa dataset. We created a separate dataset for the regression model and the predictive tool and pulled in the variables that we are interested in to run the analysis.</p>
 </div>
 </div>
 <div id="discussion-of-exploratory-analysis" class="section level1">
@@ -459,6 +458,14 @@ div.tocify {
 <p>When working on the regression analysis and the predictive model, the main challenge was figuring out the regression model and making sure it was correct, while also seeing how we could make the model fit the maps in a visually appealing way. Our regression analysis has several limitations - we primarily did not account for all the confounding variables, which may be the reason for our results being inconsistent with our hypothesis. More rigorous analysis would account for these discrepancies. Furthermore, we wanted to build on the regression models to help us predict the COVID-19 case counts based on temperature variation and we were successfully able to do so and map it out. This involved a lot of conceptualization to see how we would go from a model to a map, and making sure we formulated it in a way that would make sense for users. Seeing the final product after transmitting the regression models onto the map was very rewarding.</p>
 <p>Overall, barriers for the entire team mainly consisted of issues that dealt with committing and pushing/pulling are edits, as we were often working on the project simultaneously and ran into errors because of this. A unique experience with the timing of this project in particular was working on a collaborative project with others limited to an online format only, as we were only able to meet with each other online due to COVID-19.</p>
 <p>We had an enjoyable experience working as a team and applying concepts and material that we learned in class to relevant issues. Our topic of COVID-19 and climate was a very timely subject as we chose something that is affecting everyone’s lives on many different levels, and used the available data to create a public-facing tool that could potentially be useful for people now and in the future. With this project, each one of us was constantly improvising and coming up with new ideas to add onto the website in a way that is coherent for users. This process itself was a unique experience, but also helped us develop a deeper and better understanding of the data and the methods used to analyze it.</p>
+<div id="citations" class="section level3">
+<h3>Citations</h3>
+<ol style="list-style-type: decimal">
+<li><p>Guidotti, E., Ardia, D., (2020), “COVID-19 Data Hub”, Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.</p></li>
+<li><p>Dong E, Du H, Gardner L. An interactive web-based dashboard to track COVID-19 in real time. Lancet Inf Dis. 20(5):533-534. doi: 10.1016/S1473-3099(20)30120-1.</p></li>
+<li><p><a href="https://github.com/seandavi/sars2pack" class="uri">https://github.com/seandavi/sars2pack</a>.</p></li>
+</ol>
+</div>
 </div>
 
 
