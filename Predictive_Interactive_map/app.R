@@ -177,7 +177,8 @@ ui <- fluidPage(
                leafletOutput("plot2"),
                h3("General trend of the number of new cases for a particular month"),
                p("This gives the general trend of the new covide cases thats actually been seen. The user can select the month
-                 to obeserve the covid case change over time for their respective monthly average temperatures.")
+                 to obeserve the covid case change over time for their respective monthly average temperatures."),
+               p("On hovering over a particular state, we get the state name and the number of new cases in that state for that particular month")
              )
              
     )
@@ -230,7 +231,7 @@ server <- function(input, output) {
           bringToFront = FALSE)) %>%
       
       addCircleMarkers(lat =map_df$latitude.y, lng = map_df$longitude.y,
-                       radius =count/40000,color = "red",popup =map_df$state_name) %>%
+                       radius =sqrt(count)/20,color = "red",popup =map_df$state_name) %>%
       
       addControl(display, position = "bottomleft")
     
@@ -273,7 +274,7 @@ server <- function(input, output) {
           color = "#666",
           dashArray = "",
           fillOpacity = 0.7,
-          bringToFront = TRUE),
+          bringToFront = FALSE),
         label = labels,
         labelOptions = labelOptions(
           style = list("font-weight" = "normal", padding = "3px 8px"),
@@ -284,7 +285,7 @@ server <- function(input, output) {
                        lng = states_merged_sb$longitude.y,
                        radius = states_merged_sb$new_cases/20000,
                        color = pal1(states_merged_sb$new_cases), 
-                       popup =states_merged_sb$confirmed ) %>%
+                       popup =states_merged_sb$new_cases ) %>%
       
       addLegend("bottomright", pal = pal, values = ~states_merged_sb$state_tavg,
                 title = "temp",
@@ -338,7 +339,7 @@ server <- function(input, output) {
           bringToFront = FALSE)) %>%
       
       addCircleMarkers(lat =map_df$latitude.y, lng = map_df$longitude.y,
-                       radius =count/40000,color = "red",popup =map_df$state_name) %>%
+                       radius =sqrt(count)/20,color = "red",popup =map_df$state_name) %>%
       
       addControl(display, position = "bottomleft")
     
@@ -391,7 +392,7 @@ server <- function(input, output) {
           bringToFront = FALSE)) %>%
       
       addCircleMarkers(lat =map_df$latitude.y, lng = map_df$longitude.y,
-                       radius =count/40000,color = "red",popup =map_df$state_name) %>%
+                       radius =sqrt(count)/20,color = "red",popup =map_df$state_name) %>%
       
       addControl(display, position = "bottomleft")
     
