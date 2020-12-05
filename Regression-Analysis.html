@@ -11,7 +11,7 @@
 
 
 
-<title>statistical Analyses</title>
+<title>Statistical Analyses</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -315,7 +315,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">statistical Analyses</h1>
+<h1 class="title toc-ignore">Statistical Analyses</h1>
 
 </div>
 
@@ -351,6 +351,7 @@ $(document).ready(function () {
 </div>
 <div id="assessing-crude-correlation-among-our-selected-variables" class="section level3">
 <h3>Assessing crude correlation among our selected variables</h3>
+<p><img src="Regression-Analysis_files/figure-html/correlation-1.png" width="90%" /></p>
 <p>In order to select the most significant variables in our model we first conducted a crude correlation assessment using a correlation matrix as shown above. From this assessment we decided to remove <code>state_tmax</code> and <code>state_tmin</code> since the r is 0.97 - 0.99, indicating that there is an extreme co-linearity among other predictors.</p>
 </div>
 <div id="confounding" class="section level3">
@@ -744,6 +745,30 @@ nb_output %&gt;%
 </tbody>
 </table>
 <pre class="r"><code>write_csv(covid_noaa_dataset, &quot;Predictive_Interactive_map/covid_noaa_dataset.csv&quot; )</code></pre>
+</div>
+<div id="model-2" class="section level2">
+<h2>Model 2</h2>
+<div id="data-for-model-2" class="section level3">
+<h3>Data for Model 2</h3>
+</div>
+<div id="hypothesis-1" class="section level3">
+<h3>Hypothesis</h3>
+<p>In our initial hypotheses we have established that there is a relationship between temperature and COVID-19 cases. We now want to see if this relationship would change with certain events such as school closures, workplace closures and gathering.</p>
+</div>
+<div id="relevant-predictors-1" class="section level3">
+<h3>Relevant predictors</h3>
+<p>The following are the relevant predictors we want to include in the model</p>
+<ul>
+<li><code>new_cases</code>- The number of new cases in every month.</li>
+<li><code>case_count</code> - The total number of cases in every month.</li>
+<li><code>population</code>- Total population of each state - This forms the offset variable in the poisson regression model and the demoninator for the count to extrapolate the rate.</li>
+<li><code>state_name</code>- All the states in the USA</li>
+<li><code>state_tavg</code>- The average temperature in a state in a month.</li>
+<li><code>school_closing</code>- 0: No measures - 1: Recommend closing - 2: Require closing (only some levels or categories, eg just high school, or just public schools - 3: Require closing all levels.</li>
+<li><code>workplace_closing</code>- 0: No measures - 1: Recommend closing (or work from home) - 2: require closing for some sectors or categories of workers - 3: require closing (or work from home) all-but-essential workplaces (eg grocery stores, doctors).</li>
+<li><code>gatherings_restriction</code> - 0: No restrictions - 1: Restrictions on very large gatherings (the limit is above 1000 people) - 2: Restrictions on gatherings between 100-1000 people - 3: Restrictions on gatherings between 10-100 people - 4: Restrictions on gatherings of less than 10 people.</li>
+</ul>
+</div>
 </div>
 
 

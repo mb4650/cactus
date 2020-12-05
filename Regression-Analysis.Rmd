@@ -1,5 +1,5 @@
 ---
-title: "statistical Analyses"
+title: "Statistical Analyses"
 output: html_document
 editor_options:
   chunk_output_type: console
@@ -148,21 +148,21 @@ The following are the relevant predictors we want to include in the model
 
 ```{r correlation, echo = FALSE, message=FALSE, results='hide'}
 library(MASS)
-#covid_noaa_dataset_cor =
-#covid_noaa_dataset %>%
-#  dplyr::select(new_cases, state_tavg, state_tmax, state_tmin, state_total_prcp)
+covid_noaa_dataset_cor =
+covid_noaa_dataset %>%
+  dplyr::select(new_cases, state_tavg, state_tmax, state_tmin, state_total_prcp)
 
-#  covid_noaa_dataset_cor[,3:7] %>%
-#  cor() %>%
-#  corrplot::corrplot(type = "lower",
-#                     method = "square",
-#                     addCoef.col = "red",
-#                     diag = FALSE,
-#                     number.cex = .6,
-#                     tl.col = "red",
-#                     tl.cex = .9,
-#                     tl.srt = 45,
-#                     is.corr = FALSE)
+  covid_noaa_dataset_cor[,3:7] %>%
+  cor() %>%
+  corrplot::corrplot(type = "lower",
+                     method = "square",
+                     addCoef.col = "red",
+                     diag = FALSE,
+                     number.cex = .6,
+                     tl.col = "red",
+                     tl.cex = .9,
+                     tl.srt = 45,
+                     is.corr = FALSE)
  
 ```
 
@@ -250,3 +250,31 @@ nb_output %>%
 ```{r}
 write_csv(covid_noaa_dataset, "Predictive_Interactive_map/covid_noaa_dataset.csv" )
 ```
+
+## Model 2 
+
+### Data for Model 2 
+
+```{r creating data 3, echo = FALSE, message=FALSE, results='hide'}
+ct_school_work_gather = 
+  covid_noaa_dataset %>%
+  dplyr::select(date, case_count, new_cases, population, school_closing, workplace_closing, gatherings_restrictions, state, state_name, state_tavg, month_name)
+```
+
+### Hypothesis
+
+In our initial hypotheses we have established that there is a relationship between temperature and COVID-19 cases. We now want to see if this relationship would change with certain events such as school closures, workplace closures and gathering. 
+
+### Relevant predictors
+
+The following are the relevant predictors we want to include in the model
+
+* `new_cases`- The number of new cases in every month.
+* `case_count` - The total number of cases in every month.
+* `population`- Total population of each state - This forms the offset variable in the poisson regression model and the demoninator for the count to extrapolate the rate.
+* `state_name`- All the states in the USA
+* `state_tavg`- The average temperature in a state in a month.
+* `school_closing`- 0: No measures - 1: Recommend closing - 2: Require closing (only some levels or categories, eg just high school, or just public schools - 3: Require closing all levels.
+* `workplace_closing`- 0: No measures - 1: Recommend closing (or work from home) - 2: require closing for some sectors or categories of workers - 3: require closing (or work from home) all-but-essential workplaces (eg grocery stores, doctors).
+* `gatherings_restriction` - 0: No restrictions - 1: Restrictions on very large gatherings (the limit is above 1000 people) - 2: Restrictions on gatherings between 100-1000 people - 3: Restrictions on gatherings between 10-100 people - 4: Restrictions on gatherings of less than 10 people.
+
