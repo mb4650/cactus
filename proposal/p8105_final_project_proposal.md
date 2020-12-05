@@ -1,0 +1,52 @@
+Final Project Proposal
+================
+Maya Bunyan, Lunbei Hu, Michelle Lui, Ling Yi, Gauri Bhatkhande, Pallavi
+Krishnamurthy
+
+## The group members (Names and UNIs)
+
+Maya Bunyan (mb4650) Lunbei Hu (lh3000) Michelle Lui (mll2209) Ling Yi
+(ly2496) Gauri Bhatkhande (gb2865) Pallavi Krishnamurthy (pk2646)
+
+## The tentative project title
+
+CACTUS - Covid-19 and Climate trends in the US.
+
+## The motivation for this project
+
+We want to understand more about the trends in COVID-19 cases by state
+and by month. As we move into colder months, we also want to see if
+there is an association between COVID-19 cases and climate.
+
+## The intended final products
+
+Our intended final products will be a website with a dashboard, along
+with a report stating our findings. Our dashboard will contain summary
+visualizations. We will also do an interactive map for statewide data.
+The website will include a screencast walking our audience through the
+process that we took to complete the project.
+
+## The anticipated data sources
+
+We are planning to use the CDC dataset for the statewide daily COVID-19
+cases, and to pull the climate data (temperature, precipitation, etc.)
+for all 50 states from the NOAA website.
+
+## The planned analyses / visualizations / coding challenges
+
+We plan to plot the results of our analysis to see trends. Analysis will
+include regression models of temperature (assess linearity to determine
+linear or logistic regression) and covid cases. Preliminary plots might
+include histograms, line graphs, tables, etc. Interactive graphics will
+be included.
+
+Issues include combining the climate dataset for each state and
+accurately combining the climate and covid case dataset.
+
+## The planned timeline
+
+November 7th: Proposal November 13th: Review November 20: Import and
+clean the data November 21-25: Start working and finish the analysis
+November 26 - Dec 2: Start working on and finish visualisations and
+create the website December 3 - 5: Review and go to office hours to make
+sure everything is in order.

@@ -19,7 +19,11 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -245,7 +249,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -255,6 +325,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -319,6 +399,14 @@ $(document).ready(function () {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Statistical Analyses</h1>
@@ -326,39 +414,67 @@ $(document).ready(function () {
 </div>
 
 
-<div id="create-dataset-with-noaa-data" class="section level2">
-<h2>Create dataset with noaa data</h2>
+<div id="create-datasets" class="section level2">
+<h2>Create datasets</h2>
+<div id="create-datasets-with-noaa-data" class="section level3">
+<h3>Create datasets with noaa data</h3>
 <p>The noaa dataset that we used was from the <a href="https://www.ncdc.noaa.gov/cag/statewide/mapping">ncdc.noaa.gov</a> website. We retrieved 4 individual datasets from the noaa website. The retrieved dataset includes: 1. tmax: Data for the maximum temperature for each state by month. 2. tmin: Data for the minimum temperature for each state by month. 3. tavg: Data for the average temperaure for each state by month. 4. prcp: Data for the precipitation values for each state by month.</p>
 <p>The datasets were scraped from the website using read_csv and were then merged with the COVID19 dataset by month and state.</p>
 </div>
-<div id="import-covid-dataset.-clean-and-tidy-data" class="section level2">
-<h2>Import Covid dataset. Clean and tidy data</h2>
+<div id="import-covid-dataset.-clean-and-tidy-data" class="section level3">
+<h3>Import Covid dataset. Clean and tidy data</h3>
 <p>The COVID19 dataset was imported using the COVID19 R package. COVID-19 data was obtained from the <code>COVID19</code> package. This function has arguments set to return data at the state level. This dataset included information on the date, state, as well as the number of cases, tests, and hospitalizations for that given day.</p>
 </div>
+<<<<<<< HEAD:Regression-Analysis.html
 <div id="merging-the-two-dataset" class="section level2">
 <h2>Merging the two dataset</h2>
 <p>The two datasets were merged by state and month.</p>
+=======
+<div id="merging-the-two-dataset" class="section level3">
+<h3>Merging the two dataset</h3>
+<p>The final dataset has information on average temperature, total precipitation, maximum and minimum temperature as the main climate variables along with covid -19 data related to the case counts, information about school gathering, workplace gathering, contact tracing and testing, which are important COVID-19 related variables used in the Analysis.</p>
 </div>
-<div id="hypothesis" class="section level2">
-<h2>Hypothesis</h2>
-<p>Our team hypothesizes that the relationship between temperature and COVID-19 cases are correlated. We have looked at the trends in COVID and Climate in the United States between Jan 2020 and October 2020. <em>Include a plot here of covid cases vs temperature</em> Check out our interactive map here "<em>insert link to Maya and Michelle’s map</em>. We want to conduct an analysis to see if cases increase with increase in temperature.</p>
+</div>
+<div id="model-1" class="section level2">
+<h2>Model 1</h2>
+<div id="hypothesis" class="section level3">
+<h3>Hypothesis</h3>
+<p>Our team hypothesizes that the relationship between temperature and COVID-19 cases are correlated. We have looked at the trends in COVID and Climate in the United States. Check out our interactive map here <a href="https://mb4650.shinyapps.io/plotly/#section-trends-in-covid-and-climate-in-us-between-jan-2020-and-oct-2020">Trends in COVID and Climate in US Between Jan 2020 and OCt 2020</a>. We want to conduct an analysis to see if cases increase with increase in temperature.</p>
+>>>>>>> origin:regression_analysis.html
+</div>
 <div id="relevant-predictors" class="section level3">
 <h3>Relevant predictors</h3>
 <p>The following are the relevant predictors we want to include in the model</p>
 <ul>
-<li><code>new_cases</code>- The number of new cases in every month.</li>
+<li><code>new_cases</code> - The number of new cases in every month.</li>
 <li><code>case_count</code> - The total number of cases in every month.</li>
-<li><code>population</code>- Total population of each state - This forms the offset variable in the poisson regression model and the demoninator for the count to extrapolate the rate.</li>
-<li><code>state_name</code>- All the states in the USA</li>
-<li><code>state_tavg</code>- The average temperature in a state in a month.</li>
-<li><code>state_tmax</code>- The maximum temperature in a state in a month</li>
-<li><code>state_tmin</code>- The minimum temperature in a state in a month</li>
+<li><code>population</code> - Total population of each state - This forms the offset variable in the poisson regression model and the denominator for the count to extrapolate the rate.</li>
+<li><code>state_name</code> - All the states in the USA</li>
+<li><code>state_tavg</code> - The average temperature in a state in a month.</li>
+<li><code>state_tmax</code> - The maximum temperature in a state in a month</li>
+<li><code>state_tmin</code> - The minimum temperature in a state in a month</li>
 <li><code>state_total_prcp</code> - The total precipitation in a state in a month.</li>
 </ul>
 </div>
 <div id="assessing-crude-correlation-among-our-selected-variables" class="section level3">
 <h3>Assessing crude correlation among our selected variables</h3>
-<p><img src="Regression-Analysis_files/figure-html/correlation-1.png" width="90%" /></p>
+<pre class="r"><code>library(MASS)
+covid_noaa_dataset_cor =
+covid_noaa_dataset %&gt;%
+  dplyr::select(new_cases, state_tavg, state_tmax, state_tmin, state_total_prcp)
+
+  covid_noaa_dataset_cor[,3:7] %&gt;%
+  cor() %&gt;%
+  corrplot::corrplot(type = &quot;lower&quot;,
+                     method = &quot;square&quot;,
+                     addCoef.col = &quot;red&quot;,
+                     diag = FALSE,
+                     number.cex = .6,
+                     tl.col = &quot;red&quot;,
+                     tl.cex = .9,
+                     tl.srt = 45,
+                     is.corr = FALSE)</code></pre>
+<p><img src="regression_analysis_files/figure-html/correlation-1.png" width="90%" /></p>
 <p>In order to select the most significant variables in our model we first conducted a crude correlation assessment using a correlation matrix as shown above. From this assessment we decided to remove <code>state_tmax</code> and <code>state_tmin</code> since the r is 0.97 - 0.99, indicating that there is an extreme co-linearity among other predictors.</p>
 </div>
 <div id="confounding" class="section level3">
@@ -370,24 +486,108 @@ $(document).ready(function () {
 <p>Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression.</p>
 <p>A poisson distribution assumes that the mean and variance are the same. Sometimes the data shows extra variation that is greater than the mean. This situation is called overdispersion. Negative binomial is more flexible in that regard. Negative binomial has one more parameter the adjusts for the variance independently from the mean.</p>
 <p>In order to decide which model to use we cross validate between the two models to see the distribution. We also assess the AIC to determine the model with the smaller AIC.</p>
+<pre class="r"><code>poisson_mod = glm(new_cases ~  as.factor(month_name) + state + state_tavg + state_total_prcp,
+                    family = &quot;poisson&quot;(link = &quot;log&quot;), data = covid_noaa_dataset)
+
+
+
+neg_bin_mod = glm.nb(new_cases ~ as.factor(month_name) + state + state_tavg + state_total_prcp,
+                            data = covid_noaa_dataset)</code></pre>
+<p>AIC for both the models are below -</p>
+<pre class="r"><code>poisson_mod %&gt;%
+  broom::glance() %&gt;%
+  dplyr::select(AIC) %&gt;%
+  knitr::kable(digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2593050</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>neg_bin_mod %&gt;%
+  broom::glance() %&gt;%
+  dplyr::select(AIC) %&gt;%
+  knitr::kable(digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">8357.088</td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-<div id="cross-validation" class="section level2">
-<h2>Cross validation</h2>
-<p><img src="Regression-Analysis_files/figure-html/cross%20validation-1.png" width="90%" /></p>
+<div id="cross-validation" class="section level3">
+<h3>Cross validation</h3>
+<pre class="r"><code>count_cv =
+  crossv_mc(covid_noaa_dataset, 100)
+
+count_cv =
+  count_cv %&gt;%
+  mutate(  
+    poisson = map(train, ~glm(new_cases ~  as.factor(month) + state + state_tavg + state_total_prcp,
+                                    family=&quot;poisson&quot; (link = log), data = covid_noaa_dataset)),
+    neg_binomial = map(train, ~ glm.nb(new_cases ~  as.factor(month) + state + state_tavg + state_total_prcp,
+                                             data = covid_noaa_dataset))
+    ) %&gt;%
+  
+  mutate(
+    rmse_poisson = map2_dbl(poisson, test, ~rmse(model = .x, data = .y)),
+    rmse_negative_binomial = map2_dbl(neg_binomial, test, ~rmse(model = .x, data = .y))
+    )
+
+count_cv %&gt;%
+  dplyr::select(starts_with(&quot;rmse&quot;)) %&gt;%
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;,
+    values_to = &quot;rmse&quot;,
+    names_prefix = &quot;rmse_&quot;) %&gt;%
+  mutate(model = fct_inorder(model)) %&gt;%
+  ggplot(aes(x = model, y = rmse)) + geom_violin() +
+  labs(
+    title = &quot;Variation Distributions&quot;
+  )</code></pre>
+<p><img src="regression_analysis_files/figure-html/cross%20validation-1.png" width="90%" /></p>
 <p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
-<p>The poisson model has an AIC of The negative binomial model has an AIC of</p>
+<p>The poisson model has an AIC of 2593050 The negative binomial model has an AIC of 8357.088</p>
 <p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
-<pre class="r"><code>write_csv(covid_noaa_dataset, &quot;Predictive_Interactive_map/covid_noaa_dataset.csv&quot; )</code></pre>
 </div>
-<div id="results-1" class="section level2">
-<h2>Results 1</h2>
-<p>For every one degree increase in temperature the case count increases by 0.963 times.</p>
+<div id="results-1" class="section level3">
+<h3>Results 1</h3>
+<pre class="r"><code>nb_output = neg_bin_mod %&gt;%
+  broom::tidy() %&gt;%
+  dplyr::select(term, estimate, p.value) %&gt;%
+  mutate(exp(estimate)) 
+
+nb_output %&gt;% 
+  knitr::kable(digits = 3)</code></pre>
+<p>For every one degree increase in temperature the case count increases by 0.957 times.</p>
+</div>
 </div>
 <div id="model-2" class="section level2">
 <h2>Model 2</h2>
 <div id="data-for-model-2" class="section level3">
 <h3>Data for Model 2</h3>
+<p>This dataset filters out the variables required for the second model which assess the influence of school closures, workplace closures and gathering restrictions on case counts.</p>
+<pre class="r"><code>ct_school_work_gather = 
+  covid_noaa_dataset %&gt;%
+  dplyr::select(date, case_count, new_cases, population, school_closing, workplace_closing, gatherings_restrictions, state, state_name, state_tavg, month_name) %&gt;% 
+  mutate(
+    school_closing = as.factor(school_closing),
+    workplace_closing = as.factor(workplace_closing),
+    gatherings_restrictions = as.factor(gatherings_restrictions)
+  )</code></pre>
 </div>
 <div id="hypothesis-1" class="section level3">
 <h3>Hypothesis</h3>
@@ -409,41 +609,117 @@ $(document).ready(function () {
 </div>
 <div id="assessing-crude-correlation-among-our-selected-variables-1" class="section level3">
 <h3>Assessing crude correlation among our selected variables</h3>
-<p><img src="Regression-Analysis_files/figure-html/correlation%202-1.png" width="90%" /></p>
-<p>We decided to keep school closing and work place closing because they are important variables.</p>
+<pre class="r"><code>covid_noaa_dataset_cor_2 =
+ct_school_work_gather %&gt;%
+  dplyr::select(new_cases, state_tavg, school_closing, workplace_closing, gatherings_restrictions)
+
+cor_plot = 
+  covid_noaa_dataset_cor_2[,3:7] %&gt;%
+  hetcor() %&gt;%
+  as.matrix() %&gt;% 
+  as.data.frame() </code></pre>
+<pre class="r"><code> cor_plot %&gt;%
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<colgroup>
+<col width="23%" />
+<col width="9%" />
+<col width="10%" />
+<col width="14%" />
+<col width="17%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">new_cases</th>
+<th align="right">state_tavg</th>
+<th align="right">school_closing</th>
+<th align="right">workplace_closing</th>
+<th align="right">gatherings_restrictions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">new_cases</td>
+<td align="right">1.000</td>
+<td align="right">0.368</td>
+<td align="right">0.410</td>
+<td align="right">0.234</td>
+<td align="right">0.150</td>
+</tr>
+<tr class="even">
+<td align="left">state_tavg</td>
+<td align="right">0.368</td>
+<td align="right">1.000</td>
+<td align="right">0.610</td>
+<td align="right">0.704</td>
+<td align="right">0.331</td>
+</tr>
+<tr class="odd">
+<td align="left">school_closing</td>
+<td align="right">0.410</td>
+<td align="right">0.610</td>
+<td align="right">1.000</td>
+<td align="right">0.852</td>
+<td align="right">0.537</td>
+</tr>
+<tr class="even">
+<td align="left">workplace_closing</td>
+<td align="right">0.234</td>
+<td align="right">0.704</td>
+<td align="right">0.852</td>
+<td align="right">1.000</td>
+<td align="right">0.405</td>
+</tr>
+<tr class="odd">
+<td align="left">gatherings_restrictions</td>
+<td align="right">0.150</td>
+<td align="right">0.331</td>
+<td align="right">0.537</td>
+<td align="right">0.405</td>
+<td align="right">1.000</td>
+</tr>
+</tbody>
+</table>
+<p>We decided to keep school closing and work place closing even with large r-squared because they are important variables.</p>
 </div>
-<div id="confounding-1" class="section level3">
-<h3>Confounding</h3>
-<p>There are many variables that would confound the relationship between temperature and case count. We have included ones that we felt are the most important. However, in order to maintain parsimonious model we restricted the number of predictors. This could also be a limitation of our model.</p>
+<div id="modeling---negative-binomial-regression" class="section level3">
+<h3>Modeling - Negative binomial regression</h3>
+<p>Our outcome variable is a count variable, hence we want to model a negative binomial regression.</p>
+<p>We decided to do the use the same modeling technique to run a regression analysis.</p>
+<pre class="r"><code>neg_bin_mod_policy = glm.nb(new_cases ~  month_name + state_name + as.factor(school_closing) + as.factor(workplace_closing) + as.factor(gatherings_restrictions) + state_tavg,
+                            data = covid_noaa_dataset)</code></pre>
 </div>
-<div id="modeling---poisson-vs-negative-binomial-regression-1" class="section level3">
-<h3>Modeling - Poisson vs Negative binomial regression</h3>
-<p>Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression.</p>
-<p>We decided to do the use the same modelling technique to run a regression analysis.</p>
-</div>
-</div>
-<div id="cross-validation-1" class="section level2">
-<h2>Cross validation</h2>
-<p><img src="Regression-Analysis_files/figure-html/cross%20validation%202-1.png" width="90%" /></p>
-<p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
-<p>The poisson model has an AIC of The negative binomial model has an AIC of</p>
-<p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
-</div>
-<div id="results" class="section level2">
-<h2>Results</h2>
+<div id="results-for-the-second-model" class="section level3">
+<h3>Results for the second model</h3>
+<pre class="r"><code>nb_output_policy = neg_bin_mod_policy %&gt;%
+  broom::tidy() %&gt;%
+  dplyr::select(term, estimate, p.value) %&gt;%
+  mutate(exp(estimate)) 
+
+nb_output_policy %&gt;% 
+  knitr::kable(digits = 3)</code></pre>
 <p>For every one degree increase in temperature the case count increases by 0.96 times.</p>
+</div>
 </div>
 <div id="model-3" class="section level2">
 <h2>Model 3</h2>
 <div id="data-for-model-3" class="section level3">
 <h3>Data for Model 3</h3>
+<p>This dataset filters out the variables required for the second model which assess the influence of information campaigns, testing policies and contact tracting policies on case counts.</p>
+<pre class="r"><code>ct_infoc_test_tract = 
+  covid_noaa_dataset %&gt;%
+  dplyr::select(date, case_count, new_cases, population, information_campaigns, testing_policy, contact_tracing, state, state_name, state_tavg, month_name) %&gt;%
+  mutate(
+    information_campaigns = as.factor(information_campaigns),
+    testing_policy = as.factor(testing_policy),
+    contact_tracing = as.factor(contact_tracing)
+  )</code></pre>
 </div>
 <div id="hypothesis-2" class="section level3">
 <h3>Hypothesis</h3>
-<p>In our initial hypotheses we have established that there is a relationship between temperature and COVID-19 cases. We now want to see if this relationship would change with certain policies such as information campaigns, testing policies and contact tracing policies.</p>
-</div>
-<div id="relevant-predictors-2" class="section level3">
-<h3>Relevant predictors</h3>
+<p>In our initial hypotheses we have established that there is a relationship between temperature and COVID-19 cases. We now want to see if this relationship would change with certain policies such as information campaigns, testing policies and contact tracing policies. ### Relevant predictors</p>
 <p>The following are the relevant predictors we want to include in the model</p>
 <ul>
 <li><code>new_cases</code>- The number of new cases in every month.</li>
@@ -458,33 +734,84 @@ $(document).ready(function () {
 </div>
 <div id="assessing-crude-correlation-among-our-selected-variables-2" class="section level3">
 <h3>Assessing crude correlation among our selected variables</h3>
-<p><img src="Regression-Analysis_files/figure-html/correlation%203-1.png" width="90%" /></p>
-<p>We decided to keep information campaign and testing policy because they are important variables even though the r-sqaured is ~ 0.77.</p>
+<pre class="r"><code>covid_noaa_dataset_cor_3 =
+ct_infoc_test_tract %&gt;%
+  dplyr::select(new_cases, state_tavg, information_campaigns,  contact_tracing)
+
+cor_plot_2 =   
+covid_noaa_dataset_cor_3[,3:6] %&gt;%
+  hetcor() %&gt;%
+  as.matrix() %&gt;% 
+  as.data.frame() </code></pre>
+<pre class="r"><code> cor_plot_2 %&gt;%
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">new_cases</th>
+<th align="right">state_tavg</th>
+<th align="right">information_campaigns</th>
+<th align="right">contact_tracing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">new_cases</td>
+<td align="right">1.000</td>
+<td align="right">0.368</td>
+<td align="right">0.846</td>
+<td align="right">0.271</td>
+</tr>
+<tr class="even">
+<td align="left">state_tavg</td>
+<td align="right">0.368</td>
+<td align="right">1.000</td>
+<td align="right">0.830</td>
+<td align="right">0.635</td>
+</tr>
+<tr class="odd">
+<td align="left">information_campaigns</td>
+<td align="right">0.846</td>
+<td align="right">0.830</td>
+<td align="right">1.000</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">contact_tracing</td>
+<td align="right">0.271</td>
+<td align="right">0.635</td>
+<td align="right">NA</td>
+<td align="right">1.000</td>
+</tr>
+</tbody>
+</table>
+<p>We decided to remove <code>testing_policy</code> from the model due to colinearity with other predictors.</p>
 </div>
-<div id="confounding-2" class="section level3">
-<h3>Confounding</h3>
-<p>There are many variables that would confound the relationship between temperature and case count. We have included ones that we felt are the most important. However, in order to maintain parsimonious model we restricted the number of predictors. This could also be a limitation of our model.</p>
+<div id="modeling---negative-binomial-regression-1" class="section level3">
+<h3>Modeling - Negative binomial regression</h3>
+<p>Our outcome variable is a count variable, hence we want to model a negative binomial regression.</p>
+<p>We decided to do the use the same modeling technique to run a regression analysis as the previous models.</p>
+<pre class="r"><code>neg_bin_mod_public_health = glm.nb(new_cases ~  month_name + state_name + as.factor(information_campaigns) + as.factor(testing_policy) + as.factor(contact_tracing) + state_tavg,
+                            data = ct_infoc_test_tract)</code></pre>
 </div>
-<div id="modeling---poisson-vs-negative-binomial-regression-2" class="section level3">
-<h3>Modeling - Poisson vs Negative binomial regression</h3>
-<p>Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression.</p>
-<p>We decided to do the use the same modeling technique to run a regression analysis.</p>
-</div>
-</div>
-<div id="cross-validation-2" class="section level2">
-<h2>Cross validation</h2>
-<p><img src="Regression-Analysis_files/figure-html/cross%20validation%203-1.png" width="90%" /></p>
-<p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
-<p>The poisson model has an AIC of The negative binomial model has an AIC of</p>
-<p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
-</div>
-<div id="results-2" class="section level2">
-<h2>Results</h2>
+<div id="results-for-the-third-model" class="section level3">
+<h3>Results for the third model</h3>
+<pre class="r"><code>nb_output_public_health = neg_bin_mod_public_health %&gt;%
+  broom::tidy() %&gt;%
+  dplyr::select(term, estimate, p.value) %&gt;%
+  mutate(exp(estimate)) 
+
+nb_output_public_health %&gt;% 
+  knitr::kable(digits = 3)</code></pre>
 <p>For every one degree increase in temperature the case count increases by 0.957 times.</p>
 </div>
+</div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -516,7 +843,38 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
