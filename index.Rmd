@@ -34,7 +34,7 @@ One part of our project was to ask specific questions regarding COVID-19 and cli
 
 ### Interactive Plots
 
-In order for people to get a better idea of the trends seen in the data, we created interactive maps to allow viewers to choose what variables they would like to see and help them better visualize the information. 
+In order for people to get a better idea of the trends seen in the data, we created interactive maps to allow viewers to choose what variables they would like to see and help them better visualize the information. This includes trends graphs of COVID-19 data by state over time, a map of the U.S. displaying COVID-19 and climate data for each state depending on the month and day chosen by the user, as well as a graph to visualize temperature trends by state over time.
 
 ### Predictive Tool
 
