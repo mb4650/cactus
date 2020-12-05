@@ -299,7 +299,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Formal Analysis
+    Predictive Models
      
     <span class="caret"></span>
   </a>
@@ -331,8 +331,8 @@ $(document).ready(function () {
 <p>The noaa dataset that we used was from the <a href="https://www.ncdc.noaa.gov/cag/statewide/mapping">ncdc.noaa.gov</a> website. We retrieved 4 individual datasets from the noaa website. The retrieved dataset includes: 1. tmax: Data for the maximum temperature for each state by month. 2. tmin: Data for the minimum temperature for each state by month. 3. tavg: Data for the average temperaure for each state by month. 4. prcp: Data for the precipitation values for each state by month.</p>
 <p>The datasets were scraped from the website using read_csv and were then merged with the COVID19 dataset by month and state.</p>
 </div>
-<div id="import-covid-datase.-clean-and-tidy-data" class="section level2">
-<h2>Import Covid datase. Clean and tidy data</h2>
+<div id="import-covid-dataset.-clean-and-tidy-data" class="section level2">
+<h2>Import Covid dataset. Clean and tidy data</h2>
 <p>The COVID19 dataset was imported using the COVID19 R package. COVID-19 data was obtained from the <code>COVID19</code> package. This function has arguments set to return data at the state level. This dataset included information on the date, state, as well as the number of cases, tests, and hospitalizations for that given day.</p>
 </div>
 <div id="merging-the-two-dataset" class="section level2">
@@ -377,380 +377,11 @@ $(document).ready(function () {
 <p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
 <p>The poisson model has an AIC of The negative binomial model has an AIC of</p>
 <p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
-<pre class="r"><code>nb_output = neg_bin_mod %&gt;%
-  broom::tidy() %&gt;%
-  dplyr::select(term, estimate, p.value) %&gt;%
-  mutate(exp(estimate)) 
-
-nb_output %&gt;% 
-  knitr::kable(digits = 3)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">estimate</th>
-<th align="right">p.value</th>
-<th align="right">exp(estimate)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">(Intercept)</td>
-<td align="right">7.530</td>
-<td align="right">1.000</td>
-<td align="right">1.863414e+03</td>
-</tr>
-<tr class="even">
-<td align="left">as.factor(month_name).L</td>
-<td align="right">32.058</td>
-<td align="right">1.000</td>
-<td align="right">8.366116e+13</td>
-</tr>
-<tr class="odd">
-<td align="left">as.factor(month_name).Q</td>
-<td align="right">-26.479</td>
-<td align="right">1.000</td>
-<td align="right">0.000000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">as.factor(month_name).C</td>
-<td align="right">17.489</td>
-<td align="right">1.000</td>
-<td align="right">3.939529e+07</td>
-</tr>
-<tr class="odd">
-<td align="left">as.factor(month_name)^4</td>
-<td align="right">-10.588</td>
-<td align="right">1.000</td>
-<td align="right">0.000000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">as.factor(month_name)^5</td>
-<td align="right">5.062</td>
-<td align="right">1.000</td>
-<td align="right">1.578500e+02</td>
-</tr>
-<tr class="odd">
-<td align="left">as.factor(month_name)^6</td>
-<td align="right">-1.507</td>
-<td align="right">1.000</td>
-<td align="right">2.220000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">as.factor(month_name)^7</td>
-<td align="right">0.279</td>
-<td align="right">1.000</td>
-<td align="right">1.322000e+00</td>
-</tr>
-<tr class="odd">
-<td align="left">as.factor(month_name)^8</td>
-<td align="right">-0.002</td>
-<td align="right">1.000</td>
-<td align="right">9.980000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">as.factor(month_name)^9</td>
-<td align="right">-0.084</td>
-<td align="right">1.000</td>
-<td align="right">9.190000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateAR</td>
-<td align="right">-0.797</td>
-<td align="right">0.000</td>
-<td align="right">4.510000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateAZ</td>
-<td align="right">0.350</td>
-<td align="right">0.104</td>
-<td align="right">1.419000e+00</td>
-</tr>
-<tr class="odd">
-<td align="left">stateCA</td>
-<td align="right">1.497</td>
-<td align="right">0.000</td>
-<td align="right">4.469000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateCO</td>
-<td align="right">-0.826</td>
-<td align="right">0.001</td>
-<td align="right">4.380000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateCT</td>
-<td align="right">-0.446</td>
-<td align="right">0.043</td>
-<td align="right">6.400000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateDE</td>
-<td align="right">-1.668</td>
-<td align="right">0.000</td>
-<td align="right">1.890000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateFL</td>
-<td align="right">1.788</td>
-<td align="right">0.000</td>
-<td align="right">5.979000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateGA</td>
-<td align="right">0.899</td>
-<td align="right">0.000</td>
-<td align="right">2.457000e+00</td>
-</tr>
-<tr class="odd">
-<td align="left">stateIA</td>
-<td align="right">-0.962</td>
-<td align="right">0.000</td>
-<td align="right">3.820000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateID</td>
-<td align="right">-2.221</td>
-<td align="right">0.000</td>
-<td align="right">1.090000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateIL</td>
-<td align="right">0.773</td>
-<td align="right">0.000</td>
-<td align="right">2.166000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateIN</td>
-<td align="right">-0.291</td>
-<td align="right">0.173</td>
-<td align="right">7.470000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateKS</td>
-<td align="right">-1.237</td>
-<td align="right">0.000</td>
-<td align="right">2.900000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateKY</td>
-<td align="right">-1.066</td>
-<td align="right">0.000</td>
-<td align="right">3.450000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateLA</td>
-<td align="right">0.773</td>
-<td align="right">0.000</td>
-<td align="right">2.166000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateMA</td>
-<td align="right">0.321</td>
-<td align="right">0.150</td>
-<td align="right">1.378000e+00</td>
-</tr>
-<tr class="odd">
-<td align="left">stateMD</td>
-<td align="right">0.014</td>
-<td align="right">0.948</td>
-<td align="right">1.014000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateME</td>
-<td align="right">-3.456</td>
-<td align="right">0.000</td>
-<td align="right">3.200000e-02</td>
-</tr>
-<tr class="odd">
-<td align="left">stateMI</td>
-<td align="right">0.221</td>
-<td align="right">0.349</td>
-<td align="right">1.248000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateMN</td>
-<td align="right">-0.977</td>
-<td align="right">0.000</td>
-<td align="right">3.770000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateMO</td>
-<td align="right">-0.577</td>
-<td align="right">0.005</td>
-<td align="right">5.620000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateMS</td>
-<td align="right">-0.292</td>
-<td align="right">0.142</td>
-<td align="right">7.470000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateMT</td>
-<td align="right">-3.500</td>
-<td align="right">0.000</td>
-<td align="right">3.000000e-02</td>
-</tr>
-<tr class="even">
-<td align="left">stateNC</td>
-<td align="right">0.212</td>
-<td align="right">0.291</td>
-<td align="right">1.236000e+00</td>
-</tr>
-<tr class="odd">
-<td align="left">stateND</td>
-<td align="right">-2.923</td>
-<td align="right">0.000</td>
-<td align="right">5.400000e-02</td>
-</tr>
-<tr class="even">
-<td align="left">stateNE</td>
-<td align="right">-1.493</td>
-<td align="right">0.000</td>
-<td align="right">2.250000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateNH</td>
-<td align="right">-2.867</td>
-<td align="right">0.000</td>
-<td align="right">5.700000e-02</td>
-</tr>
-<tr class="even">
-<td align="left">stateNJ</td>
-<td align="right">1.134</td>
-<td align="right">0.000</td>
-<td align="right">3.108000e+00</td>
-</tr>
-<tr class="odd">
-<td align="left">stateNM</td>
-<td align="right">-1.654</td>
-<td align="right">0.000</td>
-<td align="right">1.910000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateNV</td>
-<td align="right">-1.075</td>
-<td align="right">0.000</td>
-<td align="right">3.410000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateNY</td>
-<td align="right">1.795</td>
-<td align="right">0.000</td>
-<td align="right">6.017000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateOH</td>
-<td align="right">-0.169</td>
-<td align="right">0.430</td>
-<td align="right">8.440000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateOK</td>
-<td align="right">-0.878</td>
-<td align="right">0.000</td>
-<td align="right">4.160000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateOR</td>
-<td align="right">-2.080</td>
-<td align="right">0.000</td>
-<td align="right">1.250000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">statePA</td>
-<td align="right">0.188</td>
-<td align="right">0.394</td>
-<td align="right">1.207000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateRI</td>
-<td align="right">-1.519</td>
-<td align="right">0.000</td>
-<td align="right">2.190000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateSC</td>
-<td align="right">-0.082</td>
-<td align="right">0.680</td>
-<td align="right">9.210000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateSD</td>
-<td align="right">-2.445</td>
-<td align="right">0.000</td>
-<td align="right">8.700000e-02</td>
-</tr>
-<tr class="odd">
-<td align="left">stateTN</td>
-<td align="right">0.095</td>
-<td align="right">0.639</td>
-<td align="right">1.099000e+00</td>
-</tr>
-<tr class="even">
-<td align="left">stateTX</td>
-<td align="right">1.523</td>
-<td align="right">0.000</td>
-<td align="right">4.587000e+00</td>
-</tr>
-<tr class="odd">
-<td align="left">stateUT</td>
-<td align="right">-1.184</td>
-<td align="right">0.000</td>
-<td align="right">3.060000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateVA</td>
-<td align="right">-0.031</td>
-<td align="right">0.878</td>
-<td align="right">9.690000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateVT</td>
-<td align="right">-4.000</td>
-<td align="right">0.000</td>
-<td align="right">1.800000e-02</td>
-</tr>
-<tr class="even">
-<td align="left">stateWA</td>
-<td align="right">-0.165</td>
-<td align="right">0.492</td>
-<td align="right">8.480000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">stateWI</td>
-<td align="right">-0.839</td>
-<td align="right">0.000</td>
-<td align="right">4.320000e-01</td>
-</tr>
-<tr class="even">
-<td align="left">stateWV</td>
-<td align="right">-2.701</td>
-<td align="right">0.000</td>
-<td align="right">6.700000e-02</td>
-</tr>
-<tr class="odd">
-<td align="left">stateWY</td>
-<td align="right">-3.950</td>
-<td align="right">0.000</td>
-<td align="right">1.900000e-02</td>
-</tr>
-<tr class="even">
-<td align="left">state_tavg</td>
-<td align="right">-0.044</td>
-<td align="right">0.000</td>
-<td align="right">9.570000e-01</td>
-</tr>
-<tr class="odd">
-<td align="left">state_total_prcp</td>
-<td align="right">-0.016</td>
-<td align="right">0.353</td>
-<td align="right">9.840000e-01</td>
-</tr>
-</tbody>
-</table>
 <pre class="r"><code>write_csv(covid_noaa_dataset, &quot;Predictive_Interactive_map/covid_noaa_dataset.csv&quot; )</code></pre>
+</div>
+<div id="results-1" class="section level2">
+<h2>Results 1</h2>
+<p>For every one degree increase in temperature the case count increases by 0.963 times.</p>
 </div>
 <div id="model-2" class="section level2">
 <h2>Model 2</h2>
@@ -775,6 +406,80 @@ nb_output %&gt;%
 <li><code>gatherings_restriction</code> - 0: No restrictions - 1: Restrictions on very large gatherings (the limit is above 1000 people) - 2: Restrictions on gatherings between 100-1000 people - 3: Restrictions on gatherings between 10-100 people - 4: Restrictions on gatherings of less than 10 people.</li>
 </ul>
 </div>
+<div id="assessing-crude-correlation-among-our-selected-variables-1" class="section level3">
+<h3>Assessing crude correlation among our selected variables</h3>
+<p><img src="Regression-Analysis_files/figure-html/correlation%202-1.png" width="90%" /></p>
+<p>We decided to keep school closing and work place closing because they are important variables.</p>
+</div>
+<div id="confounding-1" class="section level3">
+<h3>Confounding</h3>
+<p>There are many variables that would confound the relationship between temperature and case count. We have included ones that we felt are the most important. However, in order to maintain parsimonious model we restricted the number of predictors. This could also be a limitation of our model.</p>
+</div>
+<div id="modeling---poisson-vs-negative-binomial-regression-1" class="section level3">
+<h3>Modeling - Poisson vs Negative binomial regression</h3>
+<p>Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression.</p>
+<p>We decided to do the use the same modelling technique to run a regression analysis.</p>
+</div>
+</div>
+<div id="cross-validation-1" class="section level2">
+<h2>Cross validation</h2>
+<p><img src="Regression-Analysis_files/figure-html/cross%20validation%202-1.png" width="90%" /></p>
+<p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
+<p>The poisson model has an AIC of The negative binomial model has an AIC of</p>
+<p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>For every one degree increase in temperature the case count increases by 0.96 times.</p>
+</div>
+<div id="model-3" class="section level2">
+<h2>Model 3</h2>
+<div id="data-for-model-3" class="section level3">
+<h3>Data for Model 3</h3>
+</div>
+<div id="hypothesis-2" class="section level3">
+<h3>Hypothesis</h3>
+<p>In our initial hypotheses we have established that there is a relationship between temperature and COVID-19 cases. We now want to see if this relationship would change with certain policies such as information campaigns, testing policies and contact tracing policies.</p>
+</div>
+<div id="relevant-predictors-2" class="section level3">
+<h3>Relevant predictors</h3>
+<p>The following are the relevant predictors we want to include in the model</p>
+<ul>
+<li><code>new_cases</code>- The number of new cases in every month.</li>
+<li><code>case_count</code> - The total number of cases in every month.</li>
+<li><code>population</code>- Total population of each state - This forms the offset variable in the poisson regression model and the demoninator for the count to extrapolate the rate.</li>
+<li><code>state_name</code>- All the states in the USA</li>
+<li><code>state_tavg</code>- The average temperature in a state in a month.</li>
+<li><code>information_campaigns</code>- 0: No COVID-19 public information campaign - 1: public officials urging caution about COVID-19 - 2: coordinated public information campaign (e.g. across traditional and social media).</li>
+<li><code>testing_policy</code>- 0: No testing policy - 1: Only those who both (a) have symptoms AND (b) meet specific criteria (eg key workers, admitted to hospital, came into contact with a known case, returned from overseas) - 2: testing of anyone showing COVID-19 symptoms - 3: open public testing (eg “drive through” testing available to asymptomatic people).</li>
+<li><code>contact_tracing</code> - 0: No contact tracing - 1: Limited contact tracing, not done for all cases - 2: Comprehensive contact tracing, done for all cases.</li>
+</ul>
+</div>
+<div id="assessing-crude-correlation-among-our-selected-variables-2" class="section level3">
+<h3>Assessing crude correlation among our selected variables</h3>
+<p><img src="Regression-Analysis_files/figure-html/correlation%203-1.png" width="90%" /></p>
+<p>We decided to keep information campaign and testing policy because they are important variables even though the r-sqaured is ~ 0.77.</p>
+</div>
+<div id="confounding-2" class="section level3">
+<h3>Confounding</h3>
+<p>There are many variables that would confound the relationship between temperature and case count. We have included ones that we felt are the most important. However, in order to maintain parsimonious model we restricted the number of predictors. This could also be a limitation of our model.</p>
+</div>
+<div id="modeling---poisson-vs-negative-binomial-regression-2" class="section level3">
+<h3>Modeling - Poisson vs Negative binomial regression</h3>
+<p>Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression.</p>
+<p>We decided to do the use the same modeling technique to run a regression analysis.</p>
+</div>
+</div>
+<div id="cross-validation-2" class="section level2">
+<h2>Cross validation</h2>
+<p><img src="Regression-Analysis_files/figure-html/cross%20validation%203-1.png" width="90%" /></p>
+<p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
+<p>The poisson model has an AIC of The negative binomial model has an AIC of</p>
+<p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
+</div>
+<div id="results-2" class="section level2">
+<h2>Results</h2>
+<p>For every one degree increase in temperature the case count increases by 0.957 times.</p>
 </div>
 
 

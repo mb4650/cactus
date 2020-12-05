@@ -179,7 +179,7 @@ renderPlotly({
 
 ### Descriptions
 **COVID-19 trends over time for confirmed cases, deaths, and hospitalization:**
-Line graph with overlayed trends in cumulative confirmed cases, deaths, and hospitalization cases from January 2020 to October 2020 in the state selected.
+Line graph with overlaid trends in cumulative confirmed cases, deaths, and hospitalization cases from January 2020 to October 2020 in the state selected.
 
 **Confirmed COVID-19 Cases over time:**
 Bar graph of cumulative confirmed cases from January 2020 to October 2020 in the state selected.
@@ -322,7 +322,7 @@ renderPlotly({
 
 This US map allows users to choose between month, date, COVID variable, and climate variable. Changes in variables can be seen over time for all 50 states, and difference in COVID variables specifically can be visualized by changes in color from state to state on the map. Hovering over each state can allow the user to see the statistic for the COVID variable selected, the statistic for the climate variable selected, as well as the state abbreviation.
 
-The COVID variables included are: Number of Confirmed Cases, Number of Deaths, Number of Hospitalizations, Number of New Cases, Number of Tests, Proportion of Confirms Cases who Died of COVID-19, Proportin of Confirmed Cases who were Hospitalized with COVID-19, Proportion of State Population who Died of COVID-19, Proportion of State Population who were Hospitalized with COVID-19, Proportion of State Population who were Tested, Proportion of State Population with Confirmed Cases.
+The COVID variables included are: Number of Confirmed Cases, Number of Deaths, Number of Hospitalizations, Number of New Cases, Number of Tests, Proportion of Confirmed Cases who Died of COVID-19, Proportion of Confirmed Cases who were Hospitalized with COVID-19, Proportion of State Population who Died of COVID-19, Proportion of State Population who were Hospitalized with COVID-19, Proportion of State Population who were Tested, and Proportion of State Population with Confirmed Cases.
 
 **Number of Confirmed Cases:**
 Number of cumulative confirmed COVID-19 cases since January 1st, 2020, on date selected in state selected
@@ -360,13 +360,13 @@ Number of cumulative confirmed COVID-19 cases divided by total state population 
 The climate variables included are: Average temperature, Maximum temperature, Minimum temperature, and Precipitation.
 
 **Average temperature:**
-Average temperature of day selected in Farhenheit as determined by 10 stations across the state selected
+Average temperature of day selected in Fahrenheit as determined by 10 stations across the state selected
 
 **Maximum temperature:**
-Maximum temperature of day selected in Farhenheit as determined by 10 stations across the state selected
+Maximum temperature of day selected in Fahrenheit as determined by 10 stations across the state selected
 
 **Minimum temperature:**
-Minimum temperature of day selected in Farhenheit as determined by 10 stations across the state selected
+Minimum temperature of day selected in Fahrenheit as determined by 10 stations across the state selected
 
 **Precipitation:**
 Precipitation in millimeters of day selected as determined by 10 stations across the state selected
@@ -438,7 +438,7 @@ renderPlotly({
 ### Description
 ***Description of temperature trends***
 
-This plot allows users to choose between the states: Alaska, Alabama, Arizona, California, FLorida, Georgia, Hawaii, Idaho, Illinois, Kansas, Kentucky, Louisiana, Maryland, Maine, Michigan, Missouri, Mississippi, Montana, Nebraska, New Mexico, Nevada, New York, Ohio, Oregon, Pennsylvania, Rhode Island, South Carolina, Tennessee, Washington, West Virgina, and Wyoming. States that were excluded were states that did not have data for maximum temperature. Because of this, all states included will have maximum temperature, but may not have minimum or average temperature due to missing data issues. 
+This plot allows users to choose between the states: Alaska, Alabama, Arizona, California, Florida, Georgia, Hawaii, Idaho, Illinois, Kansas, Kentucky, Louisiana, Maryland, Maine, Michigan, Missouri, Mississippi, Montana, Nebraska, New Mexico, Nevada, New York, Ohio, Oregon, Pennsylvania, Rhode Island, South Carolina, Tennessee, Washington, West Virginia, and Wyoming. States that were excluded were states that did not have data for maximum temperature. Because of this, all states included will have maximum temperature, but may not have minimum or average temperature due to missing data issues. 
 
 The graph overlays the monthly average minimum temperature (F), maximum temperature (F), and average temperature(F) across 10 stations per state from January 2020 to October 2020.
 

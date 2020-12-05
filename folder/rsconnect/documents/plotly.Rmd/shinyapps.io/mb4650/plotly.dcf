@@ -5,6 +5,6 @@ account: mb4650
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3340160
-bundleId: 3945994
+bundleId: 3946735
 url: https://mb4650.shinyapps.io/plotly/
-when: 1607136848.73473
+when: 1607155947.4056
