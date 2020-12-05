@@ -37,11 +37,15 @@ neg_bin_policy = glm.nb(new_cases ~ month_name + state_name + as.factor(school_c
                         + as.factor(workplace_closing) + as.factor(gatherings_restrictions)
                         + state_tavg, data = covid_noaa_dataset) 
 
+neg_bin_public_health = glm.nb(new_cases ~ month_name + state_name + as.factor(information_campaigns) 
+                               + as.factor(testing_policy) + as.factor(contact_tracing)
+                               + state_tavg, data = covid_noaa_dataset) 
+
 ui <- fluidPage(
   titlePanel("Case count Predictor"),
   
   tabsetPanel(id='my_tabsetPanel',
-    tabPanel('Map1',
+    tabPanel('temperature & precipitation',
         sidebarPanel(
           helpText(h2("Enter details")),
           
@@ -78,24 +82,7 @@ ui <- fluidPage(
         )
       
     ),
-    tabPanel('Map2',
-             sidebarPanel(
-               helpText(h2("Enter details")),
-               
-               selectInput("month2", h3("Select Month"),
-                           choices =unique(covid_noaa_dataset["month_name"]),selected = 4)
-             ),
-             
-             mainPanel(
-               # fluidRow(
-               #   column(12,label = "Prediction", leafletOutput("selected_var")),
-               #   column(12, label = "general trend", leafletOutput("plot1"))
-               # )
-               leafletOutput("plot2")
-             )
-             
-    ),
-    tabPanel('map3',
+    tabPanel('Restrictions',
              sidebarPanel(
                helpText(h2("Enter details")),
                
@@ -134,9 +121,78 @@ ui <- fluidPage(
                #   column(12,label = "Prediction", leafletOutput("selected_var")),
                #   column(12, label = "general trend", leafletOutput("plot1"))
                # )
-               leafletOutput("plot3")
+               leafletOutput("plot3"),
+               h3("Prediction of the number of new cases for a particular month based on restrictions"),
+               p("Based on the user's choice of different restrictions and temperature , the negative binomial regression 
+          model will predict the number of new cases that are expected for a particular month and
+            state in the United States")
              )
-      )
+      ),
+    tabPanel('Public Health Policies',
+             sidebarPanel(
+               helpText(h2("Enter details")),
+               
+               selectInput("month4", h3("Select Month"),
+                           choices =unique(covid_noaa_dataset["month_name"]),selected = "May"),
+               
+               selectInput("state4", h3("Select State"),
+                           choices =unique(covid_noaa_dataset["state_name"]),selected = "New York"),
+               
+               selectInput("campaign", h3("Select information campaign Policy"),
+                           choices = list("No covid 19 public campaign" = 0, "Public officials urging caution " = 1,
+                                          "Coordinated public information campaign" = 2),
+                           selected = 1),
+               
+               selectInput("testing", h3("Select testing Policy"),
+                           choices = list("No testing policy" = 0, "those with symptoms and  specific criteria (intl travel) tested" = 1,
+                                          "Testing anyone with symptoms" = 2, "Open public testing" = 3),
+                           selected = 2),
+               
+               selectInput("contact", h3("Select contatc tracing Policy"),
+                           choices = list("No contact tracing" = 0, "Limited contact tracing" = 1,
+                                          "Comprehensive contact tracing" = 2),
+                           selected = 2),
+               
+               sliderInput( "tavg4",
+                            label = "Select Average temperature",
+                            min = 1,
+                            max = max(covid_noaa_dataset["state_tmax"])+20,
+                            value = 30),
+               
+             ),
+             
+             mainPanel(
+               # fluidRow(
+               #   column(12,label = "Prediction", leafletOutput("selected_var")),
+               #   column(12, label = "general trend", leafletOutput("plot1"))
+               # )
+               leafletOutput("plot4"),
+               h3("Prediction of the number of new cases for a particular month based on health sector activity"),
+               p("Based on the user's choice of various health sector policies, the negative binomial regression 
+          model will predict the number of new cases that are expected for a particular month and
+            state in the United States")
+             )
+    ),
+    tabPanel('General Trend',
+             sidebarPanel(
+               helpText(h2("Enter details")),
+               
+               selectInput("month2", h3("Select Month"),
+                           choices =unique(covid_noaa_dataset["month_name"]),selected = "August")
+             ),
+             
+             mainPanel(
+               # fluidRow(
+               #   column(12,label = "Prediction", leafletOutput("selected_var")),
+               #   column(12, label = "general trend", leafletOutput("plot1"))
+               # )
+               leafletOutput("plot2"),
+               h3("General trend of the number of new cases for a particular month"),
+               p("This gives the general trend of the new covide cases thats actually been seen. the user can select the month
+                 to obeserve the covid case change over time")
+             )
+             
+    )
   )
 )
 
@@ -165,11 +221,14 @@ server <- function(input, output) {
     
     states_merged_sb <- geo_join(states, map_df, "STUSPS", "state")
     
+    pal <- colorNumeric(
+      palette = "Blues",
+      domain = map_df$state_tavg)
     
     leaflet(states_merged_sb)%>%
       setView(-96, 40, 3.5) %>%
       addPolygons(
-        fillColor = "pink",
+        fillColor = ~pal(states_merged_sb$state_tavg),
         weight = 2,
         opacity = 1,
         color = "white",
@@ -207,8 +266,6 @@ server <- function(input, output) {
       domain = map_df$new_cases)
     
     
-   
-    
     labels <- sprintf(
       "<strong>%s</strong><br/>%s",
       states_merged_sb$state_name, states_merged_sb$new_cases
@@ -228,7 +285,7 @@ server <- function(input, output) {
           color = "#666",
           dashArray = "",
           fillOpacity = 0.7,
-          bringToFront = FALSE),
+          bringToFront = TRUE),
         label = labels,
         labelOptions = labelOptions(
           style = list("font-weight" = "normal", padding = "3px 8px"),
@@ -271,11 +328,68 @@ server <- function(input, output) {
     
     states_merged_sb <- geo_join(states, map_df, "STUSPS", "state")
     
+    pal <- colorNumeric(
+      palette = "Blues",
+      domain = map_df$state_tavg)
     
     leaflet(states_merged_sb)%>%
       setView(-96, 40, 3.5) %>%
       addPolygons(
-        fillColor = "pink",
+        
+        fillColor = ~pal(states_merged_sb$state_tavg),
+        weight = 2,
+        opacity = 1,
+        color = "white",
+        dashArray = "3",
+        fillOpacity = 0.7,
+        highlight = highlightOptions(
+          weight = 5,
+          color = "#666",
+          dashArray = "",
+          fillOpacity = 0.7,
+          bringToFront = FALSE)) %>%
+      
+      addCircleMarkers(lat =map_df$latitude.y, lng = map_df$longitude.y,
+                       radius =count/40000,color = "red",popup =map_df$state_name) %>%
+      
+      addControl(display, position = "bottomleft")
+    
+  })
+  
+  output$plot4 <- renderLeaflet({
+    
+    
+    df = data.frame( month_name = input$month4, state_name = input$state4, information_campaigns = as.factor(input$campaign),
+                     testing_policy = as.factor(input$testing), contact_tracing = as.factor(input$contact),
+                     state_tavg = input$tavg4 )
+    
+
+    
+    count = as.integer( predict(neg_bin_public_health, df, type = "response") )
+    
+    display = sprintf(
+      "<strong>Predicted number of cases: %s</strong>",
+      count
+    ) %>% lapply(htmltools::HTML)
+    
+    #paste( "you chose", a)
+    map_df = covid_noaa_dataset%>% 
+      filter(month_name == input$month4,
+             state_name == input$state4)
+    
+    
+    map_df = inner_join(map_df, table_lat_long_df, by = c("state" = "state" ))
+    
+    states_merged_sb <- geo_join(states, map_df, "STUSPS", "state")
+    
+    pal <- colorNumeric(
+      palette = "Blues",
+      domain = map_df$state_tavg)
+    
+    leaflet(states_merged_sb)%>%
+      setView(-96, 40, 3.5) %>%
+      addPolygons(
+        fillColor = ~pal(states_merged_sb$state_tavg),
         weight = 2,
         opacity = 1,
         color = "white",
