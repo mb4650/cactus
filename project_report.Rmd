@@ -8,7 +8,7 @@ output:
 
 # Motivation
 
-Our motivation for CACTUS came from the idea that weather potentially had an effect on COVID-19 transmission. As we’re now about to enter the winter months, it is more paramount than ever that we understand this relationship, so that the general public can be appropriately informed and take proper precaution and control measures as a result. Although climate itself most likely does not act alone in contributing to transmission, we were interested in further understanding the association between various climate variables and COVID-19 statistics. Our project utilizes real life COVID-19 and climate data to analyze trends and create predictive models.
+Our motivation for CACTUS came from the idea that weather potentially had an effect on COVID-19 transmission. As we’re now about to enter the winter months, it is more paramount than ever that we understand this relationship, so that the general public can be appropriately informed and take proper precaution and control measures as a result. Although climate itself most likely does not act alone in contributing to transmission, we were interested in further understanding the association between various climate variables and COVID-19 statistics, in addition to other social and political variables. Our project utilizes real life COVID-19 and climate data to analyze trends and create predictive models.
 
 # Initial Questions
 
@@ -36,33 +36,45 @@ For interactive dashboard visualizations, we retrieved our data from the `COVID1
 
 #### [Regression Analysis](regression_analysis.html)
 
-For the regression analysis we used the `COVID19` package^1^ in R as well as the noaa dataset. We created a separate dataset for the regression model and the predictive tool and pulled in the variables that we are interested in to run the analysis.
+For the regression analysis, we used the `COVID19` package^1^ in R as well as the noaa dataset. We created a separate dataset for the regression model and the predictive tool and pulled in the variables that we are interested in to run the analysis.
 
 
 # Discussion of Exploratory Analysis 
 
 Exploratory analysis was done in [Descriptives](descriptive_plotly.html) as well as [Interactive Dashboard Visualizations](create_shiny.html). 
 
-The purpose and results were to see whether there are any differences between new daily COVID-19 cases and deaths between states that are temperate and sub-tropical, red/blue states as per 2020 election, and between US cities among those are most populated compared to 10 randomly selected less populated counties. Additionally the interactive dashboard explored the data individually focusing on COVID-19 data and climate data. 
+The purpose and results were to see whether there are any differences between new daily COVID-19 cases and deaths between states that are temperate and sub-tropical, red/blue states as per 2020 election, and between US cities among those that are the most populated compared to 10 randomly selected less populated counties. Additionally, the interactive dashboard explored the data individually focusing on COVID-19 data and climate data. 
 
-Our results show that COVID-19 cases dropped from April to May, but increased again in the summer, before decreasing in August and September, and peaking again as we got closer to the winter. We see that COVID-19 death peaked at the beginning of the pandemic around March and April before decreasing. The pattern of COVID-19 cases is similar between sub-tropical and temperate states, but the total count in cases in sub-tropical states is slightly higher and fluctuates more, with similar observations for COVID-19 deaths. Patterns or populated cities and less populated counties are similar, however peak for COVID-19 cases and deaths are more pronounced for populated cities. From our visualizations, COVID-19 cases and deaths do not seem to be responsive to national events. However, as we move into the winter months, cases and deaths are increasing, but we are not sure if that is a result of the national events in the fall and winter.
+Our results show that COVID-19 cases dropped from April to May, but increased again in the summer, before decreasing in August and September, and peaking again as we got closer to the winter. We see that COVID-19 deaths peaked at the beginning of the pandemic around March and April before decreasing. The pattern of COVID-19 cases is similar between sub-tropical and temperate states, but the total count in cases in sub-tropical states is slightly higher and fluctuates more, with similar observations for COVID-19 deaths. Patterns for populated cities and less populated counties are similar; however, the peaks for COVID-19 cases and deaths are more pronounced for populated cities. From our visualizations, COVID-19 cases and deaths do not seem to be responsive to national events. However, as we move into the winter months, cases and deaths are increasing, but we are not sure if that is a result of the national events in the fall and winter.
 
-The interactive dashboard showed that the cumulative COVID-19 cases and deaths have increased over time since January 2020 up till October 2020. However, the rate at which cases are increasing are much faster than the rate at which deaths are increasing, as shown by the graphs in the first tab in the interactive dashboard. COVID-19 hospitalization cases fluctuate over time from state to state, so no conclusive trends can be assumed from the data that we have on COVID-19 hospitalizations. When looking at trends for temperature for each state, we see a similar trend in each state showing an increase in temperature (minimum/maximum/average) from January 2020 till August 2020, and then a decrease in temperatures going into October 2020. 
+The interactive dashboard showed that the cumulative COVID-19 cases and deaths have increased over time since January 2020 up till October 2020. However, the rate at which cases are increasing is much faster than the rate at which deaths are increasing, as shown by the graphs in the first tab in the interactive dashboard. COVID-19 hospitalization cases fluctuate over time from state to state, so no conclusive trends can be assumed from the data that we have on COVID-19 hospitalizations. When looking at trends for temperature for each state, we see a similar trend in each state, showing an increase in temperature (minimum/maximum/average) from January 2020 till August 2020, and then a decrease in temperatures going into October 2020. 
 
 # Discussion of Predictive Models
 
-Formal regression analysis was done in [Predictive Models](regression_analysis.html)
+The formal analysis for the predictive model was done in [Regression Analysis](regression_analysis.html) and the predictive tool can be found here [Predictive Tool](https://gaurib2685.shinyapps.io/predictive_interactive_map/).
 
-We wanted to see the relationship between COVID-19 and climate - more specifically if the case counts is related to rise in temperature. We decided to build three models - 
-The first model assess the relationship between COVID-19 case counts and temperature. 
-The second model assess the relationship between COVID-19 case counts, temperature and its relation to school closures, work place closures and gathering restrictions. 
-The third model assess the relationship between COVID-19 case counts and temperature and its relation to public health discourse and policies. 
+We wished to check for the association between new COVID-19 cases and various climate variables such as average temperature and precipitation. Additionally, we believe that it was important to factor in various variables such as policy changes and restrictions. Therefore, we created three models that would assist in predicting the future case counts based on these variables. 
 
-We went on to build a predictive tool which allows you to choose the temperature in the State that you are curious about and allows you to predict the case counts. The interactive map would display the predicted count. 
+First model: 
+In the first model, we developed a negative binomial regression model to assess the relationship between the new COVID-19 cases that arise in various states, and climate variables such as average temperature and precipitation. We accounted for multicollinearity between these continuous variables by doing a co-linearity check. We proceeded to develop the negative binomial regression owing to the smaller AIC values for the model. 
 
-Our second interactive predictive tools allows you to predict the case counts based on school closures, work place closures and gathering restrictions. 
+Our results show that the number of case counts significantly decrease with increase in temperatures. However, the case counts do not show significant association with the total precipitation when adjusted for month and states. 
+With every degree Fahrenheit increase in average temperature, the number of cases decrease by 4.3%. This association is significant at the 5% level of significance. This supports our hypothesis that the number of cases would rise with a decrease in temperature. Therefore, there is a possibility that we would expect more cases in winter.   
 
-The third map predicts COVID-19 case counts based on the travel restrictions. 
+However, there could also be other factors that come into play which can influence this relationship, such as governmental restrictions and public health campaigns and discourse. To account for this, we included variables such as school closures, work place closures, and gathering restrictions into our second model. 
+
+Second model: 
+We found a significant association between the number of new case counts and workplace restrictions, at the 5% level of significance. 
+Our second model suggests that the number of case counts decreases for required closing of some sectors of workplaces as compared to no workplace restriction measures by 30%. 
+With every degree Fahrenheit increase in average temperature, the number of cases decrease by 3.7%, adjusting for school, workplace, and gathering restrictions. This association is significant at the 5% level of significance. This supports our hypothesis that the number of cases would rise with a decrease in temperature.
+
+Third model: 
+We did not find a significant association between policies, such as information campaigns and contact tracing, and the number of new cases, while controlling for temperature. 
+With every degree Fahrenheit increase in average temperature, the number of cases decrease by 4.3%, adjusting for information campaigns and contact tracing. This association is significant at the 5% level of significance. This supports our hypothesis that the number of cases would rise with a decrease in temperature.
+
+Conclusion: 
+
+According to this [study](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7463156/)^4^, there was a negative correlation between atmospheric temperature variations and daily new cases growth rates. Our main findings corroborated their results and supported our main hypothesis that the number of new cases would rise with a decrease in temperature.
 
 # Project experience
 
@@ -87,3 +99,5 @@ We had an enjoyable experience working as a team and applying concepts and mater
 2. Dong E, Du H, Gardner L. An interactive web-based dashboard to track COVID-19 in real time. Lancet Inf Dis. 20(5):533-534. doi: 10.1016/S1473-3099(20)30120-1.
 
 3. https://github.com/seandavi/sars2pack.
+
+4. Rouen, A., Adda, J., Roy, O., Rogers, E., & Lévy, P. (2020). COVID-19: relationship between atmospheric temperature and daily new cases growth rate. Epidemiology and infection, 148, e184. doi: 10.1017/S0950268820001831.
