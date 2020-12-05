@@ -33,6 +33,8 @@ For descriptive visualizations, we retrieved data from the aforementioned COVID1
 
 [Interactive Dashboard Visualizations](create_shiny.html)
 
+For interactive dashboard visualizations, we retrieved our data from the COVID19 package in R as well as the rnoaa dataset.
+
 [Regression Analysis](Regression-Analysis.html)
 
 [Predictive Tool](predictive_tool.html)
