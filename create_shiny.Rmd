@@ -47,7 +47,8 @@ To set the data up for the map, the date was separated into month, day, and year
 
 The dataset was then pivoted longer to create `covid_stat_type` and `covid_stat`, which included the names of the COVID-19 related variables and the associated value, respectively. We pivoted longer once more to get `noaa_stat_type` and `noaa_stat`, so the names of the NOAA related variables were in one column and their associated value in another. This ensured that we could filter by the appropriate values when creating the interactive map. 
 
-The temperature plots used the NOAA dataset. The data were grouped and new variables averages of the temperature and precipitation variables were created to obtain the average for the month.
+The temperature plots used the NOAA dataset. The data were grouped and new variables averages of the temperature and precipitation variables were created to obtain the average for the month. States that were excluded were states that did not have data for maximum temperature. Because of this, all states included will have maximum temperature, but may not have minimum or average temperature due to missing data issues. 
+
 
 
 ### Plots 

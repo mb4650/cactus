@@ -438,7 +438,7 @@ renderPlotly({
 ### Description
 ***Description of temperature trends***
 
-This plot allows users to choose between the states: Alaska, Alabama, Arizona, California, FLorida, Georgia, Hawaii, Idaho, Illinois, Kansas, Kentucky, Louisiana, Maryland, Maine, Michigan, Missouri, Mississippi, Montana, Nebraska, New Mexico, Nevada, New York, Ohio, Oregon, Pennsylvania, Rhode Island, South Carolina, Tennessee, Washington, West Virgina, and Wyoming. States that were excluded were states that did not have data for maximum temperature.
+This plot allows users to choose between the states: Alaska, Alabama, Arizona, California, FLorida, Georgia, Hawaii, Idaho, Illinois, Kansas, Kentucky, Louisiana, Maryland, Maine, Michigan, Missouri, Mississippi, Montana, Nebraska, New Mexico, Nevada, New York, Ohio, Oregon, Pennsylvania, Rhode Island, South Carolina, Tennessee, Washington, West Virgina, and Wyoming. States that were excluded were states that did not have data for maximum temperature. Because of this, all states included will have maximum temperature, but may not have minimum or average temperature due to missing data issues. 
 
 The graph overlays the monthly average minimum temperature (F), maximum temperature (F), and average temperature(F) across 10 stations per state from January 2020 to October 2020.
 
