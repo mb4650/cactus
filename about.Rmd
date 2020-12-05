@@ -16,6 +16,8 @@ We can add little descriptions and links to any personal webpages we may want to
 [LinkedIn](https://www.linkedin.com/in/lunbeihu/) <br>
 
 ### Michelle Lui
+[Email](mailto:<michelle.lui@columbia.edu) <br>
+[Github](https://github.com/mlui18/)
 
 ### Ling Yi 
 [Email](mailto:<ly2496@cumc.columbia.edu) <br>
