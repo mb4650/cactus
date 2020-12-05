@@ -203,7 +203,7 @@ neg_bin_mod %>%
 ## Cross validation
 
 
-```{r cross validation, echo = FALSE, message=FALSE, results='hide'}
+```{r cross validation, echo = FALSE, message=FALSE, warning=FALSE, results='hide'}
 count_cv =
   crossv_mc(covid_noaa_dataset, 100)
 count_cv =
@@ -237,7 +237,7 @@ The negative binomial model has an AIC of
 
 Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.
 
-```{r}
+```{r, echo = FALSE, message=FALSE, results='hide'}
 nb_output = neg_bin_mod %>%
   broom::tidy() %>%
   dplyr::select(term, estimate, p.value) %>%
@@ -250,6 +250,10 @@ nb_output %>%
 ```{r}
 write_csv(covid_noaa_dataset, "Predictive_Interactive_map/covid_noaa_dataset.csv" )
 ```
+
+## Results 1
+
+For every one degree increase in temperature the case count increases by 0.963 times.
 
 ## Model 2 
 
@@ -278,3 +282,106 @@ The following are the relevant predictors we want to include in the model
 * `workplace_closing`- 0: No measures - 1: Recommend closing (or work from home) - 2: require closing for some sectors or categories of workers - 3: require closing (or work from home) all-but-essential workplaces (eg grocery stores, doctors).
 * `gatherings_restriction` - 0: No restrictions - 1: Restrictions on very large gatherings (the limit is above 1000 people) - 2: Restrictions on gatherings between 100-1000 people - 3: Restrictions on gatherings between 10-100 people - 4: Restrictions on gatherings of less than 10 people.
 
+### Assessing crude correlation among our selected variables
+
+```{r correlation 2, echo = FALSE, message=FALSE, results='hide'}
+
+covid_noaa_dataset_cor_2 =
+ct_school_work_gather %>%
+  dplyr::select(new_cases, state_tavg, school_closing, workplace_closing, gatherings_restrictions)
+
+  covid_noaa_dataset_cor_2[,3:7] %>%
+  cor() %>%
+  corrplot::corrplot(type = "lower",
+                     method = "square",
+                     addCoef.col = "red",
+                     diag = FALSE,
+                     number.cex = .6,
+                     tl.col = "red",
+                     tl.cex = .9,
+                     tl.srt = 45,
+                     is.corr = FALSE)
+ 
+```
+
+We decided to keep school closing and work place closing because they are important variables. 
+
+### Confounding
+
+There are many variables that would confound the relationship between temperature and case count. We have included ones that we felt are the most important. However, in order to maintain parsimonious model we restricted the number of predictors. This could also be a limitation of our model.
+
+### Modeling - Poisson vs Negative binomial regression
+
+Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression. 
+
+We decided to do the use the same modelling technique to run a regression analysis.
+
+```{r regression model 2, echo = FALSE, message=FALSE, results='hide'}
+poisson_mod_policy = glm(new_cases ~  month_name + state_name + as.factor(school_closing) + as.factor(workplace_closing) + as.factor(gatherings_restrictions) + state_tavg,
+                    family = "poisson"(link = "log"), data = covid_noaa_dataset)
+
+poisson_mod_policy %>%
+  broom::glance() %>%
+  dplyr::select(AIC) %>%
+  knitr::kable(digits = 3)
+
+neg_bin_mod_policy = glm.nb(new_cases ~  month_name + state_name + as.factor(school_closing) + as.factor(workplace_closing) + as.factor(gatherings_restrictions) + state_tavg,
+                            data = covid_noaa_dataset)
+
+neg_bin_mod_policy %>%
+  broom::glance() %>%
+  dplyr::select(AIC) %>%
+  knitr::kable(digits = 3)
+```
+
+## Cross validation
+
+
+```{r cross validation 2, echo = FALSE, message=FALSE,  warning=FALSE, results='hide'}
+count_cv =
+  crossv_mc(covid_noaa_dataset, 100)
+count_cv =
+  count_cv %>%
+  mutate(  
+    model_poisson_policy = map(train, ~glm(new_cases ~  month_name + state_name + as.factor(school_closing) + as.factor(workplace_closing) + as.factor(gatherings_restrictions) + state_tavg,
+                    family = "poisson"(link = "log"), data = covid_noaa_dataset)),
+    
+    model_neg_binomial_policy = map(train, ~ glm.nb(new_cases ~  month_name + state_name + as.factor(school_closing) + as.factor(workplace_closing) + as.factor(gatherings_restrictions) + state_tavg,
+                            data = covid_noaa_dataset))) %>%
+  mutate(rmse_poisson = map2_dbl(model_poisson_policy, test, ~rmse(model = .x, data = .y)),
+         rmse_negative_binomial = map2_dbl(model_neg_binomial_policy, test, ~rmse(model = .x, data = .y)))
+
+count_cv %>%
+  dplyr::select(rmse_poisson, rmse_negative_binomial) %>%
+  pivot_longer(
+    everything(),
+    names_to = "model",
+    values_to = "rmse",
+    names_prefix = "rmse_") %>%
+  mutate(model = fct_inorder(model)) %>%
+  ggplot(aes(x = model, y = rmse)) + geom_violin() +
+  labs(
+    title = "Prediction Error Distributions"
+  )
+```
+
+From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC. 
+
+The poisson model has an AIC of 
+The negative binomial model has an AIC of 
+
+Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.
+
+```{r 2, echo = FALSE, message=FALSE, results='hide'}
+nb_output_policy = neg_bin_mod_policy %>%
+  broom::tidy() %>%
+  dplyr::select(term, estimate, p.value) %>%
+  mutate(exp(estimate)) 
+
+nb_output_policy %>% 
+  knitr::kable(digits = 3)
+```
+
+## Results 
+
+For every one degree increase in temperature the case count increases by 0.96 times.
