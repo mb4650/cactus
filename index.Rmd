@@ -38,6 +38,17 @@ In order for people to get a better idea of the trends seen in the data, we crea
 
 ### Formal Analysis
 
-We were interested in seeing how the case counts might be next year, so created a predictive tool
+We wanted to see the relationship between COVID-19 and climate - more specifically if the case counts is related to rise in temperature. We decided to build three model - 
+The first model assess the relationship between covid-19 case counts and temperature. 
+The second model assess the relationship between covid-19 case counts, temperature and its relation to school closures, work place closures and gathering restrictions. 
+The thrid model assess the reltionship between covid-19 case counts and temperature and its relation to travel restrictions. 
+
+### Interactive Predictive Tool
+
+We went on to build a predictive tool which allows you to choose the temperature in the State that you are curious to predict the case counts and the interactive map would show you the data. 
+
+Our second interactive predictive tools allows you to predict the case counts based on school closures, work place closures and gathering restrictions. 
+
+The third map predicts covid case counts based on the travel restrictions. 
 
 # Screencast
