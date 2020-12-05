@@ -1,6 +1,5 @@
 ---
 title: "Descriptive Visualizations"
-author: "Ling Yi & Lunbei Hu"
 output:
   html_document:
     code_folding: hide

@@ -3,7 +3,8 @@ title: "Creating the Interactive Plots"
 output: 
   html_document
 ---
-Add information on how we did it!
+
+To see the interactive plots described below, click [here](https://mb4650.shinyapps.io/plotly/).
 
 ### Evolution of the Interactive Plots
 
@@ -20,6 +21,7 @@ The NOAA dataset was then joined with the COVID-19 one.
 This combined dataset was filtered and used to create the COVID-19 trends over time graphs.
 
 To set the data up for the map, the date was separated into month, day, and year columns. Columns that were not needed for the visualizations were removed and new columns were created. The variables included: <br>
+
 `id` - Unique state ID <br>
 `key_apple_mobility` - State name <br>
 `key_alpha_2` - State abbreviation <br>
