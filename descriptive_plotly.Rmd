@@ -7,7 +7,7 @@ output:
     toc_float: true
 ---
 
-# Descriptive visualizations of confirmed COVID cases and deaths in the U.S.
+# Descriptive visualizations of confirmed COVID-19 cases and deaths in the US
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -32,7 +32,7 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
-*Importing relevent dataset which includes the data from the COVID19 R package and a locally made dataset with dates of mask mandate per state.*
+*Importing relevant dataset which includes the data from the `COVID19` R package and a locally made dataset with dates of mask mandate per state.*
 
 ```{r message=FALSE, warning=FALSE}
 covid_df = covid19(c("US"), level = 2, start = "2020-01-01")
@@ -65,10 +65,10 @@ cactus_df = left_join(covid_df, mask_df, by.x = c("state", "date"), by.y = c("st
 
 ```
 
-# State Aggregated New COVID Cases and Deaths
+# State Aggregated New COVID-19 Cases and Deaths
 
 
-**Comparing new COVID cases by state over the past year**
+**Comparing new COVID-19 cases by state over the past year**
 
 ```{r message=FALSE, warning=FALSE}
 time_plot = 
@@ -77,7 +77,7 @@ covid_df %>%
   geom_point(alpha = 0.5) +
   geom_line() +
   theme(legend.position = "none") +
-  labs(title = "Daily New Covid Cases Over Time",
+  labs(title = "Daily New COVID-19 Cases Over Time",
        y = "Confirmed new cases",
        x = "Date") +
       scale_x_date(breaks = seq.Date(from = as.Date("2020-01-31"), 
@@ -88,7 +88,7 @@ time_plot <- time_plot + scale_y_continuous(labels = comma)
 time_plot
 ```
 
-**Comparing new COVID deaths by state over the past year**
+**Comparing new COVID-19 deaths by state over the past year**
 
 ```{r message=FALSE, warning=FALSE}
 death_plot = 
@@ -97,7 +97,7 @@ covid_df %>%
   geom_point(alpha = 0.5) +
   geom_line() +
   theme(legend.position = "none") +
-  labs(title = "Daily New Covid Deaths Over Time",
+  labs(title = "Daily New COVID-19 Deaths Over Time",
        y = "Confirmed new deaths",
        x = "Date") +
       scale_x_date(breaks = seq.Date(from = as.Date("2020-01-31"), 
@@ -108,7 +108,7 @@ death_plot <- death_plot + scale_y_continuous(labels = comma)
 death_plot
 ```
 
-**Daily new COVID case of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state**
+**Daily new COVID-19 case of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state**
 
 ```{r message=FALSE, warning=FALSE}
 state_plot = 
@@ -120,7 +120,7 @@ covid_df %>%
   geom_line() +
   scale_y_continuous(labels = comma) +
   facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom") +
-  labs(title = "Average Daily New COVID cases by Red/Blue states",
+  labs(title = "Average Daily New COVID-19 cases by Red/Blue states",
        y = "Confirmed new cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -129,7 +129,7 @@ state_plot
 ```
 
 
-**Daily new COVID deaths of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state**
+**Daily new COVID-19 deaths of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state**
 
 ```{r message=FALSE, warning=FALSE}
 state_death = 
@@ -141,7 +141,7 @@ covid_df %>%
   geom_line() +
   scale_y_continuous(labels = comma) +
   facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = FALSE, strip.position = "bottom") +
-  labs(title = "Average Daily New COVID deaths by Red/Blue states",
+  labs(title = "Average Daily New COVID-19 deaths by Red/Blue states",
        y = "Confirmed new deaths",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -151,7 +151,7 @@ state_death
 
 
 ```{r message=FALSE, warning=FALSE}
-#creating new variables to look at two week difference in new COVID cases and COVID deaths two weeks to one month after mask mandate respectively. 
+#creating new variables to look at two week difference in new COVID-19 cases and COVID-19 deaths two weeks to one month after mask mandate respectively. 
 
 cactus_df = 
   cactus_df %>% 
@@ -165,41 +165,41 @@ cactus_df =
   mutate(diff_death = in_two_weeks_death - new_death_updated)
 ```
 
-**Observing two week difference in confirmed new COVID cases from date of mask mandate in states that enforced a mandate**
+**Observing two week difference in confirmed new COVID-19 cases from date of mask mandate in states that enforced a mandate**
 
 ```{r message=FALSE, warning=FALSE}
 cactus_df %>% 
   ggplot(aes(x = state, y = diff, color = state_binary)) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
-  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position =     "bottom") +
- scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +##not sure if I will use this
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position = "bottom") +
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
     labs(title = "Difference in new cases and mask mandate",
        y = "Two week difference in confirmed new cases",
        x = "State")
 ```
 
 
-**Observing two week difference in confirmed new COVID deaths from date of mask mandate in states that enforced a mandate**
+**Observing two week difference in confirmed new COVID-19 deaths from date of mask mandate in states that enforced a mandate**
 
 ```{r message=FALSE, warning=FALSE}
 cactus_df %>% 
   ggplot(aes(x = state, y = diff_death, color = state_binary)) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
-  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position =     "bottom") +
- scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +##not sure if I will use this
+  facet_wrap(~temperate, nrow = 1, scales = "free_x", shrink = TRUE, strip.position = "bottom") +
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
     labs(title = "Difference in new deaths and mask mandate",
        y = "Four week difference in confirmed new deaths",
        x = "State")
 ```
 
-# City/County Aggregated New COVID Cases and Deaths
+# City/County Aggregated New COVID-19 Cases and Deaths
 
 
 
 
-**A comparison of new COVID cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties**
+**A comparison of new COVID-19 cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties**
 
 ```{r message=FALSE, warning=FALSE}
 confirmed_df = 
@@ -269,7 +269,7 @@ lessppl_df =
 
 
 
-**The most populated city - New York City vs. other less populated counties in New York state regarding new COVID cases and deaths.**
+**The most populated city - New York City vs. other less populated counties in New York state regarding new COVID-19 cases and deaths**
 
 ```{r message=FALSE, warning=FALSE}
 nyc_df =
@@ -295,7 +295,7 @@ ny_confirmed_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "COVID Cases and Deaths of New York City, NY",
+  labs(title = "COVID-19 Cases and Deaths of New York City, NY",
        y = "Confirmed new cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -321,7 +321,7 @@ ny_confirmed_plot + ny_deaths_plot
 
 
 
-**The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths.**
+**The second most populated city - Los Angeles vs. other less populated counties in California regarding new COVID-19 cases and deaths**
 
 ```{r message=FALSE, warning=FALSE}
 la_df =
@@ -347,7 +347,7 @@ ca_confirmed_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "COVID Cases and Deaths of Los Angeles, CA",
+  labs(title = "COVID-19 Cases and Deaths of Los Angeles, CA",
        y = "Confirmed new cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -372,7 +372,7 @@ ca_confirmed_plot + ca_deaths_plot
 * Los Angeles has a population of `r format(mean(pull(la_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected CA counties is `r format(mean(pull(ca_lessppl_df, population)), scientific=FALSE)`.
 
 
-**The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths.**
+**The third most populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID-19 cases and deaths**
 
 ```{r message=FALSE, warning=FALSE}
 chicago_df =
@@ -398,7 +398,7 @@ il_confirmed_plot =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = "COVID Cases and Deaths of Cook County/Chicago, IL",
+  labs(title = "COVID-19 Cases and Deaths of Cook County/Chicago, IL",
        y = "Confirmed new cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -423,7 +423,7 @@ il_confirmed_plot + il_deaths_plot
 * Cook County (Chicago included) has a population of `r format(mean(pull(chicago_df, population)), scientific=FALSE)`, and the mean population of the 10 randomly selected IL counties is `r format(mean(pull(il_lessppl_df, population)), scientific=FALSE)`.
 
 
-**The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths.**
+**The fourth most populated city - Houston vs. other less populated counties in Texas regarding new COVID-19 cases and deaths**
 
 ```{r message=FALSE, warning=FALSE}
 houston_df =
@@ -450,7 +450,7 @@ tx_confirmed_plot =
   geom_line() +
   scale_color_manual(values = c("Houston" = "black", "other TX counties" = "orange")) +
   scale_y_continuous(labels = comma) +
-  labs(title = "COVID Cases and Deaths of Houston, TX",
+  labs(title = "COVID-19 Cases and Deaths of Houston, TX",
        y = "Confirmed new cases",
        x = "Date") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b-%y",expand = c(0,0)) +
@@ -479,10 +479,10 @@ tx_confirmed_plot + tx_deaths_plot
 *Texas is one of the sub-tropical states compared to NY, CA and IL (temperate), and it is marked by different colors.*
 
 
-# National New COVID Cases and Deaths
+# National New COVID-19 Cases and Deaths
 
 
-**Comparing overall US new COVID cases and deaths with important national events**
+**Comparing overall US new COVID-19 cases and deaths with important national events**
 
 ```{r message=FALSE, warning=FALSE}
 library(sars2pack)
@@ -522,26 +522,26 @@ us_events_df =
 
 ```
 
-**Daily new COVID cases over the past year with important national events**
+**Daily new COVID-19 cases over the past year with important national events**
 
 ```{r message=FALSE, warning=FALSE}
 us_events_df %>%  
   ggplot(aes(x = date, y = new_case)) +
   geom_point() +
-    labs(title = "New COVID cases over time",
+    labs(title = "New COVID-19 cases over time",
        y = "Confirmed new cases",
        x = "Date") +
       geom_vline(data = events_df, mapping = aes(xintercept = date) ,linetype = "dotted",color = "blue", show.legend = TRUE) +
   geom_text(data = events_df, mapping = aes(x = date, y = 75000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)
 ```
 
-**Daily new COVID deaths over the past year with important national events**
+**Daily new COVID-19 deaths over the past year with important national events**
 
 ```{r message=FALSE, warning=FALSE}
 us_events_df %>%  
   ggplot(aes(x = date, y = new_deaths)) +
   geom_point() +
-    labs(title = "New COVID deaths over time",
+    labs(title = "New COVID-19 deaths over time",
        y = "Confirmed new deaths",
        x = "Date") +
       geom_vline(data = events_df, mapping = aes(xintercept = date) , linetype = "dotted", color = "blue", show.legend = TRUE) +

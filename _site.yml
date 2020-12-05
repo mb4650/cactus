@@ -23,7 +23,8 @@ navbar:
          href: regression_analysis.html
        - text: "Predictive Tool"
          href: https://gaurib2685.shinyapps.io/predictive_interactive_map/
-
+    - icon: fa-github fa-lg
+      href: http://github.com/mb4650/cactus
 output:
   html_document:
     theme: journal

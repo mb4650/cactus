@@ -245,7 +245,7 @@ renderPlotly({
 
 
 
-Trends in COVID and Climate in US Between Jan 2020 and Oct 2020
+Trends in COVID-19 and Climate in US Between Jan 2020 and Oct 2020
 ===================================== 
 
 Column {.sidebar}
@@ -274,7 +274,7 @@ selectInput("day_sel",
 						selected = 1)
 
 # Covid Variable select
-selectInput("covid_variable_choice", label = h3("Select COVID variable"),
+selectInput("covid_variable_choice", label = h3("Select COVID-19 variable"),
 						choices = covid_var_choice, selected = "Number of Tests")
 
 # NOAA Variable select
@@ -304,7 +304,7 @@ renderPlotly({
     colors = "Reds",
     text = ~paste(covid_stat_name, noaa_stat, noaa_stat_name, sep = "<br>")
   ) %>% 
-    colorbar(title = "COVID Statistic") %>% 
+    colorbar(title = "COVID-19 Statistic") %>% 
     layout(
     title = 'United States Map - Statistics by State',
     geo = list(
@@ -320,9 +320,9 @@ renderPlotly({
 ### Description
 ***Description of US map***
 
-This US map allows users to choose between month, date, COVID variable, and climate variable. Changes in variables can be seen over time for all 50 states, and difference in COVID variables specifically can be visualized by changes in color from state to state on the map. Hovering over each state can allow the user to see the statistic for the COVID variable selected, the statistic for the climate variable selected, as well as the state abbreviation.
+This US map allows users to choose between month, date, COVID-19 variable, and climate variable. Changes in variables can be seen over time for all 50 states, and difference in COVID-19 variables specifically can be visualized by changes in color from state to state on the map. Hovering over each state can allow the user to see the statistic for the COVID-19 variable selected, the statistic for the climate variable selected, as well as the state abbreviation.
 
-The COVID variables included are: Number of Confirmed Cases, Number of Deaths, Number of Hospitalizations, Number of New Cases, Number of Tests, Proportion of Confirmed Cases who Died of COVID-19, Proportion of Confirmed Cases who were Hospitalized with COVID-19, Proportion of State Population who Died of COVID-19, Proportion of State Population who were Hospitalized with COVID-19, Proportion of State Population who were Tested, and Proportion of State Population with Confirmed Cases.
+The COVID-19 variables included are: Number of Confirmed Cases, Number of Deaths, Number of Hospitalizations, Number of New Cases, Number of Tests, Proportion of Confirmed Cases who Died of COVID-19, Proportion of Confirmed Cases who were Hospitalized with COVID-19, Proportion of State Population who Died of COVID-19, Proportion of State Population who were Hospitalized with COVID-19, Proportion of State Population who were Tested, and Proportion of State Population with Confirmed Cases.
 
 **Number of Confirmed Cases:**
 Number of cumulative confirmed COVID-19 cases since January 1st, 2020, on date selected in state selected
@@ -415,9 +415,6 @@ Column {.tabset}
 ### Temperature Trends
 
 ```{r}
-#state_month = month_noaa_avg %>% pull(month_name) %>% unique()
-#xlab = list(categoryorder = 'array', categoryarray = c('Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug','Sep', 'Oct'))
-
 renderPlotly({
     month_noaa_avg %>%
     filter(
@@ -440,6 +437,6 @@ renderPlotly({
 
 This plot allows users to choose between the states: Alaska, Alabama, Arizona, California, Florida, Georgia, Hawaii, Idaho, Illinois, Kansas, Kentucky, Louisiana, Maryland, Maine, Michigan, Missouri, Mississippi, Montana, Nebraska, New Mexico, Nevada, New York, Ohio, Oregon, Pennsylvania, Rhode Island, South Carolina, Tennessee, Washington, West Virginia, and Wyoming. States that were excluded were states that did not have data for maximum temperature. Because of this, all states included will have maximum temperature, but may not have minimum or average temperature due to missing data issues. 
 
-The graph overlays the monthly average minimum temperature (F), maximum temperature (F), and average temperature(F) across 10 stations per state from January 2020 to October 2020.
+The graph overlays the monthly average minimum temperature (F), maximum temperature (F), and average temperature (F) across 10 stations per state from January 2020 to October 2020.
 
 

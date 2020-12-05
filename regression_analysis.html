@@ -26,6 +26,8 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -392,6 +394,12 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li>
+  <a href="http://github.com/mb4650/cactus">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -419,35 +427,35 @@ div.tocify {
 <div id="create-datasets-with-noaa-data" class="section level3">
 <h3>Create datasets with noaa data</h3>
 <p>The noaa dataset that we used was from the <a href="https://www.ncdc.noaa.gov/cag/statewide/mapping">ncdc.noaa.gov</a> website. We retrieved 4 individual datasets from the noaa website. The retrieved dataset includes: 1. tmax: Data for the maximum temperature for each state by month. 2. tmin: Data for the minimum temperature for each state by month. 3. tavg: Data for the average temperaure for each state by month. 4. prcp: Data for the precipitation values for each state by month.</p>
-<p>The datasets were scraped from the website using read_csv and were then merged with the COVID19 dataset by month and state.</p>
+<p>The datasets were scraped from the website using read_csv and were then merged with the <code>COVID19</code> dataset by month and state.</p>
 </div>
-<div id="import-covid-dataset.-clean-and-tidy-data" class="section level3">
-<h3>Import Covid dataset. Clean and tidy data</h3>
-<p>The COVID19 dataset was imported using the COVID19 R package. COVID-19 data was obtained from the <code>COVID19</code> package. This function has arguments set to return data at the state level. This dataset included information on the date, state, as well as the number of cases, tests, and hospitalizations for that given day.</p>
+<div id="import-covid-19-dataset.-clean-and-tidy-data" class="section level3">
+<h3>Import COVID-19 dataset. Clean and tidy data</h3>
+<p>The COVID-19 dataset was imported using the <code>COVID19</code> R package. COVID-19 data was obtained from the <code>COVID19</code> package. This function has arguments set to return data at the state level. This dataset included information on the date, state, as well as the number of cases, tests, and hospitalizations for that given day.</p>
 </div>
-<div id="merging-the-two-dataset" class="section level3">
-<h3>Merging the two dataset</h3>
-<p>The final dataset has information on average temperature, total precipitation, maximum and minimum temperature as the main climate variables along with covid -19 data related to the case counts, information about school gathering, workplace gathering, contact tracing and testing, which are important COVID-19 related variables used in the Analysis.</p>
+<div id="merging-the-two-datasets" class="section level3">
+<h3>Merging the two datasets</h3>
+<p>The final dataset has information on average temperature, total precipitation, maximum and minimum temperature as the main climate variables along with COVID-19 data related to the case counts, information about school gathering, workplace gathering, contact tracing and testing, which are important COVID-19 related variables used in the analysis.</p>
 </div>
 </div>
 <div id="model-1" class="section level2">
 <h2>Model 1</h2>
 <div id="hypothesis" class="section level3">
 <h3>Hypothesis</h3>
-<p>Our team hypothesizes that the relationship between temperature and COVID-19 cases are correlated. We have looked at the trends in COVID and Climate in the United States. Check out our interactive map here <a href="https://mb4650.shinyapps.io/plotly/#section-trends-in-covid-and-climate-in-us-between-jan-2020-and-oct-2020">Trends in COVID and Climate in US Between Jan 2020 and OCt 2020</a>. We want to conduct an analysis to see if cases increase with increase in temperature.</p>
+<p>Our team hypothesizes that temperature and COVID-19 cases are associated, wherein the number of new cases rises with a decrease in temperature. We have looked at the trends in COVID-19 and Climate in the United States. Check out our interactive map here <a href="https://mb4650.shinyapps.io/plotly/#section-trends-in-covid-and-climate-in-us-between-jan-2020-and-oct-2020">Trends in COVID-19 and Climate in US Between Jan 2020 and Oct 2020</a>. We want to conduct an analysis to see if cases increase with increase in temperature.</p>
 </div>
 <div id="relevant-predictors" class="section level3">
 <h3>Relevant predictors</h3>
 <p>The following are the relevant predictors we want to include in the model</p>
 <ul>
-<li><code>new_cases</code> - The number of new cases in every month.</li>
-<li><code>case_count</code> - The total number of cases in every month.</li>
-<li><code>population</code> - Total population of each state - This forms the offset variable in the poisson regression model and the denominator for the count to extrapolate the rate.</li>
-<li><code>state_name</code> - All the states in the USA</li>
-<li><code>state_tavg</code> - The average temperature in a state in a month.</li>
+<li><code>new_cases</code> - The number of new cases in every month</li>
+<li><code>case_count</code> - The total number of cases in every month</li>
+<li><code>population</code> - Total population of each state - This forms the offset variable in the Poisson regression model and the denominator for the count to extrapolate the rate</li>
+<li><code>state_name</code> - All the states in the US</li>
+<li><code>state_tavg</code> - The average temperature in a state in a month</li>
 <li><code>state_tmax</code> - The maximum temperature in a state in a month</li>
 <li><code>state_tmin</code> - The minimum temperature in a state in a month</li>
-<li><code>state_total_prcp</code> - The total precipitation in a state in a month.</li>
+<li><code>state_total_prcp</code> - The total precipitation in a state in a month</li>
 </ul>
 </div>
 <div id="assessing-crude-correlation-among-our-selected-variables" class="section level3">
@@ -469,17 +477,17 @@ covid_noaa_dataset %&gt;%
                      tl.srt = 45,
                      is.corr = FALSE)</code></pre>
 <p><img src="regression_analysis_files/figure-html/correlation-1.png" width="90%" /></p>
-<p>In order to select the most significant variables in our model we first conducted a crude correlation assessment using a correlation matrix as shown above. From this assessment we decided to remove <code>state_tmax</code> and <code>state_tmin</code> since the r is 0.97 - 0.99, indicating that there is an extreme co-linearity among other predictors.</p>
+<p>In order to select the most significant variables in our model, we first conducted a crude correlation assessment using a correlation matrix as shown above. From this assessment, we decided to remove <code>state_tmax</code> and <code>state_tmin</code> since the r is 0.97 - 0.99, indicating that there is an extreme co-linearity among other predictors.</p>
 </div>
 <div id="confounding" class="section level3">
 <h3>Confounding</h3>
-<p>There are many variables that would confound the relationship between temperature and case count. We have included ones that we felt are the most important. However, in order to maintain parsimonious model we restricted the number of predictors. This could also be a limitation of our model.</p>
+<p>There are many variables that would confound the relationship between temperature and case count. We have included ones that we felt are the most important. However, in order to maintain a parsimonious model, we restricted the number of predictors. This could also be a limitation of our model.</p>
 </div>
 <div id="modeling---poisson-vs-negative-binomial-regression" class="section level3">
 <h3>Modeling - Poisson vs Negative binomial regression</h3>
-<p>Our outcome variable is a count variable, hence we want to model either a poisson regression or a negative binomial regression.</p>
-<p>A poisson distribution assumes that the mean and variance are the same. Sometimes the data shows extra variation that is greater than the mean. This situation is called overdispersion. Negative binomial is more flexible in that regard. Negative binomial has one more parameter the adjusts for the variance independently from the mean.</p>
-<p>In order to decide which model to use we cross validate between the two models to see the distribution. We also assess the AIC to determine the model with the smaller AIC.</p>
+<p>Our outcome variable is a count variable, hence we want to model either a Poisson regression or a negative binomial regression.</p>
+<p>A Poisson distribution assumes that the mean and variance are the same. Sometimes the data shows extra variation that is greater than the mean. This situation is called overdispersion. Negative binomial is more flexible in that regard. Negative binomial has one more parameter that adjusts for the variance independently from the mean.</p>
+<p>In order to decide which model to use, we cross validated between the two models to see the distribution. We also assessed the AIC to determine the model with the smaller AIC.</p>
 <pre class="r"><code>poisson_mod = glm(new_cases ~  as.factor(month_name) + state + state_tavg + state_total_prcp,
                     family = &quot;poisson&quot;(link = &quot;log&quot;), data = covid_noaa_dataset)
 
@@ -553,9 +561,9 @@ count_cv %&gt;%
     title = &quot;Variation Distributions&quot;
   )</code></pre>
 <p><img src="regression_analysis_files/figure-html/cross%20validation-1.png" width="90%" /></p>
-<p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
-<p>The poisson model has an AIC of 2593050 The negative binomial model has an AIC of 8357.088</p>
-<p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
+<p>From the distribution above, we can see that both the figures are very similar to each other. Solely based on this distribution, we cannot base our decision to use either of the models. Hence we look at the AIC.</p>
+<p>The Poisson model has an AIC of 2593050 The negative binomial model has an AIC of 8357.088</p>
+<p>Since the negative binomial model has a smaller AIC than the Poisson model, we chose the negative binomial model.</p>
 </div>
 <div id="results-1" class="section level3">
 <h3>Results 1</h3>
@@ -566,14 +574,15 @@ count_cv %&gt;%
 
 nb_output %&gt;% 
   knitr::kable(digits = 3)</code></pre>
-<p>For every one degree increase in temperature the case count increases by 0.957 times.</p>
+<p>Our results show that the number of case counts significantly decrease with increase in temperature. However, the case counts do not show a significant association with the total precipitation when adjusted for month and states. With every degree Fahrenheit increase in average temperature, the number of cases decreases by 4.3%. This association is significant at the 5% level of significance. This supports our hypothesis that the number of cases would rise with a decrease in temperature. Therefore, there is a possibility that we would expect more cases in winter.</p>
 </div>
 </div>
 <div id="model-2" class="section level2">
 <h2>Model 2</h2>
+<p>There could also be other factors that can influence this relationship, such as governmental restrictions and public health campaigns and discourse. To account for this, we included variables such as school closures, work place closures, and gathering restrictions into our second model.</p>
 <div id="data-for-model-2" class="section level3">
 <h3>Data for Model 2</h3>
-<p>This dataset filters out the variables required for the second model which assess the influence of school closures, workplace closures and gathering restrictions on case counts.</p>
+<p>This dataset filters out the variables required for the second model which assesses the influence of school closures, workplace closures, and gathering restrictions on the case counts.</p>
 <pre class="r"><code>ct_school_work_gather = 
   covid_noaa_dataset %&gt;%
   dplyr::select(date, case_count, new_cases, population, school_closing, workplace_closing, gatherings_restrictions, state, state_name, state_tavg, month_name) %&gt;% 
@@ -585,20 +594,20 @@ nb_output %&gt;%
 </div>
 <div id="hypothesis-1" class="section level3">
 <h3>Hypothesis</h3>
-<p>In our initial hypotheses we have established that there is a relationship between temperature and COVID-19 cases. We now want to see if this relationship would change with certain events such as school closures, workplace closures and gathering.</p>
+<p>In our initial hypotheses, we have established that there is a negative association between the temperature and COVID-19 cases. We now want to see if this relationship would change with certain events such as school closures, workplace closures, and gathering.</p>
 </div>
 <div id="relevant-predictors-1" class="section level3">
 <h3>Relevant predictors</h3>
-<p>The following are the relevant predictors we want to include in the model</p>
+<p>The following are the relevant predictors we want to include in the model:</p>
 <ul>
-<li><code>new_cases</code>- The number of new cases in every month.</li>
-<li><code>case_count</code> - The total number of cases in every month.</li>
-<li><code>population</code>- Total population of each state - This forms the offset variable in the poisson regression model and the demoninator for the count to extrapolate the rate.</li>
-<li><code>state_name</code>- All the states in the USA</li>
-<li><code>state_tavg</code>- The average temperature in a state in a month.</li>
-<li><code>school_closing</code>- 0: No measures - 1: Recommend closing - 2: Require closing (only some levels or categories, eg just high school, or just public schools - 3: Require closing all levels.</li>
-<li><code>workplace_closing</code>- 0: No measures - 1: Recommend closing (or work from home) - 2: require closing for some sectors or categories of workers - 3: require closing (or work from home) all-but-essential workplaces (eg grocery stores, doctors).</li>
-<li><code>gatherings_restriction</code> - 0: No restrictions - 1: Restrictions on very large gatherings (the limit is above 1000 people) - 2: Restrictions on gatherings between 100-1000 people - 3: Restrictions on gatherings between 10-100 people - 4: Restrictions on gatherings of less than 10 people.</li>
+<li><code>new_cases</code>- The number of new cases in every month</li>
+<li><code>case_count</code> - The total number of cases in every month</li>
+<li><code>population</code>- Total population of each state - This forms the offset variable in the Poisson regression model and the denominator for the count to extrapolate the rate</li>
+<li><code>state_name</code>- All the states in the US</li>
+<li><code>state_tavg</code>- The average temperature in a state in a month</li>
+<li><code>school_closing</code>- 0: No measures - 1: Recommend closing - 2: Require closing (only some levels or categories, e.g. just high school, or just public schools - 3: Require closing all levels</li>
+<li><code>workplace_closing</code>- 0: No measures - 1: Recommend closing (or work from home) - 2: Require closing for some sectors or categories of workers - 3: Require closing (or work from home) all-but-essential workplaces (e.g. grocery stores, doctors)</li>
+<li><code>gatherings_restriction</code> - 0: No restrictions - 1: Restrictions on very large gatherings (the limit is above 1000 people) - 2: Restrictions on gatherings between 100-1000 people - 3: Restrictions on gatherings between 10-100 people - 4: Restrictions on gatherings of less than 10 people</li>
 </ul>
 </div>
 <div id="assessing-crude-correlation-among-our-selected-variables-1" class="section level3">
@@ -676,12 +685,12 @@ cor_plot =
 </tr>
 </tbody>
 </table>
-<p>We decided to keep school closing and work place closing even with large r-squared because they are important variables.</p>
+<p>We decided to keep school closing and work place closing even with a large R-square value because they are important variables.</p>
 </div>
 <div id="modeling---negative-binomial-regression" class="section level3">
 <h3>Modeling - Negative binomial regression</h3>
 <p>Our outcome variable is a count variable, hence we want to model a negative binomial regression.</p>
-<p>We decided to do the use the same modeling technique to run a regression analysis.</p>
+<p>We decided to use the same modeling technique to run a regression analysis.</p>
 <pre class="r"><code>neg_bin_mod_policy = glm.nb(new_cases ~  month_name + state_name + as.factor(school_closing) + as.factor(workplace_closing) + as.factor(gatherings_restrictions) + state_tavg,
                             data = covid_noaa_dataset)</code></pre>
 </div>
@@ -694,14 +703,14 @@ cor_plot =
 
 nb_output_policy %&gt;% 
   knitr::kable(digits = 3)</code></pre>
-<p>For every one degree increase in temperature the case count increases by 0.96 times.</p>
+<p>We found a significant association between the number of new case counts and workplace restrictions, at the 5% level of significance. Our second model suggests that the number of case counts decreases for required closing of some sectors of workplaces as compared to no workplace restriction measures by 30%. With every degree Fahrenheit increase in average temperature, the number of cases decrease by 3.7%, adjusting for school, workplace and gathering restrictions. This association is significant at the 5% level of significance. This supports our hypothesis that the number of cases would rise with decrease in temperature.</p>
 </div>
 </div>
 <div id="model-3" class="section level2">
 <h2>Model 3</h2>
 <div id="data-for-model-3" class="section level3">
 <h3>Data for Model 3</h3>
-<p>This dataset filters out the variables required for the second model which assess the influence of information campaigns, testing policies and contact tracting policies on case counts.</p>
+<p>This dataset filters out the variables required for the second model which assesses the influence of information campaigns, testing policies, and contact tracing policies on case counts.</p>
 <pre class="r"><code>ct_infoc_test_tract = 
   covid_noaa_dataset %&gt;%
   dplyr::select(date, case_count, new_cases, population, information_campaigns, testing_policy, contact_tracing, state, state_name, state_tavg, month_name) %&gt;%
@@ -713,21 +722,24 @@ nb_output_policy %&gt;%
 </div>
 <div id="hypothesis-2" class="section level3">
 <h3>Hypothesis</h3>
-<p>In our initial hypotheses we have established that there is a relationship between temperature and COVID-19 cases. We now want to see if this relationship would change with certain policies such as information campaigns, testing policies and contact tracing policies. ### Relevant predictors</p>
-<p>The following are the relevant predictors we want to include in the model</p>
+<p>In our initial hypotheses, we have established that there is a negative association between temperature and COVID-19 cases. We now want to see if this relationship would change with certain policies such as information campaigns, testing policies, and contact tracing policies.</p>
+</div>
+<div id="relevant-predictors-2" class="section level3">
+<h3>Relevant predictors</h3>
+<p>The following are the relevant predictors we want to include in the model:</p>
 <ul>
-<li><code>new_cases</code>- The number of new cases in every month.</li>
-<li><code>case_count</code> - The total number of cases in every month.</li>
-<li><code>population</code>- Total population of each state - This forms the offset variable in the poisson regression model and the demoninator for the count to extrapolate the rate.</li>
-<li><code>state_name</code>- All the states in the USA</li>
-<li><code>state_tavg</code>- The average temperature in a state in a month.</li>
-<li><code>information_campaigns</code>- 0: No COVID-19 public information campaign - 1: public officials urging caution about COVID-19 - 2: coordinated public information campaign (e.g. across traditional and social media).</li>
-<li><code>testing_policy</code>- 0: No testing policy - 1: Only those who both (a) have symptoms AND (b) meet specific criteria (eg key workers, admitted to hospital, came into contact with a known case, returned from overseas) - 2: testing of anyone showing COVID-19 symptoms - 3: open public testing (eg “drive through” testing available to asymptomatic people).</li>
-<li><code>contact_tracing</code> - 0: No contact tracing - 1: Limited contact tracing, not done for all cases - 2: Comprehensive contact tracing, done for all cases.</li>
+<li><code>new_cases</code>- The number of new cases in every month</li>
+<li><code>case_count</code> - The total number of cases in every month</li>
+<li><code>population</code>- Total population of each state - This forms the offset variable in the Poisson regression model and the denominator for the count to extrapolate the rate</li>
+<li><code>state_name</code>- All the states in the US</li>
+<li><code>state_tavg</code>- The average temperature in a state in a month</li>
+<li><code>information_campaigns</code>- 0: No COVID-19 public information campaign - 1: Public officials urging caution about COVID-19 - 2: Coordinated public information campaign (e.g. across traditional and social media)</li>
+<li><code>testing_policy</code>- 0: No testing policy - 1: Only those who both (a) have symptoms AND (b) meet specific criteria (e.g. key workers, admitted to hospital, came into contact with a known case, returned from overseas) - 2: Testing of anyone showing COVID-19 symptoms - 3: Open public testing (e.g. “drive through” testing available to asymptomatic people)</li>
+<li><code>contact_tracing</code> - 0: No contact tracing - 1: Limited contact tracing, not done for all cases - 2: Comprehensive contact tracing, done for all cases</li>
 </ul>
 </div>
-<div id="assessing-crude-correlation-among-our-selected-variables-2" class="section level3">
-<h3>Assessing crude correlation among our selected variables</h3>
+<div id="assessing-the-crude-correlation-among-our-selected-variables" class="section level3">
+<h3>Assessing the crude correlation among our selected variables</h3>
 <pre class="r"><code>covid_noaa_dataset_cor_3 =
 ct_infoc_test_tract %&gt;%
   dplyr::select(new_cases, state_tavg, information_campaigns,  contact_tracing)
@@ -780,12 +792,12 @@ covid_noaa_dataset_cor_3[,3:6] %&gt;%
 </tr>
 </tbody>
 </table>
-<p>We decided to remove <code>testing_policy</code> from the model due to colinearity with other predictors.</p>
+<p>We decided to remove <code>testing_policy</code> from the model due to co-linearity with other predictors.</p>
 </div>
 <div id="modeling---negative-binomial-regression-1" class="section level3">
 <h3>Modeling - Negative binomial regression</h3>
 <p>Our outcome variable is a count variable, hence we want to model a negative binomial regression.</p>
-<p>We decided to do the use the same modeling technique to run a regression analysis as the previous models.</p>
+<p>We decided to use the same modeling technique to run a regression analysis as the previous models.</p>
 <pre class="r"><code>neg_bin_mod_public_health = glm.nb(new_cases ~  month_name + state_name + as.factor(information_campaigns) + as.factor(testing_policy) + as.factor(contact_tracing) + state_tavg,
                             data = ct_infoc_test_tract)</code></pre>
 </div>
@@ -798,7 +810,11 @@ covid_noaa_dataset_cor_3[,3:6] %&gt;%
 
 nb_output_public_health %&gt;% 
   knitr::kable(digits = 3)</code></pre>
-<p>For every one degree increase in temperature the case count increases by 0.957 times.</p>
+<p>We did not find a significant association between policies, such as information campaigns and contact tracing, and the number of new cases, while controlling for temperature. With every degree Fahrenheit increase in average temperature, the number of cases decrease by 4.3%, adjusting for information campaigns and contact tracing. This association is significant at the 5% level of significance. This supports our hypothesis that the number of cases would rise with decrease in temperature.</p>
+</div>
+<div id="limitations-for-the-models" class="section level3">
+<h3>Limitations for the models</h3>
+<p>We have not accounted for additional variables that could influence the results of association between temperature and number of new cases. Additionally, since we have already adjusted for state, the true association between policies and restrictions might not be reflected as they are specific to the state.</p>
 </div>
 </div>
 

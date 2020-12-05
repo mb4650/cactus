@@ -26,6 +26,8 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -392,6 +394,12 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li>
+  <a href="http://github.com/mb4650/cactus">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -414,8 +422,8 @@ div.tocify {
 </div>
 
 
-<div id="descriptive-visualizations-of-confirmed-covid-cases-and-deaths-in-the-u.s." class="section level1">
-<h1>Descriptive visualizations of confirmed COVID cases and deaths in the U.S.</h1>
+<div id="descriptive-visualizations-of-confirmed-covid-19-cases-and-deaths-in-the-us" class="section level1">
+<h1>Descriptive visualizations of confirmed COVID-19 cases and deaths in the US</h1>
 <pre class="r"><code>library(tidyverse)
 library(readxl)
 require(scales)
@@ -436,7 +444,7 @@ options(
 )
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d</code></pre>
-<p><em>Importing relevent dataset which includes the data from the COVID19 R package and a locally made dataset with dates of mask mandate per state.</em></p>
+<p><em>Importing relevant dataset which includes the data from the <code>COVID19</code> R package and a locally made dataset with dates of mask mandate per state.</em></p>
 <pre class="r"><code>covid_df = covid19(c(&quot;US&quot;), level = 2, start = &quot;2020-01-01&quot;)</code></pre>
 <pre><code>## We have invested a lot of time and effort in creating COVID-19 Data Hub, please cite the following when using it:
 ## 
@@ -483,16 +491,16 @@ mask_df = read_excel(&quot;./data/mask_state.xlsx&quot;) %&gt;%
 
 cactus_df = left_join(covid_df, mask_df, by.x = c(&quot;state&quot;, &quot;date&quot;), by.y = c(&quot;state&quot;, &quot;date&quot;))</code></pre>
 </div>
-<div id="state-aggregated-new-covid-cases-and-deaths" class="section level1">
-<h1>State Aggregated New COVID Cases and Deaths</h1>
-<p><strong>Comparing new COVID cases by state over the past year</strong></p>
+<div id="state-aggregated-new-covid-19-cases-and-deaths" class="section level1">
+<h1>State Aggregated New COVID-19 Cases and Deaths</h1>
+<p><strong>Comparing new COVID-19 cases by state over the past year</strong></p>
 <pre class="r"><code>time_plot = 
 covid_df %&gt;% 
   ggplot(aes(x = date, y = new_case_updated, color = state)) +
   geom_point(alpha = 0.5) +
   geom_line() +
   theme(legend.position = &quot;none&quot;) +
-  labs(title = &quot;Daily New Covid Cases Over Time&quot;,
+  labs(title = &quot;Daily New COVID-19 Cases Over Time&quot;,
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
       scale_x_date(breaks = seq.Date(from = as.Date(&quot;2020-01-31&quot;), 
@@ -502,14 +510,14 @@ covid_df %&gt;%
 time_plot &lt;- time_plot + scale_y_continuous(labels = comma)
 time_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
-<p><strong>Comparing new COVID deaths by state over the past year</strong></p>
+<p><strong>Comparing new COVID-19 deaths by state over the past year</strong></p>
 <pre class="r"><code>death_plot = 
 covid_df %&gt;% 
   ggplot(aes(x = date, y = new_death_updated, color = state)) +
   geom_point(alpha = 0.5) +
   geom_line() +
   theme(legend.position = &quot;none&quot;) +
-  labs(title = &quot;Daily New Covid Deaths Over Time&quot;,
+  labs(title = &quot;Daily New COVID-19 Deaths Over Time&quot;,
        y = &quot;Confirmed new deaths&quot;,
        x = &quot;Date&quot;) +
       scale_x_date(breaks = seq.Date(from = as.Date(&quot;2020-01-31&quot;), 
@@ -519,7 +527,7 @@ covid_df %&gt;%
 death_plot &lt;- death_plot + scale_y_continuous(labels = comma)
 death_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
-<p><strong>Daily new COVID case of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state</strong></p>
+<p><strong>Daily new COVID-19 case of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state</strong></p>
 <pre class="r"><code>state_plot = 
 covid_df %&gt;% 
   group_by(state_binary, date, temperate) %&gt;% 
@@ -529,14 +537,14 @@ covid_df %&gt;%
   geom_line() +
   scale_y_continuous(labels = comma) +
   facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = FALSE, strip.position = &quot;bottom&quot;) +
-  labs(title = &quot;Average Daily New COVID cases by Red/Blue states&quot;,
+  labs(title = &quot;Average Daily New COVID-19 cases by Red/Blue states&quot;,
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 state_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
-<p><strong>Daily new COVID deaths of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state</strong></p>
+<p><strong>Daily new COVID-19 deaths of red/blue state (based on 2020 presidential election) stratified by temperate/sub-tropical state</strong></p>
 <pre class="r"><code>state_death = 
 covid_df %&gt;% 
   group_by(state_binary, date, temperate) %&gt;% 
@@ -546,14 +554,14 @@ covid_df %&gt;%
   geom_line() +
   scale_y_continuous(labels = comma) +
   facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = FALSE, strip.position = &quot;bottom&quot;) +
-  labs(title = &quot;Average Daily New COVID deaths by Red/Blue states&quot;,
+  labs(title = &quot;Average Daily New COVID-19 deaths by Red/Blue states&quot;,
        y = &quot;Confirmed new deaths&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 state_death</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
-<pre class="r"><code>#creating new variables to look at two week difference in new COVID cases and COVID deaths two weeks to one month after mask mandate respectively. 
+<pre class="r"><code>#creating new variables to look at two week difference in new COVID-19 cases and COVID-19 deaths two weeks to one month after mask mandate respectively. 
 
 cactus_df = 
   cactus_df %&gt;% 
@@ -565,32 +573,32 @@ cactus_df =
   cactus_df %&gt;% 
   mutate(in_two_weeks_death = if_else(mask == &quot;Yes&quot;, lead(new_death_updated, 30), NA_real_)) %&gt;% 
   mutate(diff_death = in_two_weeks_death - new_death_updated)</code></pre>
-<p><strong>Observing two week difference in confirmed new COVID cases from date of mask mandate in states that enforced a mandate</strong></p>
+<p><strong>Observing two week difference in confirmed new COVID-19 cases from date of mask mandate in states that enforced a mandate</strong></p>
 <pre class="r"><code>cactus_df %&gt;% 
   ggplot(aes(x = state, y = diff, color = state_binary)) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
-  facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = TRUE, strip.position =     &quot;bottom&quot;) +
- scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +##not sure if I will use this
+  facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = TRUE, strip.position = &quot;bottom&quot;) +
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
     labs(title = &quot;Difference in new cases and mask mandate&quot;,
        y = &quot;Two week difference in confirmed new cases&quot;,
        x = &quot;State&quot;)</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
-<p><strong>Observing two week difference in confirmed new COVID deaths from date of mask mandate in states that enforced a mandate</strong></p>
+<p><strong>Observing two week difference in confirmed new COVID-19 deaths from date of mask mandate in states that enforced a mandate</strong></p>
 <pre class="r"><code>cactus_df %&gt;% 
   ggplot(aes(x = state, y = diff_death, color = state_binary)) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
-  facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = TRUE, strip.position =     &quot;bottom&quot;) +
- scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +##not sure if I will use this
+  facet_wrap(~temperate, nrow = 1, scales = &quot;free_x&quot;, shrink = TRUE, strip.position = &quot;bottom&quot;) +
+ scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
     labs(title = &quot;Difference in new deaths and mask mandate&quot;,
        y = &quot;Four week difference in confirmed new deaths&quot;,
        x = &quot;State&quot;)</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
 </div>
-<div id="citycounty-aggregated-new-covid-cases-and-deaths" class="section level1">
-<h1>City/County Aggregated New COVID Cases and Deaths</h1>
-<p><strong>A comparison of new COVID cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties</strong></p>
+<div id="citycounty-aggregated-new-covid-19-cases-and-deaths" class="section level1">
+<h1>City/County Aggregated New COVID-19 Cases and Deaths</h1>
+<p><strong>A comparison of new COVID-19 cases and deaths between main US cities (New York City, Los Angeles, Chicago/Cook County and Houston) and less populated counties</strong></p>
 <pre class="r"><code>confirmed_df = 
   read_csv(&quot;https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv&quot;) %&gt;% 
   select_all(tolower) %&gt;% 
@@ -654,7 +662,7 @@ lessppl_df =
   ) %&gt;% 
   select(-c(state.x, state.y)) %&gt;% 
   select(state, everything())</code></pre>
-<p><strong>The most populated city - New York City vs. other less populated counties in New York state regarding new COVID cases and deaths.</strong></p>
+<p><strong>The most populated city - New York City vs. other less populated counties in New York state regarding new COVID-19 cases and deaths</strong></p>
 <pre class="r"><code>nyc_df =
   confirmed_deaths_df %&gt;% 
   filter(county == &quot;New York&quot;)
@@ -675,7 +683,7 @@ ny_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;COVID Cases and Deaths of New York City, NY&quot;,
+  labs(title = &quot;COVID-19 Cases and Deaths of New York City, NY&quot;,
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
@@ -697,9 +705,9 @@ ny_deaths_plot =
 ny_confirmed_plot + ny_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <ul>
-<li>NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 276422.8.</li>
+<li>NYC has a population of 1628706, and the mean population of the 10 randomly selected NY counties is 375435.2.</li>
 </ul>
-<p><strong>The second populated city - Los Angeles vs. other less populated counties in California regarding new COVID cases and deaths.</strong></p>
+<p><strong>The second most populated city - Los Angeles vs. other less populated counties in California regarding new COVID-19 cases and deaths</strong></p>
 <pre class="r"><code>la_df =
   confirmed_deaths_df %&gt;% 
   filter(county == &quot;Los Angeles&quot;)
@@ -720,7 +728,7 @@ ca_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;COVID Cases and Deaths of Los Angeles, CA&quot;,
+  labs(title = &quot;COVID-19 Cases and Deaths of Los Angeles, CA&quot;,
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
@@ -742,9 +750,9 @@ ca_deaths_plot =
 ca_confirmed_plot + ca_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
 <ul>
-<li>Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 560640.4.</li>
+<li>Los Angeles has a population of 10039107, and the mean population of the 10 randomly selected CA counties is 767129.9.</li>
 </ul>
-<p><strong>The third populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID cases and deaths.</strong></p>
+<p><strong>The third most populated city - Chicago (part of Cook County) vs. other less populated counties in Illinois regarding new COVID-19 cases and deaths</strong></p>
 <pre class="r"><code>chicago_df =
   confirmed_deaths_df %&gt;% 
   filter(county == &quot;Cook&quot;)
@@ -765,7 +773,7 @@ il_df =
   geom_point(alpha = 0.5) +
   geom_line() +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;COVID Cases and Deaths of Cook County/Chicago, IL&quot;,
+  labs(title = &quot;COVID-19 Cases and Deaths of Cook County/Chicago, IL&quot;,
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
@@ -787,9 +795,9 @@ il_deaths_plot =
 il_confirmed_plot + il_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-15-1.png" width="90%" /></p>
 <ul>
-<li>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 73507.94.</li>
+<li>Cook County (Chicago included) has a population of 5150233, and the mean population of the 10 randomly selected IL counties is 67974.41.</li>
 </ul>
-<p><strong>The fourth populated city - Houston vs. other less populated counties in Texas regarding new COVID cases and deaths.</strong></p>
+<p><strong>The fourth most populated city - Houston vs. other less populated counties in Texas regarding new COVID-19 cases and deaths</strong></p>
 <pre class="r"><code>houston_df =
   confirmed_deaths_df %&gt;% 
   filter(county == &quot;Houston&quot;)
@@ -811,7 +819,7 @@ tx_df =
   geom_line() +
   scale_color_manual(values = c(&quot;Houston&quot; = &quot;black&quot;, &quot;other TX counties&quot; = &quot;orange&quot;)) +
   scale_y_continuous(labels = comma) +
-  labs(title = &quot;COVID Cases and Deaths of Houston, TX&quot;,
+  labs(title = &quot;COVID-19 Cases and Deaths of Houston, TX&quot;,
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
   scale_x_date(date_breaks = &quot;1 month&quot;, date_labels = &quot;%b-%y&quot;,expand = c(0,0)) +
@@ -834,13 +842,13 @@ tx_deaths_plot =
 tx_confirmed_plot + tx_deaths_plot</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
 <ul>
-<li>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 68177.42.</li>
+<li>Houston has a population of 22968, and the mean population of the 10 randomly selected TX counties is 133128.4.</li>
 </ul>
 <p><em>Texas is one of the sub-tropical states compared to NY, CA and IL (temperate), and it is marked by different colors.</em></p>
 </div>
-<div id="national-new-covid-cases-and-deaths" class="section level1">
-<h1>National New COVID Cases and Deaths</h1>
-<p><strong>Comparing overall US new COVID cases and deaths with important national events</strong></p>
+<div id="national-new-covid-19-cases-and-deaths" class="section level1">
+<h1>National New COVID-19 Cases and Deaths</h1>
+<p><strong>Comparing overall US new COVID-19 cases and deaths with important national events</strong></p>
 <pre class="r"><code>library(sars2pack)
 
 us_df = jhu_data() %&gt;% 
@@ -875,21 +883,21 @@ us_events_df =
   us_events_df %&gt;% 
   mutate(in_two_weeks_death = if_else(!(is.na(event)), lead(new_deaths, 30), NA_real_)) %&gt;% 
   mutate(diff_death = in_two_weeks_death - new_deaths)</code></pre>
-<p><strong>Daily new COVID cases over the past year with important national events</strong></p>
+<p><strong>Daily new COVID-19 cases over the past year with important national events</strong></p>
 <pre class="r"><code>us_events_df %&gt;%  
   ggplot(aes(x = date, y = new_case)) +
   geom_point() +
-    labs(title = &quot;New COVID cases over time&quot;,
+    labs(title = &quot;New COVID-19 cases over time&quot;,
        y = &quot;Confirmed new cases&quot;,
        x = &quot;Date&quot;) +
       geom_vline(data = events_df, mapping = aes(xintercept = date) ,linetype = &quot;dotted&quot;,color = &quot;blue&quot;, show.legend = TRUE) +
   geom_text(data = events_df, mapping = aes(x = date, y = 75000, label = event), size = 2.5, angle = 90, vjust = -0.4, hjust = 0)</code></pre>
 <p><img src="descriptive_plotly_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
-<p><strong>Daily new COVID deaths over the past year with important national events</strong></p>
+<p><strong>Daily new COVID-19 deaths over the past year with important national events</strong></p>
 <pre class="r"><code>us_events_df %&gt;%  
   ggplot(aes(x = date, y = new_deaths)) +
   geom_point() +
-    labs(title = &quot;New COVID deaths over time&quot;,
+    labs(title = &quot;New COVID-19 deaths over time&quot;,
        y = &quot;Confirmed new deaths&quot;,
        x = &quot;Date&quot;) +
       geom_vline(data = events_df, mapping = aes(xintercept = date) , linetype = &quot;dotted&quot;, color = &quot;blue&quot;, show.legend = TRUE) +
