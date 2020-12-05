@@ -96,7 +96,7 @@ noaa_dataset =
 write_csv(noaa_dataset,"data/noaa_dataset.csv")
 ```
 
-## Import Covid datase. Clean and tidy data
+## Import Covid dataset. Clean and tidy data
 
 The COVID19 dataset was imported using the COVID19 R package.
 COVID-19 data was obtained from the `COVID19` package. This function has arguments set to return data at the state level. This dataset included information on the date, state, as well as the number of cases, tests, and hospitalizations for that given day.
