@@ -468,7 +468,7 @@ covid_noaa_dataset %&gt;%
                      tl.cex = .9,
                      tl.srt = 45,
                      is.corr = FALSE)</code></pre>
-<p><img src="Regression-Analysis_files/figure-html/correlation-1.png" width="90%" /></p>
+<p><img src="regression_analysis_files/figure-html/correlation-1.png" width="90%" /></p>
 <p>In order to select the most significant variables in our model we first conducted a crude correlation assessment using a correlation matrix as shown above. From this assessment we decided to remove <code>state_tmax</code> and <code>state_tmin</code> since the r is 0.97 - 0.99, indicating that there is an extreme co-linearity among other predictors.</p>
 </div>
 <div id="confounding" class="section level3">
@@ -552,7 +552,7 @@ count_cv %&gt;%
   labs(
     title = &quot;Variation Distributions&quot;
   )</code></pre>
-<p><img src="Regression-Analysis_files/figure-html/cross%20validation-1.png" width="90%" /></p>
+<p><img src="regression_analysis_files/figure-html/cross%20validation-1.png" width="90%" /></p>
 <p>From the distribution above we can see that both the figures are very similar to each other. We cannot solely base our decision to use either of the models based on this distribution. Hence we look at the AIC.</p>
 <p>The poisson model has an AIC of 2593050 The negative binomial model has an AIC of 8357.088</p>
 <p>Since the Negative binomial model has a smaller AIC than the poission model we chose the negative binomial model.</p>
