@@ -223,3 +223,11 @@ count_cv %>%
   )
 ```
 
+
+
+```{r}
+write_csv(covid_noaa_dataset, "Predictive_Interactive_map/covid_noaa_dataset.csv" )
+```
+
+
+
