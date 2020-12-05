@@ -119,6 +119,8 @@ covid_data =
 
 ## Merging the two dataset
 
+The two datasets were merged by state and month.
+
 ```{r creating dataset 3, echo = FALSE, message=FALSE, results='hide'}
 covid_noaa_dataset =
   inner_join(covid_data,noaa_dataset, by = c("key_alpha_2" = "state_code", "month" = "month")) %>%
