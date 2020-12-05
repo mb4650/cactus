@@ -13,13 +13,13 @@ library(sp)
 library(tigris)
 library(MASS)
 
+
 covid_noaa_dataset = read_csv("covid_noaa_dataset.csv")
 states <- states(cb=T)
 
 
 
 # Downloading the shapefiles for states at the lowest resolution
-states <- states(cb=T)
 
 url = "https://urldefense.proofpoint.com/v2/url?u=https-3A__developers.google.com_public-2Ddata_docs_canonical_states-5Fcsv&d=DwIFAg&c=G2MiLlal7SXE3PeSnG8W6_JBU6FcdVjSsBSbw6gcR0U&r=B8uzIkNMhKdWydN9xY4NUSbhsqKRbTFG_gmZY3kin8Q&m=ZLDhVDaJRa8xTJd2UCndV5ZKTHV5ZrzOcRkhqHloTko&s=RJ-z_AUb_Xy-Yw9rP8euzOmNJCXWGMMWkgyuhy97A8M&e= "
 lat_long_html = read_html(url)
@@ -36,35 +36,56 @@ neg_bin_mod = glm.nb(new_cases ~ as.factor(month) + state_name + state_tavg + st
 ui <- fluidPage(
   titlePanel("Case count Predictor"),
   
-  sidebarLayout(
-    sidebarPanel(
-      helpText(h2("Enter details")),
+  tabsetPanel(id='my_tabsetPanel',
+    tabPanel('Map1',
+        sidebarPanel(
+          helpText(h2("Enter details")),
+          
+          selectInput("Month1", h3("Select Month"),
+                      choices =unique(covid_noaa_dataset["month"]),selected = 4),
+          
+          selectInput("State", h3("Select state"),
+                      choices =unique(covid_noaa_dataset["state_name"]),selected = 10),
+          
+          sliderInput( "tavg",
+                       label = "Select Average temperature",
+                       min = 1,
+                       max = max(covid_noaa_dataset["state_tmax"])+20,
+                       value = 30),
+          
+          sliderInput(inputId = "prcp",
+                      label = "Select precipitation",
+                      min = -10,
+                      max = max(covid_noaa_dataset["state_total_prcp"])+10,
+                      value = 1)
+          
+        ),
       
-      selectInput("Month", h3("Select Month"),
-                  choices =unique(covid_noaa_dataset["month"]),selected = 4),
-      
-      selectInput("State", h3("Select state"),
-                  choices =unique(covid_noaa_dataset["state_name"]),selected = 10),
-      
-      sliderInput( "tavg",
-                   label = "Select Average temperature",
-                   min = 1,
-                   max = max(covid_noaa_dataset["state_tmax"])+20,
-                   value = 30),
-      
-      sliderInput(inputId = "prcp",
-                  label = "Select precipitation",
-                  min = -10,
-                  max = max(covid_noaa_dataset["state_total_prcp"])+10,
-                  value = 1)
+        mainPanel(
+          # fluidRow(
+          #   column(12,label = "Prediction", leafletOutput("selected_var")),
+          #   column(12, label = "general trend", leafletOutput("plot1"))
+          # )
+          leafletOutput("plot1")
+        )
       
     ),
-    
-    mainPanel(
-      fluidRow(
-        column(12,label = "Prediction", leafletOutput("selected_var")),
-        column(12, label = "general trend", leafletOutput("plot1"))
-      )
+    tabPanel('Map2',
+             sidebarPanel(
+               helpText(h2("Enter details")),
+               
+               selectInput("Month2", h3("Select Month"),
+                           choices =unique(covid_noaa_dataset["month"]),selected = 4)
+             ),
+             
+             mainPanel(
+               # fluidRow(
+               #   column(12,label = "Prediction", leafletOutput("selected_var")),
+               #   column(12, label = "general trend", leafletOutput("plot1"))
+               # )
+               leafletOutput("plot2")
+             )
+             
     )
   )
 )
@@ -72,9 +93,9 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
-  output$selected_var <- renderLeaflet({
+  output$plot1 <- renderLeaflet({
     
-    df = data.frame( month = as.factor(input$Month), state_name = input$State ,
+    df = data.frame( month = as.factor(input$Month1), state_name = input$State ,
                      state_tavg = input$tavg , state_total_prcp = input$prcp )
     
     count = as.integer( predict(neg_bin_mod, df, type = "response") )
@@ -86,7 +107,7 @@ server <- function(input, output) {
     
     #paste( "you chose", a)
     map_df = covid_noaa_dataset%>% 
-      filter(month == as.factor(input$Month),
+      filter(month == as.factor(input$Month1),
              state_name ==input$State)
     
     
@@ -112,14 +133,14 @@ server <- function(input, output) {
           bringToFront = FALSE)) %>%
       
       addCircleMarkers(lat =map_df$latitude.y, lng = map_df$longitude.y,
-                       radius =count/20000,color = "red",popup =map_df$state_name) %>%
+                       radius =count/40000,color = "red",popup =map_df$state_name) %>%
       
       addControl(display, position = "bottomleft")
     
   })
   
-  output$plot1 <- renderLeaflet({
-    map_df = covid_noaa_dataset%>% filter(month == as.factor(input$Month))
+  output$plot2 <- renderLeaflet({
+    map_df = covid_noaa_dataset%>% filter(month == as.factor(input$Month2))
     
     map_df = inner_join(map_df, table_lat_long_df, by = c("key_alpha_2" = "state" ))
     

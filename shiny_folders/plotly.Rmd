@@ -4,7 +4,7 @@ output:
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
-    source_code: embed
+    source: embed
 runtime: shiny
 ---
 
@@ -415,6 +415,8 @@ Column {.tabset}
 ### Temperature Trends
 
 ```{r}
+#state_month = month_noaa_avg %>% pull(month_name) %>% unique()
+#xlab = list(categoryorder = 'array', categoryarray = c('Jan', 'Feb', 'Mar','Apr', 'May','Jun','Jul','Aug','Sep', 'Oct'))
 
 renderPlotly({
     month_noaa_avg %>%
