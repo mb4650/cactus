@@ -8,34 +8,33 @@ output:
 
 # Motivation
 
-# Related Work
+Our motivation for CACTUS came from the idea that weather potentially had an effect on COVID-19 transmission. As we’re now about to enter the winter months, it is more paramount than ever that we understand this relationship, so that the general public can be appropriately informed and take proper precaution and control measures as a result. Although climate itself most likely does not act alone in contributing to transmission, we were interested in further understanding the association between various climate variables and COVID-19 statistics. Our project utilizes real life COVID-19 and climate data to analyze trends and create predictive models.
 
 # Initial Questions
 
 Our initial questions involved looking deeper into trends in COVID-19 over the year and how those trends were affected by climate. We also wanted to see what the case counts might look like in the future based on the data that we have. To answer these broader questions, we divided into multiple smaller sections to better address more specific questions. For more information on what these initial questions looked like and how they evolved over time, please click on one of the following:
 
-[Descriptives](descriptive_plotly.html)
+#### [Descriptives](descriptive_plotly.html)
 
-[Interactive Dashboard Visualizations](create_shiny.html)
+#### [Interactive Dashboard Visualizations](create_shiny.html)
 
-[Regression Analysis](Regression-Analysis.html)
+#### [Regression Analysis](Regression-Analysis.html)
 
-[Predictive Tool](predictive_tool.html)
 
 
 # Data
 
 For each section, COVID-19 data were obtained from the `COVID19` package in R. Additional datasets were utilized for the analysis and are defined in the following reports.
 
-[Descriptives](descriptive_plotly.html)
+#### [Descriptives](descriptive_plotly.html)
 
 For descriptive visualizations, we retrieved data from the aforementioned COVID19 package in R, JHU CSSE database, and the sars2pack from GitHub along with two locally created datasets with date of mask mandate per state and important national events. 
 
-[Interactive Dashboard Visualizations](create_shiny.html)
+#### [Interactive Dashboard Visualizations](create_shiny.html)
 
 For interactive dashboard visualizations, we retrieved our data from the COVID19 package in R as well as the rnoaa dataset.
 
-[Regression Analysis](Regression-Analysis.html)
+#### [Regression Analysis](Regression-Analysis.html)
 
 
 # Exploratory Analysis
