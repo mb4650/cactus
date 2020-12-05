@@ -39,3 +39,7 @@ In order for people to get a better idea of the trends seen in the data, we crea
 We wanted to see the relationship between COVID-19 and climate - more specifically if the case counts is related to rise in temperature. We decided to build three model and predict covid case counts. We went on to build a predictive tool which allows you to choose the temperature in the State that you are curious to predict the case counts and the interactive map would show you the data. 
 
 # Screencast
+
+<video width="700" height="450" controls>
+<source src="./images/DSfinal_screencast.mp4" type="video/mp4">
+</video>
