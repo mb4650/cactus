@@ -20,7 +20,7 @@ navbar:
     - text: "Predictive Models"
       menu:
        - text: "Regression Analysis"
-         href: Regression-Analysis.html
+         href: regression_analysis.html
        - text: "Predictive Tool"
          href: https://gaurib2685.shinyapps.io/predictive_interactive_map/
 
