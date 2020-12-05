@@ -33,9 +33,9 @@ table_lat_long_df =
 neg_bin_mod = glm.nb(new_cases ~ month_name + state_name + state_tavg + state_total_prcp,
                      data = covid_noaa_dataset)
 
-neg_bin_policy = glm.nb(new_cases ~ as.factor(month) + state_name + school_closing + workplace_closing + gatherings_restrictions, 
-                        
-                        data = covid_noaa_dataset) 
+neg_bin_policy = glm.nb(new_cases ~ month_name + state_name + as.factor(school_closing) 
+                        + as.factor(workplace_closing) + as.factor(gatherings_restrictions)
+                        + state_tavg, data = covid_noaa_dataset) 
 
 ui <- fluidPage(
   titlePanel("Case count Predictor"),
@@ -79,7 +79,7 @@ ui <- fluidPage(
                helpText(h2("Enter details")),
                
                selectInput("month2", h3("Select Month"),
-                           choices =unique(covid_noaa_dataset["month"]),selected = 4)
+                           choices =unique(covid_noaa_dataset["month_name"]),selected = 4)
              ),
              
              mainPanel(
@@ -96,10 +96,10 @@ ui <- fluidPage(
                helpText(h2("Enter details")),
                
                selectInput("month3", h3("Select Month"),
-                           choices =unique(covid_noaa_dataset["month"]),selected = 4),
+                           choices =unique(covid_noaa_dataset["month_name"]),selected = "May"),
                
                selectInput("state3", h3("Select State"),
-                           choices =unique(covid_noaa_dataset["state_name"]),selected = 10),
+                           choices =unique(covid_noaa_dataset["state_name"]),selected = "New York"),
                
                selectInput("school", h3("Select School Policy"),
                            choices = list("No measures" = 0, "Recommended closing" = 1,
@@ -114,7 +114,7 @@ ui <- fluidPage(
                selectInput("gathering", h3("Select Gathering Policy"),
                            choices = list("No restrictions" = 0, "Limit very large gatherings" = 1,
                                           "Limit upto 100-1000 people " = 2, "Limit upto 10-100 people" = 3, 
-                                          "Limit upto 10 people"),
+                                          "Limit upto 10 people" = 4),
                            selected = 0),
                
                sliderInput( "tavg3",
@@ -141,7 +141,7 @@ server <- function(input, output) {
   
   output$plot1 <- renderLeaflet({
     
-    df = data.frame( month_name = as.factor(input$month1), state_name = input$state1 ,
+    df = data.frame( month_name = input$month1, state_name = input$state1 ,
                      state_tavg = input$tavg1 , state_total_prcp = input$prcp )
     
     count = as.integer( predict(neg_bin_mod, df, type = "response") )
@@ -185,8 +185,9 @@ server <- function(input, output) {
     
   })
   
+  
   output$plot2 <- renderLeaflet({
-    map_df = covid_noaa_dataset%>% filter(month == as.factor(input$Month2))
+    map_df = covid_noaa_dataset%>% filter(month_name == input$month2)
     
     map_df = inner_join(map_df, table_lat_long_df, by = c("state" = "state" ))
     
@@ -244,10 +245,12 @@ server <- function(input, output) {
   
   output$plot3 <- renderLeaflet({
     
-    df = data.frame( month_name = as.factor(input$month3), state_name = input$state1 ,
-                     state_tavg = input$tavg , state_total_prcp = input$prcp )
     
-    count = as.integer( predict(neg_bin_mod_policy, df, type = "response") )
+    df = data.frame( month_name = input$month3, state_name = input$state3, school_closing = as.factor(input$school),
+                     workplace_closing = as.factor(input$workplace), gatherings_restrictions = as.factor(input$gathering),
+                     state_tavg = input$tavg3 )
+    
+    count = as.integer( predict(neg_bin_policy, df, type = "response") )
     
     display = sprintf(
       "<strong>Predicted number of cases: %s</strong>",
@@ -256,8 +259,8 @@ server <- function(input, output) {
     
     #paste( "you chose", a)
     map_df = covid_noaa_dataset%>% 
-      filter(month == as.factor(input$Month1),
-             state_name ==input$State)
+      filter(month_name == input$month3,
+             state_name ==input$state3)
     
     
     map_df = inner_join(map_df, table_lat_long_df, by = c("state" = "state" ))
