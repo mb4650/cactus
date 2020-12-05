@@ -161,7 +161,8 @@ covid_noaa_dataset %>%
                      number.cex = .6,
                      tl.col = "red",
                      tl.cex = .9,
-                     tl.srt = 45)
+                     tl.srt = 45,
+                     is.corr = FALSE)
   
 ```
 
