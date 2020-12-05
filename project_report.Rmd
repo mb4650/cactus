@@ -48,9 +48,20 @@ Our results show that COVID cases dropped from April to May, but increased again
 
 The interactive dashboard showed that the cumulative COVID-19 cases and deaths have increased over time since January 2020 up till October 2020. However, the rate at which cases are increasing are much faster than the rate at which deaths are increasing, as shown by the graphs in the first tab in the interactive dashboard. COVID-19 hospitalization cases fluctuate over time from state to state, so no conclusive trends can be assumed from the data that we have on COVID-19 hospitalizations. When looking at trends for temperature for each state, we see a similar trend in each state showing an increase in temperature (minimum/maximum/average) from January 2020 till August 2020, and then a decrease in temperatures going into October 2020. 
 
-# Formal Analysis
+### Predictive Models
 
-More formal analysis was done with [Regression Analysis](Regression-Analysis.html). Add more details on what that included
+We wanted to see the relationship between COVID-19 and climate - more specifically if the case counts is related to rise in temperature. We decided to build three model - 
+The first model assess the relationship between covid-19 case counts and temperature. 
+The second model assess the relationship between covid-19 case counts, temperature and its relation to school closures, work place closures and gathering restrictions. 
+The thrid model assess the reltionship between covid-19 case counts and temperature and its relation to travel restrictions. 
+
+### Interactive Predictive Tool
+
+We went on to build a predictive tool which allows you to choose the temperature in the State that you are curious to predict the case counts and the interactive map would show you the data. 
+
+Our second interactive predictive tools allows you to predict the case counts based on school closures, work place closures and gathering restrictions. 
+
+The third map predicts covid case counts based on the travel restrictions. 
 
 # Discussion
 include formal discussion that is a combination of all the conclusions from other sections
