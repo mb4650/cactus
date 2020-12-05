@@ -37,7 +37,6 @@ For interactive dashboard visualizations, we retrieved our data from the COVID19
 
 [Regression Analysis](Regression-Analysis.html)
 
-[Predictive Tool](predictive_tool.html)
 
 # Exploratory Analysis
 
@@ -51,7 +50,7 @@ The interactive dashboard showed that the cumulative COVID-19 cases and deaths h
 
 # Formal Analysis
 
-More formal analysis was done with [Regression Analysis](Regression-Analysis.html) and [Predictive Tool](predictive_tool.html). Add more details on what that included
+More formal analysis was done with [Regression Analysis](Regression-Analysis.html). Add more details on what that included
 
 # Discussion
 include formal discussion that is a combination of all the conclusions from other sections
